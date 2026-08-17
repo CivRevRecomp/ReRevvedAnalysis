@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0044",
+  "topic": "guest-entrypoint-828f4950",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What current evidence supports the bitfield leaf at 0x828F4950?",
+  "currentEvidence": {
+    "address": "0x828F4950",
+    "method": "Exact eight-instruction body plus bounded runtime reachability.",
+    "confidence": "confirmed"
+  },
+  "staticResult": {
+    "result": "Address 0x828F4950 contains a load at offset 0x20, paired rlwinm bit extraction, a conditional return, a masked result, and a final return.",
+    "boundary": "The exact 0x20-byte leaf ends at 0x828F496C before the next function at 0x828F4970."
+  },
+  "runtimeResult": {
+    "result": "The maintained runtime reached 0x828F4950 through an indirect callback while exercising the city worker path."
+  },
+  "generatedCoverage": {
+    "result": "The maintained generated function map registers 0x828F4950."
+  },
+  "guards": [
+    "Do not identify adjacent targets without independent evidence.",
+    "Do not assign a semantic type beyond the observed bitfield-result behavior."
+  ],
+  "conclusion": "The bitfield-result leaf at 0x828F4950 is an exact current-image entrypoint reached by the runtime."
+}

@@ -1,0 +1,1681 @@
+{
+  "schemaVersion": 1,
+  "catalog": "relations",
+  "records": [
+    {
+      "id": "RVA-REL-0018",
+      "kind": "calls",
+      "from": "RVA-SYM-0016",
+      "to": "RVA-SYM-0021",
+      "image": "../image.json",
+      "claim": "The completed-preload consumer calls the named-resource registration function for each valid entry.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/loadedEntry" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E7F4F0" }
+      ],
+      "qualification": {
+        "alternatives": ["No individual entry is identified as GFX_MainMenu.gfx."]
+      }
+    },
+    {
+      "id": "RVA-REL-0019",
+      "kind": "calls",
+      "from": "RVA-SYM-0021",
+      "to": "RVA-SYM-0022",
+      "image": "../image.json",
+      "claim": "The named-resource registration path calls the numeric resource factory.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/registrationBehavior" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C92C38" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the current direct call at 0x82C92CD8 is claimed."]
+      }
+    },
+    {
+      "id": "RVA-REL-0020",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0022",
+      "to": "RVA-VTBL-0005",
+      "image": "../image.json",
+      "claim": "The numeric factory's type-11 case installs the current File Data resource vtable.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/fileDataResource" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C91E38" }
+      ],
+      "qualification": {
+        "alternatives": ["Other numeric cases install different tables and remain outside this relation."]
+      }
+    },
+    {
+      "id": "RVA-REL-0021",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0021",
+      "to": "RVA-SYM-0023",
+      "image": "../image.json",
+      "claim": "After creating a type-11 resource, registration dispatches File Data vtable slot 0x10 to its initializer.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/fileDataResource" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C92C38" }
+      ],
+      "qualification": {
+        "alternatives": ["The relation applies when the created numeric resource is type 11."]
+      }
+    },
+    {
+      "id": "RVA-REL-0022",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0021",
+      "to": "RVA-FLD-0009",
+      "image": "../image.json",
+      "claim": "Registration stores the normalized resource key at File Data offset 0x4 before initializer dispatch.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/fileDataResource" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C92C38" }
+      ],
+      "qualification": {
+        "alternatives": ["The key interning implementation remains outside this relation."]
+      }
+    },
+    {
+      "id": "RVA-REL-0023",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0023",
+      "to": "RVA-FLD-0010",
+      "image": "../image.json",
+      "claim": "The File Data initializer stores buffer+4 at payload-data offset 0x14.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/currentEvidence/fileDataInitializer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822E9500" }
+      ],
+      "qualification": {
+        "alternatives": ["The preceding four-byte length remains outside the field value."]
+      }
+    },
+    {
+      "id": "RVA-REL-0024",
+      "kind": "consumes",
+      "from": "RVA-SYM-0021",
+      "to": "RVA-SYM-0020",
+      "image": "../image.json",
+      "claim": "The preload call supplies the registry pointee at 0x8314F238 to named-resource registration as its container argument.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/loadedEntry" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E7F4F0" }
+      ],
+      "qualification": {
+        "alternatives": ["The concrete registry-owner type remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0025",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0027",
+      "to": "RVA-VTBL-0006",
+      "image": "../image.json",
+      "claim": "The opener installer binds the new 0x18-byte object to the current resource-backed opener vtable.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/installedOpener" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E41E60" }
+      ],
+      "qualification": {
+        "alternatives": ["The enclosing owner type remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0026",
+      "kind": "calls",
+      "from": "RVA-SYM-0026",
+      "to": "RVA-SYM-0034",
+      "image": "../image.json",
+      "claim": "CcGFXStreamLoadStream passes its supplied filename into the identified loader preflight.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/loaderDispatch" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C7D930" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime filename or cache outcome is claimed."]
+      }
+    },
+    {
+      "id": "RVA-REL-0027",
+      "kind": "calls",
+      "from": "RVA-SYM-0034",
+      "to": "RVA-SYM-0032",
+      "image": "../image.json",
+      "claim": "The loader preflight reaches the current loader-open helper with the normalized filename.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/loaderDispatch" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821EFB18" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the bounded filename-preserving path is claimed."]
+      }
+    },
+    {
+      "id": "RVA-REL-0028",
+      "kind": "calls",
+      "from": "RVA-SYM-0032",
+      "to": "RVA-SYM-0033",
+      "image": "../image.json",
+      "claim": "The loader-open helper passes the same supplied filename to GfxOpenFile.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/loaderDispatch" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82217C38" }
+      ],
+      "qualification": {
+        "alternatives": ["The concrete loader-state type remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0029",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0033",
+      "to": "RVA-SYM-0028",
+      "image": "../image.json",
+      "claim": "GfxOpenFile dispatches the supplied filename through opener slot 0x4 to the resource-backed opener.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/loaderDispatch" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E2D10" }
+      ],
+      "qualification": {
+        "alternatives": ["The relation applies while the installed opener is the vtable at 0x82162F28."]
+      }
+    },
+    {
+      "id": "RVA-REL-0030",
+      "kind": "calls",
+      "from": "RVA-SYM-0028",
+      "to": "RVA-SYM-0029",
+      "image": "../image.json",
+      "claim": "The resource-backed opener requests the supplied filename from ResLoadByName as numeric resource type 11.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E87B28" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime cache hit is inferred."]
+      }
+    },
+    {
+      "id": "RVA-REL-0031",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0029",
+      "to": "RVA-SYM-0030",
+      "image": "../image.json",
+      "claim": "A matched type-11 resource dispatches File Data vtable slot 0xC to export its payload.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C92950" }
+      ],
+      "qualification": {
+        "alternatives": ["The relation is bounded to the File Data vtable at 0x82160E54."]
+      }
+    },
+    {
+      "id": "RVA-REL-0032",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0030",
+      "to": "RVA-FLD-0010",
+      "image": "../image.json",
+      "claim": "The File Data exporter reads the retained payload pointer at offset 0x14.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/currentEvidence/fileDataExporter" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82C837C0" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime consumer is inferred beyond the bounded opener path."]
+      }
+    },
+    {
+      "id": "RVA-REL-0033",
+      "kind": "calls",
+      "from": "RVA-SYM-0028",
+      "to": "RVA-SYM-0031",
+      "image": "../image.json",
+      "claim": "On a non-empty File Data payload, the resource-backed opener calls the memory-file initializer with the supplied filename and payload extent.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E87B28" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete memory-file object layout remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0034",
+      "kind": "consumes",
+      "from": "RVA-SYM-0028",
+      "to": "RVA-SYM-0020",
+      "image": "../image.json",
+      "claim": "The resource-backed opener loads and consumes the current resource-registry pointer before its type-11 lookup.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E87B28" }
+      ],
+      "qualification": {
+        "alternatives": ["The concrete registry-owner type remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0035",
+      "kind": "consumes",
+      "from": "RVA-SYM-0011",
+      "to": "RVA-SYM-0035",
+      "image": "../image.json",
+      "claim": "The main-menu preload routine passes GFX_MainMenu_logo.dds to the current named-file helper at 0x82E7E410.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-logo-texture-resource.json#/logoPreload" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpInstructions.java:0x82E7ED28" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E7EA60" }
+      ],
+      "qualification": {
+        "alternatives": ["The relation establishes preload-list membership, not runtime completion or texture creation."]
+      }
+    },
+    {
+      "id": "RVA-REL-0042",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0022",
+      "to": "RVA-VTBL-0007",
+      "image": "../image.json",
+      "claim": "The numeric factory's type-7 case installs the current texture-resource vtable.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/factoryBehavior" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C91E38" }
+      ],
+      "qualification": {
+        "alternatives": ["Other numeric cases install different tables and are outside this relation."]
+      }
+    },
+    {
+      "id": "RVA-REL-0043",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0021",
+      "to": "RVA-SYM-0041",
+      "image": "../image.json",
+      "claim": "After storing the normalized key, registration dispatches texture-resource vtable slot 0x10 to the initializer.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/registrationBehavior" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C92C38" }
+      ],
+      "qualification": {
+        "alternatives": ["The relation applies when the created numeric resource is type 7."]
+      }
+    },
+    {
+      "id": "RVA-REL-0044",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0041",
+      "to": "RVA-FLD-0012",
+      "image": "../image.json",
+      "claim": "The texture-resource initializer assigns the supplied retained pointer to offset 0x18.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/currentEvidence/initializer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C8DA08" }
+      ],
+      "qualification": {
+        "alternatives": ["The retained-pointer helper's concrete public type is unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0045",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0042",
+      "to": "RVA-FLD-0012",
+      "image": "../image.json",
+      "claim": "The texture-resource exporter reads the retained pointer at offset 0x18.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/exportBehavior" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82C8D540" }
+      ],
+      "qualification": {
+        "alternatives": ["No logo-specific caller is inferred."]
+      }
+    },
+    {
+      "id": "RVA-REL-0051",
+      "kind": "calls",
+      "from": "RVA-SYM-0050",
+      "to": "RVA-SYM-0051",
+      "image": "../image.json",
+      "claim": "The DefineExternalImage tag loader passes its parsed fields to the deferred descriptor builder.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/externalImageTag" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E9390" }
+      ],
+      "qualification": {
+        "alternatives": ["This generic relation does not identify a runtime movie or asset."]
+      }
+    },
+    {
+      "id": "RVA-REL-0052",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0052",
+      "to": "RVA-VTBL-0009",
+      "image": "../image.json",
+      "claim": "The loader's state-kind-12 installer binds the external-image creator vtable at 0x8213CF28.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/imageCreatorState" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821EF610" }
+      ],
+      "qualification": {
+        "alternatives": ["Other loader state kinds remain outside this relation."]
+      }
+    },
+    {
+      "id": "RVA-REL-0053",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0053",
+      "to": "RVA-SYM-0054",
+      "image": "../image.json",
+      "claim": "The image-file resource creator reads state kind 12 from snapshot offset 0x18 and dispatches its slot 0x4 for an external-image request.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/fileDecodeHandoff" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8213F0F4" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822189A8" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime dispatch or asset identity is asserted."]
+      }
+    },
+    {
+      "id": "RVA-REL-0054",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0054",
+      "to": "RVA-SYM-0028",
+      "image": "../image.json",
+      "claim": "For external request kind 2, the image creator calls the request's state-kind-10 opener through slot 0x4.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/fileDecodeHandoff" },
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/installedOpener" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E2F80" }
+      ],
+      "qualification": {
+        "alternatives": ["The opener can serve type-11 File Data or use its ordinary-loader fallback."]
+      }
+    },
+    {
+      "id": "RVA-REL-0055",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0055",
+      "to": "RVA-VTBL-0010",
+      "image": "../image.json",
+      "claim": "The Scaleform renderer constructor installs vtable 0x82169E30.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/rendererConstructor" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82301D00" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the renderer vtable identity required by this path is claimed."]
+      }
+    },
+    {
+      "id": "RVA-REL-0056",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0054",
+      "to": "RVA-SYM-0056",
+      "image": "../image.json",
+      "claim": "After decoding an external image, the image creator dispatches renderer slot 0x8 to allocate a renderer texture object.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/rendererTextureHandoff" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82169E30" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E2F80" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime asset identity is inferred."]
+      }
+    },
+    {
+      "id": "RVA-REL-0057",
+      "kind": "produces",
+      "from": "RVA-SYM-0056",
+      "to": "RVA-STR-0008",
+      "image": "../image.json",
+      "claim": "The renderer texture factory produces a 0x30-byte renderer texture object.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/textureFactory" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302DC8" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete concrete class name remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0058",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0056",
+      "to": "RVA-VTBL-0011",
+      "image": "../image.json",
+      "claim": "The renderer texture factory installs vtable 0x82169EC4 in the new texture object.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/textureFactory" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302DC8" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the vtable installation needed by this path is claimed."]
+      }
+    },
+    {
+      "id": "RVA-REL-0059",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0054",
+      "to": "RVA-SYM-0057",
+      "image": "../image.json",
+      "claim": "The image creator dispatches renderer texture slot 0x8 with decoded image data and dimensions.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/rendererTextureHandoff" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82169EC4" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E2F80" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime upload success or presentation is inferred."]
+      }
+    },
+    {
+      "id": "RVA-REL-0060",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0057",
+      "to": "RVA-FLD-0014",
+      "image": "../image.json",
+      "claim": "The texture upload method records selected width and height at offsets 0x20 and 0x24.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/uploadTarget" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82304CF0" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime dimensions are asserted for a specific asset."]
+      }
+    },
+    {
+      "id": "RVA-REL-0061",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0057",
+      "to": "RVA-FLD-0015",
+      "image": "../image.json",
+      "claim": "The texture upload method stores the created backend texture at offset 0x28.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/uploadTarget" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82304CF0" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime backend identity or visual result is inferred."]
+      }
+    },
+    {
+      "id": "RVA-REL-0231",
+      "kind": "produces",
+      "from": "RVA-SYM-0154",
+      "to": "RVA-STR-0029",
+      "image": "../image.json",
+      "claim": "GfxSourceTableViewBuild initializes the temporary source view and asks the provider to populate its primary and secondary base/count pairs.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-source-count-contract.json#/sourceContainer/temporaryView" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821F3F48" }
+      ],
+      "qualification": { "alternatives": ["The provider's concrete class remains unresolved."] }
+    },
+    {
+      "id": "RVA-REL-0232",
+      "kind": "calls",
+      "from": "RVA-SYM-0157",
+      "to": "RVA-SYM-0156",
+      "image": "../image.json",
+      "claim": "GfxMeshSourceBatchDispatch calls GfxMeshResourceSourceSubmit with source base context +0x4 in r5 and authoritative count context +0x48 in r6.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-source-count-contract.json#/submitHandoff" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822683B0" }
+      ],
+      "qualification": { "alternatives": ["The submit consumer does not independently validate selector membership against r6."] }
+    },
+    {
+      "id": "RVA-REL-0230",
+      "kind": "calls",
+      "from": "RVA-SYM-0153",
+      "to": "RVA-SYM-0003",
+      "image": "../image.json",
+      "claim": "GfxFillStateApply binds primary record +0x2C as renderer slot 0 for textured type-3 fills; variant 8 also calls GfxTextureBind with secondary record +0x50 as slot 1, where a zero first word returns without changing renderer texture state.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-draw-producer.json#/fillAndTransform/activeFill" },
+        { "kind": "topic-manifest", "locator": "../gfx-variant8-tf1-semantics.json#/slot1Behavior" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302A50" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime texture identity, secondary-record contents, or previous slot-1 state is asserted."]
+      }
+    },
+    {
+      "id": "RVA-REL-0242",
+      "kind": "calls",
+      "from": "RVA-SYM-0153",
+      "to": "RVA-SYM-0173",
+      "image": "../image.json",
+      "claim": "GfxFillStateApply derives base variant 7 for subtype 1 or 2 and base variant 8 for other textured type-3 subtypes, applies its renderer-mode adjustment, then calls GfxPixelShaderSelect.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-variant8-tf1-semantics.json#/variantContract" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302A50" }
+      ],
+      "qualification": {
+        "alternatives": ["Renderer mode can add 4 before this call, and GfxPixelShaderSelect can add the 12-variant alternate-bank offset; no runtime branch is asserted."]
+      }
+    },
+    {
+      "id": "RVA-REL-0233",
+      "kind": "calls",
+      "from": "RVA-SYM-0001",
+      "to": "RVA-SYM-0158",
+      "image": "../image.json",
+      "claim": "GfxCoupledFillMeshBuild calls GfxMeshSourceReferenceEncode with its bounded source base/count pair.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/sourceReferenceEncoder" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822688C0" }
+      ],
+      "qualification": { "alternatives": ["No runtime source contents are inferred."] }
+    },
+    {
+      "id": "RVA-REL-0234",
+      "kind": "calls",
+      "from": "RVA-SYM-0001",
+      "to": "RVA-SYM-0159",
+      "image": "../image.json",
+      "claim": "GfxCoupledFillMeshBuild calls GfxComplexFillDescriptorWrite only when the temporary source-bearing flag is nonzero and the selected numeric format is not 3.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/formatAndWriterSelection/writerBranch" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822688C0" }
+      ],
+      "qualification": { "alternatives": ["No runtime writer branch is asserted."] }
+    },
+    {
+      "id": "RVA-REL-0239",
+      "kind": "calls",
+      "from": "RVA-SYM-0164",
+      "to": "RVA-SYM-0001",
+      "image": "../image.json",
+      "claim": "GfxMeshSourceFinalize calls GfxCoupledFillMeshBuild with bounded source base/count and config pointer kept distinct.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/callers/primary" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821F4948" }
+      ],
+      "qualification": { "alternatives": ["No runtime source cardinality is asserted."] }
+    },
+    {
+      "id": "RVA-REL-0241",
+      "kind": "produces",
+      "from": "RVA-SYM-0159",
+      "to": "RVA-STR-0032",
+      "image": "../image.json",
+      "claim": "GfxComplexFillDescriptorWrite appends a coherent mapping-count, selector, and fill-subtype tuple to a 0x28-byte descriptor.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/descriptorProduction" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822CA718" }
+      ],
+      "qualification": { "alternatives": ["No runtime tuple instance is asserted."] }
+    },
+    {
+      "id": "RVA-REL-0240",
+      "kind": "calls",
+      "from": "RVA-SYM-0166",
+      "to": "RVA-SYM-0165",
+      "image": "../image.json",
+      "claim": "GfxSelectMipSource calls GfxFormatLevelExtent while advancing nonzero levels.",
+      "confidence": "strong",
+      "evidence": [
+        {
+          "kind": "topic-manifest",
+          "locator": "../gfx-mip-source-selection.json#/currentEvidence/formatExtent"
+        },
+        {
+          "kind": "generated-code",
+          "locator": "generated:rerevved/sub_821E0568"
+        }
+      ],
+      "qualification": {
+        "alternatives": [
+          "No runtime claim is made about which assets request later levels."
+        ]
+      }
+    },
+    {
+      "id": "RVA-REL-0225",
+      "kind": "owns",
+      "from": "RVA-FLD-0015",
+      "to": "RVA-STR-0028",
+      "image": "../image.json",
+      "claim": "Renderer texture +0x28 retains the backend texture whose +0x1C through +0x30 template feeds selected guest fetch state.",
+      "confidence": "strong",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-backend-fetch-descriptor.json#/objectPath" }],
+      "qualification": {
+        "falsificationCondition": "0x82305100 does not store the backend at renderer texture +0x28 or 0x82302798 does not later load it from that field."
+      }
+    },
+    {
+      "id": "RVA-REL-0226",
+      "kind": "calls",
+      "from": "RVA-SYM-0148",
+      "to": "RVA-SYM-0147",
+      "image": "../image.json",
+      "claim": "BackendTextureCreate calls BackendTextureFetchTemplateInit before patching the allocation-derived address portions.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-backend-fetch-descriptor.json#/backendTexture" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8269AC1C" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The call at 0x8269AC1C does not target 0x8269A378."
+      }
+    },
+    {
+      "id": "RVA-REL-0227",
+      "kind": "calls",
+      "from": "RVA-SYM-0003",
+      "to": "RVA-SYM-0149",
+      "image": "../image.json",
+      "claim": "GfxTextureBind calls TextureFetchDescriptorSelect with graphics state from renderer +0xB8, its selected renderer slot, the persistent backend from texture +0x28, and the slot dirty bit.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-backend-fetch-descriptor.json#/objectPath/rendererGraphicsState" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x823027B8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302758" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The call at 0x823027B8 does not target 0x8269AF10 with the recorded argument identities."
+      }
+    },
+    {
+      "id": "RVA-REL-0228",
+      "kind": "consumes",
+      "from": "RVA-SYM-0149",
+      "to": "RVA-STR-0028",
+      "image": "../image.json",
+      "claim": "TextureFetchDescriptorSelect consumes all six backend template dwords and merges them into the selected slot +0x30 shadow entry.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-backend-fetch-descriptor.json#/descriptorMerge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_8269AF10" }
+      ],
+      "qualification": {
+        "alternatives": ["The selected descriptor preserves bounded slot-local bits and is not always byte-identical to the backend template."]
+      }
+    },
+    {
+      "id": "RVA-REL-0243",
+      "kind": "calls",
+      "from": "RVA-SYM-0057",
+      "to": "RVA-SYM-0148",
+      "image": "../image.json",
+      "claim": "GfxUploadRendererTexture calls BackendTextureCreate and stores the returned persistent backend at renderer texture +0x28.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-backend-fetch-descriptor.json#/objectPath/rendererTexture" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x823050FC" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82304CF0" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime asset identity, backend pointer, or allocation result is asserted."]
+      }
+    },
+    {
+      "id": "RVA-REL-0229",
+      "kind": "calls",
+      "from": "RVA-SYM-0150",
+      "to": "RVA-SYM-0151",
+      "image": "../image.json",
+      "claim": "GraphicsDirtyStateAndDrawPrepare calls FetchDirtyRunPacketEmit when the low 32 bits of dirty group +0x18 are nonzero, passing that mask shifted into the high 32 bits.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-dirty-fetch-packet.json#/dirtyBitDerivation" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x826A320C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_826A3048" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The direct branch at 0x826A320C does not target 0x826ACEA0 or is reachable when the low-32 fetch-dirty bits are zero."
+      }
+    },
+    {
+      "id": "RVA-REL-0002",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0004",
+      "to": "RVA-SYM-0006",
+      "image": "../image.json",
+      "claim": "GfxComplexFillConstantDispatch tail-dispatches directly to GfxCoupledFillAlternateCaller.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/dispatch/wrappers/0" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x821FBC38" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The terminal branch at 0x821F80D8 does not target 0x821FBC38."
+      }
+    },
+    {
+      "id": "RVA-REL-0003",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0005",
+      "to": "RVA-SYM-0006",
+      "image": "../image.json",
+      "claim": "GfxComplexFillObjectDispatch tail-dispatches directly to GfxCoupledFillAlternateCaller.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/dispatch/wrappers/1" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x821FBC38" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The terminal branch at 0x821F8604 does not target 0x821FBC38."
+      }
+    },
+    {
+      "id": "RVA-REL-0004",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0007",
+      "to": "RVA-VTBL-0002",
+      "image": "../image.json",
+      "claim": "GfxComplexFillBaseInitialize installs vtable 0x8213D408 at object offset +0x0.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/baseReplacement" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x8213D408" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The store at 0x821F816C does not place 0x8213D408 in the object vptr."
+      }
+    },
+    {
+      "id": "RVA-REL-0005",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0008",
+      "to": "RVA-VTBL-0003",
+      "image": "../image.json",
+      "claim": "GfxComplexFillOwnerConstruct replaces the initialized object vptr with vtable 0x8213F088.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/baseReplacement" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82214480" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The constructor does not store 0x8213F088 after calling the base initializer."
+      }
+    },
+    {
+      "id": "RVA-REL-0006",
+      "kind": "owns",
+      "from": "RVA-FLD-0002",
+      "to": "RVA-STR-0003",
+      "image": "../image.json",
+      "claim": "Parent field +0x90 receives the first directly allocated and initialized 0x3C child object.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/ownership/fields/0" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82214564" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The constructor does not directly allocate, initialize, and retain the child pointer at parent offset +0x90; destruction and exclusive lifetime remain unresolved."
+      }
+    },
+    {
+      "id": "RVA-REL-0007",
+      "kind": "owns",
+      "from": "RVA-FLD-0003",
+      "to": "RVA-STR-0003",
+      "image": "../image.json",
+      "claim": "Parent field +0x94 receives the second directly allocated and initialized 0x3C child object.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/ownership/fields/1" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x822145CC" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The constructor does not directly allocate, initialize, and retain the child pointer at parent offset +0x94; destruction and exclusive lifetime remain unresolved."
+      }
+    },
+    {
+      "id": "RVA-REL-0008",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0008",
+      "to": "RVA-VTBL-0004",
+      "image": "../image.json",
+      "claim": "GfxComplexFillOwnerConstruct installs vtable 0x8213D2B8 into each directly constructed child object.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/ownership" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x822145BC" }
+      ],
+      "qualification": {
+        "falsificationCondition": "Either child initialization path does not store 0x8213D2B8 at child offset +0x0."
+      }
+    },
+    {
+      "id": "RVA-REL-0001",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0001",
+      "to": "RVA-FLD-0001",
+      "image": "../image.json",
+      "claim": "The coupled-fill build loads context +0x28 at 0x82268968 and extracts raw bit 0x10 at 0x82268974 as one input to format selection.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-complex-fill.json#/selector" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82268968" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822688C0" }
+      ],
+      "qualification": {
+        "alternatives": ["Independent configuration and mesh-state conditions also gate the path; the sampled bit is not sufficient by itself."]
+      }
+    },
+    {
+      "id": "RVA-REL-0062",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0003",
+      "to": "RVA-FLD-0015",
+      "image": "../image.json",
+      "claim": "Texture bind reads renderer-texture backend +0x28 and calls GfxTextureBackendEnsure only when that field is null.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-complex-fill.json#/textureBind" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82302780" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302758" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The load at 0x82302780 is not renderer-texture backend +0x28 or the null path does not call 0x82305FD8 at 0x82302790."
+      }
+    },
+    {
+      "id": "RVA-REL-0181",
+      "kind": "calls",
+      "from": "RVA-SYM-0123",
+      "to": "RVA-SYM-0124",
+      "image": "../image.json",
+      "claim": "The bounded publisher block invokes SceneTreeCtor on the newly allocated 0x2C-byte object.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/publication" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D52AE8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The call at 0x82D52DBC does not pass the allocated object in r3 to 0x82D4BF58."
+      }
+    },
+    {
+      "id": "RVA-REL-0182",
+      "kind": "produces",
+      "from": "RVA-SYM-0123",
+      "to": "RVA-STR-0026",
+      "image": "../image.json",
+      "claim": "The bounded publisher block allocates and constructs the 0x2C-byte scene render tree.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/publication" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D52AE8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The block does not allocate exactly 0x2C bytes and pass the result to SceneTreeCtor."
+      }
+    },
+    {
+      "id": "RVA-REL-0183",
+      "kind": "contains",
+      "from": "RVA-SYM-0127",
+      "to": "RVA-STR-0026",
+      "image": "../image.json",
+      "claim": "Global 0x8314F08C stores the pointer returned by SceneTreeCtor for the 0x2C-byte scene render tree.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/publication" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D52AE8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The bounded publisher block does not store the constructed pointer at 0x8314F08C."
+      }
+    },
+    {
+      "id": "RVA-REL-0184",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0124",
+      "to": "RVA-FLD-0064",
+      "image": "../image.json",
+      "claim": "SceneTreeCtor initializes the embedded critical section at scene render tree offset 0x10.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/layout" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4BF58" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneTreeCtor does not pass object-plus-0x10 to RtlInitializeCriticalSection."
+      }
+    },
+    {
+      "id": "RVA-REL-0185",
+      "kind": "consumes",
+      "from": "RVA-SYM-0126",
+      "to": "RVA-SYM-0127",
+      "image": "../image.json",
+      "claim": "SceneRenderGate reads the scene render tree pointer from 0x8314F08C for its gate check and direct render call.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/renderEdge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E43830" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneRenderGate does not load 0x8314F08C before its call to SceneTreeRender."
+      }
+    },
+    {
+      "id": "RVA-REL-0186",
+      "kind": "calls",
+      "from": "RVA-SYM-0126",
+      "to": "RVA-SYM-0125",
+      "image": "../image.json",
+      "claim": "SceneRenderGate passes the published tree pointer in r3 and directly calls SceneTreeRender.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/renderEdge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E43830" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneRenderGate does not call 0x82D4C348 with the pointer from 0x8314F08C in r3."
+      }
+    },
+    {
+      "id": "RVA-REL-0187",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0125",
+      "to": "RVA-FLD-0062",
+      "image": "../image.json",
+      "claim": "SceneTreeRender stores its incoming f1 value at scene render tree offset 0x8.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/renderEdge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C348" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneTreeRender does not store f1 at object offset 0x8."
+      }
+    },
+    {
+      "id": "RVA-REL-0188",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0125",
+      "to": "RVA-FLD-0063",
+      "image": "../image.json",
+      "claim": "SceneTreeRender stores its incoming r4 value at scene render tree offset 0xC.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/renderEdge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C348" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneTreeRender does not store r4 at object offset 0xC."
+      }
+    },
+    {
+      "id": "RVA-REL-0189",
+      "kind": "consumes",
+      "from": "RVA-SYM-0128",
+      "to": "RVA-SYM-0127",
+      "image": "../image.json",
+      "claim": "RenderMgrUpdate loads the published scene render tree from 0x8314F08C before its direct state-reapplication call.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-update.json#/updateEdge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D526A0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "RenderMgrUpdate does not load 0x8314F08C on its manager-byte-0x4C2 path."
+      }
+    },
+    {
+      "id": "RVA-REL-0190",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0128",
+      "to": "RVA-FLD-0065",
+      "image": "../image.json",
+      "claim": "RenderMgrUpdate reads tree byte 0x2 and passes that same value to RenderRoot4156Walk.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-update.json#/updateEdge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D526A0" }
+      ],
+      "qualification": {
+        "alternatives": ["The read establishes state reapplication, not a changed value."]
+      }
+    },
+    {
+      "id": "RVA-REL-0191",
+      "kind": "calls",
+      "from": "RVA-SYM-0128",
+      "to": "RVA-SYM-0129",
+      "image": "../image.json",
+      "claim": "RenderMgrUpdate calls RenderRoot4156Walk with the published tree and its current offset-0x2 byte.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-update.json#/updateEdge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D526A0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The call at 0x82D52710 does not target 0x82D4C4B8 with the tree in r3 and byte 0x2 in r4."
+      }
+    },
+    {
+      "id": "RVA-REL-0192",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0129",
+      "to": "RVA-FLD-0065",
+      "image": "../image.json",
+      "claim": "RenderRoot4156Walk stores its byte argument at scene render tree offset 0x2 after entering the critical section.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-update.json#/updateEdge" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C4B8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "0x82D4C4B8 does not store r4 at object offset 0x2."
+      }
+    },
+    {
+      "id": "RVA-REL-0193",
+      "kind": "calls",
+      "from": "RVA-SYM-0125",
+      "to": "RVA-SYM-0131",
+      "image": "../image.json",
+      "claim": "SceneTreeRender calls SceneTreeWalkRecurse and preserves its returned pointer for the non-null path.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-root-content.json#/producer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C348" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The call at 0x82D4C3F4 does not target 0x82D51160 or its result is not tested for null."
+      }
+    },
+    {
+      "id": "RVA-REL-0194",
+      "kind": "produces",
+      "from": "RVA-SYM-0131",
+      "to": "RVA-FLD-0066",
+      "image": "../image.json",
+      "claim": "SceneTreeWalkRecurse supplies the non-null pointer later stored at scene render tree offset 0x4.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-root-content.json#/producer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D51160" }
+      ],
+      "qualification": {
+        "alternatives": ["The produced object's original class name and complete lifetime remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0195",
+      "kind": "calls",
+      "from": "RVA-SYM-0125",
+      "to": "RVA-SYM-0130",
+      "image": "../image.json",
+      "claim": "SceneTreeRender calls SceneRootSetContent with the non-null recursive-producer result.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-root-content.json#/producer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C348" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The call at 0x82D4C410 does not target 0x82D4C2A8 with the recursive result in r4."
+      }
+    },
+    {
+      "id": "RVA-REL-0196",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0130",
+      "to": "RVA-FLD-0066",
+      "image": "../image.json",
+      "claim": "SceneRootSetContent stores the supplied non-null pointer at scene render tree offset 0x4.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-root-content.json#/producer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C2A8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "0x82D4C2A8 does not store its r4 pointer at object offset 0x4."
+      }
+    },
+    {
+      "id": "RVA-REL-0197",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0129",
+      "to": "RVA-FLD-0066",
+      "image": "../image.json",
+      "claim": "RenderRoot4156Walk reads scene render tree offset 0x4 before its bounded root-content branch.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-root-content.json#/consumer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C4B8" }
+      ],
+      "qualification": {
+        "alternatives": ["Nested fields and the indirect target remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0198",
+      "kind": "calls",
+      "from": "RVA-SYM-0131",
+      "to": "RVA-SYM-0133",
+      "image": "../image.json",
+      "claim": "SceneTreeWalkRecurse calls SceneRootContentAcquire to obtain its candidate root-content object.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/constructionIdentity" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D51160" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneTreeWalkRecurse does not call 0x82D503D0."
+      }
+    },
+    {
+      "id": "RVA-REL-0199",
+      "kind": "produces",
+      "from": "RVA-SYM-0132",
+      "to": "RVA-STR-0027",
+      "image": "../image.json",
+      "claim": "SceneRootContentPoolGrow allocates and constructs the 0xA8-byte entries retained by pool 0x8314FA54.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/constructionIdentity" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822D1708" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete pool lifetime and reclamation policy remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0200",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0132",
+      "to": "RVA-VTBL-0022",
+      "image": "../image.json",
+      "claim": "SceneRootContentPoolGrow stores vtable address 0x82147EF8 at entry offset 0x0 during construction.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/constructionIdentity" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147EF8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822D1708" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The store at 0x822D17A4 does not write 0x82147EF8 to object offset 0x0."
+      }
+    },
+    {
+      "id": "RVA-REL-0201",
+      "kind": "produces",
+      "from": "RVA-SYM-0133",
+      "to": "RVA-STR-0027",
+      "image": "../image.json",
+      "claim": "SceneRootContentAcquire returns a retained scene-root content pool entry when acquisition succeeds.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/constructionIdentity" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D503D0" }
+      ],
+      "qualification": {
+        "alternatives": ["The call can return null, and successful runtime acquisition is not established."]
+      }
+    },
+    {
+      "id": "RVA-REL-0202",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0131",
+      "to": "RVA-SLOT-0029",
+      "image": "../image.json",
+      "claim": "SceneTreeWalkRecurse invokes scene-root content slot 0 with the acquired object and the stack record prepared at frame offset 0x60.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/slot0Consumer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D51160" }
+      ],
+      "qualification": {
+        "alternatives": ["The prepared record's concrete type and semantic slot name remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0203",
+      "kind": "calls",
+      "from": "RVA-SYM-0134",
+      "to": "RVA-SYM-0135",
+      "image": "../image.json",
+      "claim": "SceneRootContentSlot0Thunk branches directly to SceneRootContentSlot0Body.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/slot0Consumer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147EF8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E49CE0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "0x82E49CE0 does not branch directly to 0x82D548B8."
+      }
+    },
+    {
+      "id": "RVA-REL-0218",
+      "kind": "calls",
+      "from": "RVA-SYM-0131",
+      "to": "RVA-SYM-0141",
+      "image": "../image.json",
+      "claim": "SceneTreeWalkRecurse passes stack address r1+0x60 as a prepared record to SceneRootPreparedRecordPopulate after writing zero at record byte 0x1C.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-producers.json#/callerInitialization" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D51160" }
+      ],
+      "qualification": {
+        "alternatives": ["The prepared record's complete type and successful runtime population remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0215",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0135",
+      "to": "RVA-FLD-0072",
+      "image": "../image.json",
+      "claim": "SceneRootContentSlot0Body copies prepared-record byte 0x1C to scene-root content byte 0x38 when its offset-0x14 copy gate is zero.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-field-roles.json#/boundedProducer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D548B8" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic meaning of the prepared-record byte remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0216",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0135",
+      "to": "RVA-FLD-0073",
+      "image": "../image.json",
+      "claim": "SceneRootContentSlot0Body copies prepared-record word 0x0 to scene-root content word 0x1C when its offset-0x14 copy gate is zero.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-field-roles.json#/boundedProducer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D548B8" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic meaning of the prepared-record word remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0217",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0140",
+      "to": "RVA-FLD-0073",
+      "image": "../image.json",
+      "claim": "SceneNodeRenderVisit loads scene-root content word 0x1C as r4 for unresolved callee 0x82D50820 only when incoming r4 is null and byte 0x38 is zero.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-field-roles.json#/firstConsumerRoles" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D55C68" }
+      ],
+      "qualification": {
+        "alternatives": ["The field's scalar meaning and excluded callee's result remain unresolved; the callee body is outside this packet."]
+      }
+    },
+    {
+      "id": "RVA-REL-0204",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0135",
+      "to": "RVA-FLD-0069",
+      "image": "../image.json",
+      "claim": "SceneRootContentSlot0Body reads byte 0x14 and enters the record-copy path only when it is zero.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/recordConsumption" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D548B8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "0x82D548B8 does not branch to the copy path when object byte 0x14 is zero."
+      }
+    },
+    {
+      "id": "RVA-REL-0205",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0135",
+      "to": "RVA-FLD-0069",
+      "image": "../image.json",
+      "claim": "SceneRootContentSlot0Body stores one at scene-root content byte 0x14 after the bounded record copy.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/recordConsumption" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D548B8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "0x82D548B8 does not store one at object offset 0x14 after the helper call."
+      }
+    },
+    {
+      "id": "RVA-REL-0206",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0135",
+      "to": "RVA-FLD-0068",
+      "image": "../image.json",
+      "claim": "SceneRootContentSlot0Body stores constant 4 at scene-root content word 0x8 after the bounded record copy.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/recordConsumption" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D548B8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "0x82D548B8 does not store constant 4 at object offset 0x8 after the helper call."
+      }
+    },
+    {
+      "id": "RVA-REL-0207",
+      "kind": "calls",
+      "from": "RVA-SYM-0135",
+      "to": "RVA-SYM-0136",
+      "image": "../image.json",
+      "claim": "SceneRootContentSlot0Body passes object offset 0x44 and prepared-record offset 0x28 to RefCountedPointerAssign.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/refcountedAssignment" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D548B8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The call at 0x82D54958 does not receive object-plus-0x44 and prepared-record-plus-0x28."
+      }
+    },
+    {
+      "id": "RVA-REL-0208",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0136",
+      "to": "RVA-FLD-0070",
+      "image": "../image.json",
+      "claim": "RefCountedPointerAssign replaces the pointer stored at scene-root content offset 0x44 with the prepared-record offset-0x28 pointer.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/refcountedAssignment" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x821B2440" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821B2440" }
+      ],
+      "qualification": {
+        "alternatives": ["The pointer's concrete type and complete ownership policy remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0209",
+      "kind": "calls",
+      "from": "RVA-SYM-0131",
+      "to": "RVA-SYM-0137",
+      "image": "../image.json",
+      "claim": "SceneTreeWalkRecurse calls SceneNodeRenderWrap with the scene-root content object only after slot 0 returns a nonzero low byte.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/nodeDispatchBoundary" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D51160" }
+      ],
+      "qualification": {
+        "alternatives": ["Static evidence does not establish a nonzero runtime slot-0 return."]
+      }
+    },
+    {
+      "id": "RVA-REL-0210",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0137",
+      "to": "RVA-SLOT-0030",
+      "image": "../image.json",
+      "claim": "SceneNodeRenderWrap's first indirect call dispatches scene-root content vtable slot 0x14 with argument zero.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/nodeDispatchBoundary" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147F0C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D55808" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The indirect branch at 0x82D55830 does not load vtable offset 0x14 or does not pass zero in r4."
+      }
+    },
+    {
+      "id": "RVA-REL-0211",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0138",
+      "to": "RVA-FLD-0071",
+      "image": "../image.json",
+      "claim": "The slot-0x14 target reads scene-root content byte 0x17 before its slot-0x40 dispatch.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-node-render-entry.json#/nodeDispatchGate" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpInstructions.java:0x82E49B58" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E49B58" }
+      ],
+      "qualification": {
+        "alternatives": ["The byte's original semantic name and runtime value remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0212",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0138",
+      "to": "RVA-SLOT-0031",
+      "image": "../image.json",
+      "claim": "After its byte gates pass, the slot-0x14 target dispatches scene-root content vtable slot 0x40.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-node-render-entry.json#/directEntry" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpInstructions.java:0x82E49B58" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E49B58" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The indirect branch at 0x82E49B94 does not load vtable offset 0x40."
+      }
+    },
+    {
+      "id": "RVA-REL-0213",
+      "kind": "calls",
+      "from": "RVA-SYM-0139",
+      "to": "RVA-SYM-0140",
+      "image": "../image.json",
+      "claim": "The slot-0x40 wrapper writes zero to r5 and branches directly to SceneNodeRenderVisit while preserving r3 and r4.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-node-render-entry.json#/directEntry" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpInstructions.java:0x82E4A098" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E4A098" }
+      ],
+      "qualification": {
+        "alternatives": ["Static evidence does not establish successful runtime entry or rendering."]
+      }
+    },
+    {
+      "id": "RVA-REL-0214",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0140",
+      "to": "RVA-FLD-0072",
+      "image": "../image.json",
+      "claim": "On the null-r4 path, SceneNodeRenderVisit's first scene-root content field read is byte 0x38.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-node-render-entry.json#/firstContentConsumption" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D55C68" }
+      ],
+      "qualification": {
+        "alternatives": ["The field's original semantic name and runtime value remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-REL-0172",
+      "kind": "calls",
+      "from": "RVA-SYM-0119",
+      "to": "RVA-SYM-0120",
+      "image": "../image.json",
+      "claim": "ScenePublishStore calls SceneActiveGateCtor on application-owner offset 0xC0.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/publication" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E294D0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "ScenePublishStore does not pass owner-plus-0xC0 to 0x82D3D930."
+      }
+    },
+    {
+      "id": "RVA-REL-0173",
+      "kind": "installs-vtable",
+      "from": "RVA-SYM-0119",
+      "to": "RVA-VTBL-0021",
+      "image": "../image.json",
+      "claim": "ScenePublishStore installs vtable 0x82121100 in its containing application owner.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/vtableBoundary" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82121100" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E294D0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "ScenePublishStore does not store 0x82121100 at containing-owner offset 0x0."
+      }
+    },
+    {
+      "id": "RVA-REL-0174",
+      "kind": "contains",
+      "from": "RVA-STR-0024",
+      "to": "RVA-VTBL-0021",
+      "image": "../image.json",
+      "claim": "The application owner begins with vtable 0x82121100.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/vtableBoundary" }
+      ],
+      "qualification": {
+        "falsificationCondition": "ScenePublishStore does not place vtable 0x82121100 at application-owner offset 0x0."
+      }
+    },
+    {
+      "id": "RVA-REL-0175",
+      "kind": "owns",
+      "from": "RVA-FLD-0059",
+      "to": "RVA-STR-0025",
+      "image": "../image.json",
+      "claim": "Application-owner offset 0xC0 embeds the scene-active gate.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/publication" }
+      ],
+      "qualification": {
+        "falsificationCondition": "ScenePublishStore does not construct the gate at application-owner offset 0xC0."
+      }
+    },
+    {
+      "id": "RVA-REL-0176",
+      "kind": "contains",
+      "from": "RVA-SYM-0122",
+      "to": "RVA-STR-0025",
+      "image": "../image.json",
+      "claim": "Global 0x8314F094 stores the address of the embedded scene-active gate.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/publication" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E294D0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "ScenePublishStore does not store owner-plus-0xC0 at 0x8314F094."
+      }
+    },
+    {
+      "id": "RVA-REL-0177",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0120",
+      "to": "RVA-FLD-0060",
+      "image": "../image.json",
+      "claim": "SceneActiveGateCtor initializes active byte 0x1 before ScenePublishStore clears it after publication.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/gateConstruction" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D3D930" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E294D0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneActiveGateCtor does not store 1 at offset 0x1 or ScenePublishStore does not subsequently clear owner offset 0xC1."
+      }
+    },
+    {
+      "id": "RVA-REL-0178",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0120",
+      "to": "RVA-FLD-0061",
+      "image": "../image.json",
+      "claim": "SceneActiveGateCtor clears callback state at offset 0x4 before registering its address.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/gateConstruction" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D3D930" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneActiveGateCtor does not clear offset 0x4 and pass that address to 0x828159C8."
+      }
+    },
+    {
+      "id": "RVA-REL-0179",
+      "kind": "calls",
+      "from": "RVA-SYM-0109",
+      "to": "RVA-SYM-0121",
+      "image": "../image.json",
+      "claim": "AudioGameStartInit calls SceneFlagToggle with value 1 when the published gate is non-null.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/downstreamUpdate" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E60F70" }
+      ],
+      "qualification": {
+        "falsificationCondition": "AudioGameStartInit does not pass 0x8314F094 and value 1 to 0x82D3D890."
+      }
+    },
+    {
+      "id": "RVA-REL-0180",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0121",
+      "to": "RVA-FLD-0060",
+      "image": "../image.json",
+      "claim": "SceneFlagToggle stores its requested boolean value at scene-active gate offset 0x1.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/downstreamUpdate" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D3D890" }
+      ],
+      "qualification": {
+        "falsificationCondition": "SceneFlagToggle does not store its r4 byte at gate offset 0x1."
+      }
+    }
+  ]
+}

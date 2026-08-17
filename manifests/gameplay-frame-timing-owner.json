@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0015",
+  "topic": "gameplay-frame-timing-owner",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which version 1.3 timing owner does AudioGameStartInit reset, and what is one downstream update edge?",
+  "scope": {
+    "functions": ["0x82E293E8", "0x82E60F70", "0x82C7EBF8", "0x82C7EB68", "0x82C5F680"],
+    "globals": ["0x8314F280", "0x8314F2D4"],
+    "tables": ["0x82164E14"],
+    "fields": ["0x8", "0x10", "0x18", "0x20", "0x28", "0x30"]
+  },
+  "currentEvidence": {
+    "method": "identified at 0x82E293E8, 0x82E60F70, 0x82C7EBF8, 0x82C7EB68, 0x8314F280, 0x8314F2D4, and 0x82164E14 by the 0x48-byte allocation, dual publication, timing-field initializer, vtable slots, and per-frame timing consumption",
+    "entries": [
+      {
+        "role": "timing-owner publisher",
+        "address": "0x82E293E8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "AudioGameStartInit",
+        "address": "0x82E60F70",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "timing reset",
+        "address": "0x82C7EBF8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "timing advance",
+        "address": "0x82C7EB68",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "timing owner primary global",
+        "address": "0x8314F280",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "timing owner secondary global",
+        "address": "0x8314F2D4",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "timing owner vtable",
+        "address": "0x82164E14",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpMemoryWords.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": ["generated:rerevved/sub_82E293E8", "generated:rerevved/sub_82E60F70", "generated:rerevved/sub_82C5F680"]
+  },
+  "ownerPublication": {
+    "publisher": "0x82E293E8",
+    "size": "0x48",
+    "vtable": "0x82164E14",
+    "globals": ["0x8314F280", "0x8314F2D4"],
+    "result": "The publisher allocates and initializes one 0x48-byte timing object, installs vtable 0x82164E14, and publishes the same pointer through both globals."
+  },
+  "gameStartInitialization": {
+    "entry": "0x82E60F70",
+    "ownerGlobal": "0x8314F280",
+    "slot": "0x4",
+    "target": "0x82C7EBF8",
+    "result": "AudioGameStartInit loads the timing owner and invokes slot 0x4, whose table word targets the timing reset method."
+  },
+  "perFrameUpdate": {
+    "driver": "0x82C5F680",
+    "ownerGlobal": "0x8314F280",
+    "slot": "0x8",
+    "target": "0x82C7EB68",
+    "result": "The bounded frontend/GFx step loads the timing owner, invokes slot 0x8, then consumes its accumulated time and frame delta in later update calls.",
+    "boundary": "Static evidence does not establish runtime cadence, precision, or successful rendering."
+  },
+  "guards": [
+    "Do not assign an original class name from vtable proximity or method shape.",
+    "Do not merge the two timing globals with adjacent service or scene globals.",
+    "Do not claim a playable-state update loop from static timing dispatch."
+  ],
+  "conclusion": "Version 1.3 uses the shared 0x48-byte frame-timing owner at globals 0x8314F280 and 0x8314F2D4; AudioGameStartInit resets it through vtable slot 0x4 and the bounded frontend/GFx step advances it through slot 0x8."
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0055",
+  "topic": "gfx-format10-image-decoder",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Which current function implements the format-10 decoder in version 1.3, and what behavior does it show?",
+  "scope": {
+    "decoder": "0x821E1410",
+    "boundary": "This packet identifies the current format-10 decoder only. The file opener, external-image request chain, renderer upload, and helper identities remain outside scope."
+  },
+  "currentEvidence": {
+    "address": "0x821E1410",
+    "method": "generated-code and Ghidra fingerprints followed by foreground read-only decompilation of the current function",
+    "generated": {
+      "bodySize": 364,
+      "instructionCount": 91
+    },
+    "ghidra": {
+      "confidence": "strong",
+      "reason": "unique current normalized shape and instruction count"
+    },
+    "result": "The current decompilation shows the allocation gate, virtual metadata reads, decoded-image creation call, per-level copy loop, failure release, and final source release."
+  },
+  "decoderBehavior": {
+    "address": "0x821E1410",
+    "allocationSize": "0x310",
+    "decodedImageCreateKind": 2,
+    "sourceSlots": ["0x8", "0x14", "0x18", "0x1C", "0x28"],
+    "decodedRecordOffsets": ["0x8", "0x18", "0x1C", "0x20"],
+    "result": "The decoder opens and validates a source object, allocates a 0x310-byte work object, obtains source metadata, requests a kind-2 decoded-image record, copies each decoded level through source slot 0x1C, releases a failed decoded record, and releases the source object."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "script": "ghidra/DumpFunctions.java",
+    "qualification": "The current decompiler reaches a known bad-instruction boundary after the final source release; the matched generated body supplies the remaining return sequence."
+  },
+  "guards": [
+    "Do not assign a public file-format name to numeric descriptor format 10.",
+    "Do not identify the decoded-image creation helper from this packet alone.",
+    "Do not claim that a particular runtime asset executes this decoder."
+  ],
+  "conclusion": "The version 1.3 format-10 image decoder is at 0x821E1410 and shows the bounded decode-and-copy behavior recorded here."
+}

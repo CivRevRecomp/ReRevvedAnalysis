@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0036",
+  "topic": "gfx-variant8-tf1-semantics",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "How do version 1.3 fill subtypes select the one- and two-texture pixel-shader contracts?",
+  "scope": {
+    "resourceSubmit": "0x82266358",
+    "shaderInitializer": "0x82302348",
+    "shaderSelector": "0x82302620",
+    "textureBind": "0x82302758",
+    "fillApply": "0x82302A50",
+    "fillConstruct": "0x82302C98",
+    "boundary": "This packet covers descriptor-subtype flow, active-fill resource fields, variants 7 and 8, the immediate secondary bind, and the two selected HLSL sources. It does not claim logo-specific runtime values, injected descriptor state, vertex-shader linkage, active microcode traces, presentation conclusions, repair advice, runtime hooks, or patches."
+  },
+  "dependencies": [
+    { "topic": "gfx-coupled-fill-producer", "use": "native descriptor subtype and resource-cardinality invariant" },
+    { "topic": "gfx-draw-producer", "use": "current active-fill and texture-bind boundaries" },
+    { "topic": "gfx-source-count-contract", "use": "current descriptor submission boundary" }
+  ],
+  "currentEvidence": {
+    "method": "current generated-function fingerprints, body metrics, field accesses, and call structure followed by foreground read-only Ghidra queries and direct inspection of the version 1.3 HLSL pointer table",
+    "entries": [
+      {
+        "role": "resource submit",
+        "address": "0x82266358",
+        "confidence": "strong",
+        "instructionCount": 125
+      },
+      {
+        "role": "shader initializer",
+        "address": "0x82302348",
+        "confidence": "strong",
+        "instructionCount": 124
+      },
+      {
+        "role": "shader selector",
+        "address": "0x82302620",
+        "confidence": "strong",
+        "instructionCount": 26
+      },
+      {
+        "role": "texture bind",
+        "address": "0x82302758",
+        "confidence": "strong"
+      },
+      {
+        "role": "fill apply",
+        "address": "0x82302A50",
+        "confidence": "strong",
+        "instructionCount": 146
+      },
+      {
+        "role": "fill construct",
+        "address": "0x82302C98",
+        "confidence": "strong",
+        "instructionCount": 75
+      }
+    ],
+    "qualification": "The shader selector has a unique current normalized shape and instruction count. The other identities additionally require their current argument flow, field layout, neighboring calls, and renderer role."
+  },
+  "subtypeFlow": {
+    "descriptorField": "+0x10",
+    "submitCall": "0x82266488 loads descriptor +0x10 into r4, and the call at 0x8226649C dispatches renderer vtable slot +0x58 with the resolved primary and secondary resource records in r5 and r6.",
+    "fillConstructor": "0x82302C98 stores incoming r4 at active fill +0x04, writes fill type 3 at +0x00, copies a non-null primary record to +0x2C, and copies a non-null secondary record to +0x50.",
+    "producerInvariant": "The version 1.3 complex writer emits subtype 2 with one resource and subtype 3 with two distinct resources; subtype and cardinality are one producer result.",
+    "result": "The subtype tested by the active-fill renderer is the descriptor subtype produced with the resource mapping."
+  },
+  "variantContract": {
+    "common": "For textured active fill type 3, 0x82302A50 binds primary record +0x2C through 0x82302758 as renderer slot 0 with mode 4.",
+    "variant7": {
+      "condition": "Active fill subtype is exactly 1 or 2.",
+      "selection": "The fill selects base shader variant 7 and does not issue the secondary slot-1 texture bind.",
+      "nativeProducer": "Subtype 2 is the one-resource complex-writer result.",
+      "shaderField": "With renderer flag +0x14 bit 0x2 clear, 0x82302620 selects the shader object at renderer +0x70.",
+      "sourceTableEntry": "0x82F7B9F8 points to HLSL source 0x82168C10.",
+      "pixelInterface": "The source declares sampler tex0 at s0 and consumes COLOR, COLOR1, and TEXCOORD0. It does not declare tex1 or TEXCOORD1."
+    },
+    "variant8": {
+      "condition": "For textured active fill type 3, subtype is neither 1 nor 2.",
+      "selection": "The fill selects base shader variant 8 after calling 0x82302758 with secondary record +0x50, renderer slot 1, and mode 6.",
+      "nativeProducer": "Subtype 3 is the two-distinct-resource complex-writer result.",
+      "shaderField": "With renderer flag +0x14 bit 0x2 clear, 0x82302620 selects the shader object at renderer +0x74.",
+      "sourceTableEntry": "0x82F7B9FC points to HLSL source 0x82168900.",
+      "pixelInterface": "The source declares tex0 at s0 and tex1 at s1, consumes COLOR1, TEXCOORD0, and TEXCOORD1, and computes lerp(tex1, tex0, factor.b) before applying color transform constants."
+    },
+    "modeAdjustment": "Before calling 0x82302620, 0x82302A50 adds 4 to the base variant when renderer mode +0x178 is 3 or 6.",
+    "alternateBank": "When renderer flag +0x14 bit 0x2 is set, 0x82302620 adds another 12 to the requested variant before indexing the shader-object array. The +0x70 and +0x74 HLSL claims therefore describe the unadjusted base-bank pair only."
+  },
+  "slot1Behavior": {
+    "callsite": "0x82302C60 calls 0x82302758 with active fill +0x50, slot 1, and mode 6 on the variant-8 branch.",
+    "nullRecord": "0x82302758 loads the texture record's first word and returns immediately when it is zero.",
+    "effect": "A null secondary record causes no lazy backend creation, backend selection, or renderer dirty-state update. The function does not clear slot 1 or install a default texture.",
+    "qualification": "This static behavior does not establish the prior contents of slot 1 or prove that a null secondary record occurs in a version 1.3 runtime draw."
+  },
+  "shaderSelection": {
+    "initializer": "0x82302348 loads a 24-entry pixel-program source table beginning at 0x82F7B9E0 into renderer fields beginning at +0x58.",
+    "selector": "0x82302620 adjusts the requested variant for the optional alternate bank, skips work when it matches cached index +0x20, selects renderer field (variant + 21) * 4, submits that shader object, and updates the cache.",
+    "variant7": { "field": "+0x70", "table": "0x82F7B9F8", "source": "0x82168C10" },
+    "variant8": { "field": "+0x74", "table": "0x82F7B9FC", "source": "0x82168900" },
+    "qualification": "The HLSL strings establish the declared pixel interfaces. This packet does not claim vertex-program pairing, compiled microcode trace, interpolator masks, constant values, or runtime shader selection."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpDataValues.java"],
+    "targets": [
+      "0x82266358", "0x82302348", "0x82302620", "0x82302758", "0x82302A50", "0x82302C98",
+      "0x82F7B9F8", "0x82F7B9FC", "0x82168C10", "0x82168900"
+    ],
+    "program": "rerevved_image.bin",
+    "qualification": "Several Xenon-heavy functions truncate at save-register thunks in Ghidra. Ghidra confirms their maintained starts, the active-fill decompilation, pointer-table values, and full HLSL strings; generated version 1.3 bodies corroborate the bounded instruction and field claims."
+  },
+  "guards": [
+    "Do not claim injected logo descriptor, resource selectors, runtime texture descriptors, null-SRV observation, black-output diagnosis, or presentation claim.",
+    "Do not infer that a version 1.3 runtime draw selected variant 7 or 8, supplied a null secondary record, or used GFX_MainMenu_logo.dds.",
+    "Do not infer the active vertex shader, interpolator contents, blend-factor value, shader constants, or final color from the pixel HLSL interface.",
+    "Do not populate or clear slot 1, force a subtype or vertex format, edit descriptor fields, or change SDK invalid-texture handling.",
+    "This packet authorizes no runtime hook, launch, or guest-memory write."
+  ],
+  "conclusion": "Version 1.3 defines the subtype-coupled base shader split: native subtype 2 carries one resource and selects variant 7's s0-only pixel interface, while native subtype 3 carries two resources and selects variant 8's s0/s1 interface after the secondary slot-1 bind. Renderer mode and flags can select adjusted banks. A null secondary record returns without changing slot 1, but no such runtime state is asserted here."
+}

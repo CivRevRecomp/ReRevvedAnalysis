@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rerevved.local/schemas/vtables.schema.json",
+  "title": "ReRevved vtable catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "catalog", "records"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "catalog": { "const": "vtables" },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/record" }
+    }
+  },
+  "$defs": {
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "offset",
+        "target",
+        "claim",
+        "confidence",
+        "evidence",
+        "qualification"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^RVA-SLOT-[0-9]{4}$" },
+        "offset": { "$ref": "common.schema.json#/$defs/offset" },
+        "target": { "type": "string", "pattern": "^RVA-SYM-[0-9]{4}$" },
+        "claim": { "type": "string", "minLength": 1 },
+        "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+        "evidence": { "$ref": "common.schema.json#/$defs/evidence" },
+        "qualification": { "$ref": "common.schema.json#/$defs/qualification" }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "address",
+        "image",
+        "claim",
+        "confidence",
+        "evidence",
+        "qualification",
+        "slots"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^RVA-VTBL-[0-9]{4}$" },
+        "name": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "address": { "$ref": "common.schema.json#/$defs/address" },
+        "image": { "$ref": "common.schema.json#/$defs/image" },
+        "claim": { "type": "string", "minLength": 1 },
+        "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+        "evidence": { "$ref": "common.schema.json#/$defs/evidence" },
+        "qualification": { "$ref": "common.schema.json#/$defs/qualification" },
+        "slots": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/slot" }
+        }
+      }
+    }
+  }
+}

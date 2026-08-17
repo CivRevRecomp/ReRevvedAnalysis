@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0001",
+  "topic": "gfx-complex-fill",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "What produces the version 1.3 movie-view transform word sampled by the coupled-fill selector, and which downstream presentation parts remain unverified?",
+  "scope": {
+    "movieDisplay": "0x8222E2A0",
+    "transformContextBuild": "0x82298898",
+    "coupledFillBuild": "0x822688C0",
+    "textureBind": "0x82302758",
+    "textureBackendEnsure": "0x82305FD8",
+    "boundary": "This packet identifies the current transform producer, raw-bit selector read, and downstream lazy texture-backend boundary. It does not claim runtime addresses, observed values, injected descriptors, hook placements, crashes, shader state, asset identities, or visible-result conclusions."
+  },
+  "dependencies": [
+    {
+      "topic": "gfx-coupled-fill-producer",
+      "use": "current bounded-source, writer-selection, and descriptor-production contract"
+    },
+    {
+      "topic": "gfx-source-count-contract",
+      "use": "authoritative source-array cardinality and selector bounds"
+    },
+    {
+      "topic": "gfx-variant8-tf1-semantics",
+      "use": "static subtype and texture-factor interpretation"
+    },
+    {
+      "topic": "gfx-draw-producer",
+      "use": "current texture-bind and draw boundary"
+    }
+  ],
+  "currentEvidence": {
+    "method": "current generated-code structure followed by foreground read-only Ghidra word, function, and reference queries",
+    "entries": [
+      {
+        "role": "movie display",
+        "address": "0x8222E2A0",
+        "confidence": "strong"
+      },
+      {
+        "role": "transform context build",
+        "address": "0x82298898",
+        "confidence": "strong"
+      },
+      {
+        "role": "coupled fill build",
+        "address": "0x822688C0",
+        "confidence": "strong"
+      },
+      {
+        "role": "texture bind",
+        "address": "0x82302758",
+        "confidence": "strong"
+      },
+      {
+        "role": "texture backend ensure",
+        "address": "0x82305FD8",
+        "confidence": "strong"
+      }
+    ],
+    "qualification": "The producer and selector use the recorded instruction-level field contract. The bounded title session observed the natural descriptor at this fill boundary, but did not establish a downstream bind."
+  },
+  "producer": {
+    "caller": "0x8222E2A0 passes movieView +0x98 in r8 to 0x82298898 at call site 0x8222E350.",
+    "builder": "0x82298898 copies six consecutive single-precision values from the supplied source into context offsets +0x24 through +0x38.",
+    "field": {
+      "offset": "0x28",
+      "writeSite": "0x82298A70",
+      "sourceOffset": "0x4",
+      "meaning": "Second element of the six-float movie-view transform copy."
+    },
+    "result": "The +0x28 word is produced by an ordinary floating-point transform copy and is not an independently authored Boolean flag."
+  },
+  "selector": {
+    "function": "0x822688C0",
+    "readSite": "0x82268968",
+    "extractSite": "0x82268974",
+    "behavior": "The coupled-fill build loads configuration +0x28 and rotates raw bit 0x10 into a one-bit value used by the existing-format-zero branch. Format 3 is the default; format 4 additionally requires the mesh-state latch or a bounded source entry with a nonzero raw +0x0 byte.",
+    "qualification": "The function also tests independent eligibility bits from configuration +0x1C and +0x24. The sampled transform bit is one input to the selector, not a semantic flag or a sufficient format decision by itself.",
+    "descriptorResult": "The simple and complex writer outcomes remain those recorded by gfx-coupled-fill-producer; the bounded title session adds the natural source count and descriptor tuple recorded in runtimeEvidence."
+  },
+  "textureBind": {
+    "function": "0x82302758",
+    "backendField": "+0x28",
+    "readSite": "0x82302780",
+    "ensureCallSite": "0x82302790",
+    "ensureTarget": "0x82305FD8",
+    "behavior": "The bind path reads renderer-texture backend +0x28 and calls the ensure routine only when that field is null, then reloads the field for submission.",
+    "qualification": "The bounded title session did not observe the resolve-image, resolve-output, or texture-bind markers, so it does not establish a resolved image, bind, backend value, or visible result."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/DumpFunctions.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpReferences.java"
+    ],
+    "targets": [
+      "0x8222E2A0",
+      "0x8222E350",
+      "0x82298898",
+      "0x82298A70",
+      "0x822688C0",
+      "0x82268968",
+      "0x82268974",
+      "0x82302758",
+      "0x82302780",
+      "0x82302790",
+      "0x82305FD8"
+    ],
+    "program": "rerevved_image.bin",
+    "result": "Ghidra confirms the current function starts, the sole direct call to 0x82298898 from 0x8222E350, the six-float copy words, the selector load/extract words, and the lazy backend load/call words. Generated version 1.3 bodies provide the bounded control-flow interpretation."
+  },
+  "runtimeEvidence": {
+    "status": "bounded",
+    "session": "title/menu",
+    "date": "2026-08-15",
+    "naturalDescriptor": {
+      "invocation": 55,
+      "index": 0,
+      "sourceCount": 1,
+      "source": "0x527f9e1c",
+      "matchedSource": "0x527f9e1c",
+      "config28": "0x00000000",
+      "writerResult": 1,
+      "tupleWords": [
+        "0x00000000",
+        "0xffffffff",
+        "0xffffffff",
+        "0xffffffff",
+        "0x00000000"
+      ],
+      "result": "The probe recorded the natural coupled-fill output; the probe itself performed no descriptor write or format override."
+    },
+    "resourceCorrelation": {
+      "filter": [
+        "GFX_MainMenu_logo",
+        "GFX_MainMenu.gfx",
+        "GFX_MainMenu_logo.dds"
+      ],
+      "requests": [
+        {
+          "name": "GFX_MainMenu_logo",
+          "requestKey": 1,
+          "imageName": "GFX_MainMenu_logo.dds",
+          "branch": "type-11-cache",
+          "payload": "0x525d0034",
+          "size": 1048704,
+          "resourceCreated": true
+        },
+        {
+          "name": "GFX_MainMenu.gfx",
+          "branch": "type-11-cache",
+          "payload": "0x400ec674",
+          "size": 20069
+        }
+      ],
+      "filesystemFallbackObserved": false,
+      "qualification": "The exact-name resource/open observations occurred in the same bounded title sessions as the natural descriptor. Dynamic descriptor, resource, image, and output pointers are not promoted as stable identities."
+    },
+    "presentationBoundary": {
+      "lastObserved": "natural descriptor at coupled-fill entry/source 0x527f9e1c",
+      "downstreamMarkers": {
+        "resolveImage": false,
+        "resolveOutput": false,
+        "textureBind": false
+      },
+      "result": "The natural path stopped being observable after descriptor/resource creation and before the first resolver or bind marker. The run then encountered repeated ObjectIcons VFS failures and exited with illegal instruction.",
+      "qualification": "This identifies the first bounded observation boundary, not a causal proof that the boundary caused missing presentation."
+    },
+    "excluded": [
+      "format or descriptor validation writes",
+      "guest-memory changes, injected mappings, forced presentation, shader state, draw results, and visible-output conclusions",
+      "a semantic interpretation of the transform word or tuple fields"
+    ],
+    "gpuTextureEnumeration": {
+      "status": "bounded",
+      "session": "title/loading-screen",
+      "date": "2026-08-16",
+      "method": "default-off SDK texture-cache log of each distinct key committed to a load, over a bounded 25 second launch",
+      "distinctKeys": 41,
+      "guestUploadShapes": {
+        "64x64": 46,
+        "32x32": 6,
+        "128x128": 4,
+        "16x16": 3,
+        "64x128": 2,
+        "128x64": 2,
+        "1024x256": 1
+      },
+      "gpuKeysByShape": {
+        "64x64": 4,
+        "32x32": 0,
+        "128x128": 0,
+        "16x16": 0,
+        "64x128": 0,
+        "128x64": 0,
+        "1024x256": 0
+      },
+      "tiledRgbaKeys": "Four 64x64 content keys plus two 1280x720 endian-0 presentation surfaces.",
+      "nearestMiss": "1AEA1000:1024:256:1024:0:18:1, an untiled DXT1 key of matching geometry and unrelated format.",
+      "result": "No tiled k_8_8_8_8 endian-2 key outside the 64x64 class was committed to a load. GFx images outside that class do not reach the GPU.",
+      "qualification": "The enumeration is bounded to one session and records key identity only. It does not establish which guest function omits the fetch constant, nor any asset identity for a loaded key.",
+      "scopeCorrection": "The shape table is bounded to the loading screen. A later 95 second interactive session counted 189440 binds at 0x82302758 with no null, unreadable, or bad-reference cases, and recorded 64x64, 16x16, 32x32, and 256x128 bound shapes. Image-sized textures therefore do bind. Do not read this table as a general claim that only 64x64 reaches the GPU.",
+      "survivingClaim": "No 1024x256 tiled k_8_8_8_8 key was committed to a load, and no 1024x256 bind occurred in 189440 counted samples."
+    },
+    "rendererBoundary": {
+      "status": "settled",
+      "date": "2026-08-16",
+      "session": "title/menu, interactive",
+      "statement": "The GFx core never offers the missing images to the renderer. Every renderer stage downstream of that handoff is correct.",
+      "site": "0x82303B68",
+      "siteRole": "Textured-fill setter. Writes draw-state kind 2 and copies a nine-word fill descriptor whose word 0 is the texture.",
+      "registerRoles": "Entry is 'or r11,r3,r3' then 'or r9,r4,r4'; 'lwz r7,0x0(r9)' into 'stw r7,0x21f4(r11)' makes descriptor word 0 the texture. Roles read from the instructions at the hook site.",
+      "measurement": {
+        "calls": 81920,
+        "resolvedToRegisteredTexture": 81920,
+        "unregistered": 0,
+        "nullTexture": 0,
+        "unreadableDescriptor": 0,
+        "logoOffered": 0,
+        "distinctShapesOffered": [
+          "64x64",
+          "32x32",
+          "16x16"
+        ],
+        "textureRegistrySize": 562,
+        "textureRegistryDropped": 0
+      },
+      "subjectPresent": "Exactly one 1024x256 upload occurred in the same session, so the absence is a measurement rather than a gap.",
+      "instrumentProof": "All 81920 arguments resolved against the registry, so the site was fully understood rather than merely sampled.",
+      "stateBlocks": "The renderer holds two identical state blocks at +0x21c8 and +0x223c, each carrying its texture at +0x2c. The block the dispatch reads has no field setter: its only static write to +0x2268 is a zero store, so the value arrives by bulk copy.",
+      "uploadedButNeverOffered": [
+        "1024x256",
+        "128x128",
+        "128x64",
+        "64x128"
+      ],
+      "sizeRuleNotEstablished": "An earlier session bound a 256x128 texture, so larger images can reach the renderer under some conditions. No size threshold is claimed.",
+      "eliminatedDownstream": [
+        "decode",
+        "upload",
+        "texture creation",
+        "six-dword fetch template",
+        "bind at 0x82302758",
+        "draw state at 0x82302A50"
+      ],
+      "staticBlocker": "The GFx core producer at 0x822688C0 and the renderer vtable slots decompile only to save-register thunks or halt_baddata; undecoded VMX128 regions prevent a static read of the core side without the mutating repair chain."
+    }
+  },
+  "openBoundary": "The bounded version 1.3 runtime session identifies the natural descriptor tuple, its source-count-one fill boundary, the exact main-menu image/movie requests, type-11 cache service, and the first unobserved boundary before resolver/bind presentation. Downstream resolution, backend state, shader selection, draw completion, and the cause of missing visuals remain unverified.",
+  "guards": [
+    "Do not write the transform word, force bit 0x10, or reinterpret the sampled float bits as a standalone flag.",
+    "Do not force format 4, change fill subtype, populate source selectors, or reuse an unverified validation tuple.",
+    "Do not infer a resolved image, runtime bind, backend state, shader selection, draw result, or visible outcome from the bounded pre-presentation trace.",
+    "This packet authorizes no runtime hook, launch, guest-memory write, generated-code edit, or presentation-path change."
+  ],
+  "conclusion": "Version 1.3 establishes the current static architecture, and the bounded session observed the natural tuple 0,0xffffffff,0xffffffff,0xffffffff,0 at the coupled-fill source-count-one boundary. Exact GFX_MainMenu_logo.dds and GFX_MainMenu.gfx requests were served by the type-11 cache with no exact-name filesystem fallback, while no resolver, output, or texture-bind marker appeared before the run's VFS failure. The downstream presentation path and any causal explanation for missing visuals remain unproven."
+}

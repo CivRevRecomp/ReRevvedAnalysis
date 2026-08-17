@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0011",
+  "topic": "save-profile-storage",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which version 1.3 object owns selected sign-in state, and where is the first explicit saved-content enumeration boundary?",
+  "scope": {
+    "functions": ["0x82E2E3B8", "0x82D8D548", "0x82E633C0", "0x82DDDFC0", "0x8280DC58"],
+    "globals": ["0x8314EFE0", "0x82FFD624"],
+    "fields": ["0x0", "0x18", "0x5C", "0xD0"]
+  },
+  "currentEvidence": {
+    "method": "identified at 0x8314EFE0 and 0x82DDDFC0 by the 0x78-byte allocation/publication, selected-user resolver fingerprint, type-1 count-11 content-enumerator call, frontend device-field load, and record stride",
+    "entries": [
+      {
+        "role": "application resource builder",
+        "address": "0x82E2E3B8",
+        "confidence": "strong"
+      },
+      {
+        "role": "sign-in state constructor",
+        "address": "0x82D8D548",
+        "confidence": "strong"
+      },
+      {
+        "role": "selected-user resolver",
+        "address": "0x82E633C0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "save-specific enumeration",
+        "address": "0x82DDDFC0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "content enumerator wrapper",
+        "address": "0x8280DC58",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "sign-in owner global",
+        "address": "0x8314EFE0",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The selected-device field is frontend-root offset 0xD0, and enumerated content records are 0x164 bytes."
+  },
+  "staticQuery": {"scripts":["ghidra/FindStrings.java","ghidra/DumpReferences.java"],"mode":"foreground-read-only","generatedCorroboration":["generated:rerevved/sub_82E2E3B8","generated:rerevved/sub_82D8D548","generated:rerevved/sub_82E633C0","generated:rerevved/sub_82DDDFC0"]},
+  "signInStateOwner": {
+    "global":"0x8314EFE0","allocationSite":"0x82E2E3B8","size":"0x78","constructor":"0x82D8D548",
+    "fields":{"selectedUserIndex":"0x0","profileService":"0x18","profileNotificationGuard":"0x5C"},
+    "result":"The application resource builder allocates 0x78 bytes, calls the current sign-in owner constructor, and publishes the result through 0x8314EFE0.",
+    "boundary":"The concrete class name and profile-service lifetime remain unresolved."
+  },
+  "applicationFacade": {
+    "result":"No 0x8-byte facade or storage-related slots are promoted because the version 1.3 enumeration path directly reads frontend-root field 0xD0.",
+    "boundary":"Do not infer a facade global or vtable by adjacency."
+  },
+  "saveEnumeration": {
+    "function":"0x82DDDFC0","selectedUserResolver":"0x82E633C0","frontendRoot":"0x82FFD624","selectedDeviceField":"0xD0","enumeratorWrapper":"0x8280DC58","contentType":1,"requestedCount":11,"recordSize":"0x164",
+    "result":"The save-specific path resolves an eligible user, reads device ID from frontend-root offset 0xD0, requests eleven type-1 content records, and iterates them with a 0x164-byte stride.",
+    "boundary":"This proves the static enumeration boundary, not successful runtime I/O or save compatibility."
+  },
+  "guards":["Do not infer successful save loading or writing.","Do not infer a selected-device offset or record size from unsupported candidates.","Do not name the unconfirmed application facade as a storage manager."],
+  "conclusion":"Version 1.3 publishes the 0x78-byte selected-user owner at 0x8314EFE0 and enumerates saves at 0x82DDDFC0, where eleven type-1 records use frontend device field 0xD0 and a 0x164-byte stride."
+}

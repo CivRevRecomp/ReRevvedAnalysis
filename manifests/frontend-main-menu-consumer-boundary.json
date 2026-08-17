@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0009",
+  "topic": "frontend-main-menu-consumer-boundary",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Can version 1.3 static evidence bind the completed main-menu File Data context to the owner that selects GFX_MainMenu.gfx?",
+  "scope": {
+    "functions": ["0x82E7F4F0"],
+    "globals": ["0x8314EFB0"],
+    "strings": ["0x8212000C"]
+  },
+  "currentEvidence": {
+    "method": "identified completion path 0x82E7F4F0 and context global 0x8314EFB0 by context-global use, manager completion checks, registry promotion loop, release, and global clear",
+    "entries": [
+      {
+        "role": "main-menu preload completion",
+        "address": "0x82E7F4F0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "preload context global",
+        "address": "0x8314EFB0",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/FindStrings.java", "ghidra/DumpReferences.java", "ghidra/FindPointerValues.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": ["generated:rerevved/sub_82E7F4F0"]
+  },
+  "completionBoundary": {
+    "completionFunction": "0x82E7F4F0",
+    "preloadContextGlobal": "0x8314EFB0",
+    "releaseCall": "0x82D3D9F0",
+    "globalClearInstruction": "0x82E7F7FC",
+    "result": "The completion path checks the named-file context, promotes completed entries through generic registry operations, releases the context, and clears its global. It does not return a movie path or exact movie owner.",
+    "boundary": "Later consumers use registry state, so call adjacency cannot establish exact GFX_MainMenu.gfx ownership."
+  },
+  "exactIdentitySearch": {
+    "moviePath": "GFX_MainMenu.gfx",
+    "moviePathAddress": "0x8212000C",
+    "referenceCount": 0,
+    "result": "The version 1.3 literal has no recovered reference and no static data-flow edge to the completion path.",
+    "boundary": "An owner may obtain the filename from loaded data or construct an equivalent string without referencing this literal."
+  },
+  "runtimeEvidence": {
+    "status": "bounded",
+    "session": "title/menu",
+    "date": "2026-08-15",
+    "observedRequests": [
+      {"name":"GFX_MainMenu.gfx","resourceType":11,"branch":"type-11-cache","payload":"0x400ec674","size":20069},
+      {"name":"GFX_MainMenu_logo.dds","resourceType":11,"branch":"type-11-cache","payload":"0x525d0034","size":1048704}
+    ],
+    "filesystemFallbackObserved": false,
+    "result": "The title session confirms exact-name type-11 opener activity but does not identify the concrete movie owner or preload-loop entry."
+  },
+  "rejectedDynamicCandidates": {
+    "result": "No loading-screen selector or generic owner-replacement candidate is promoted because no current main-menu identity edge reaches them.",
+    "falsificationCondition": "A version 1.3 caller or data-flow trace supplies the main-menu resource name or loaded File Data entry to a concrete movie owner."
+  },
+  "guards": [
+    "Do not select a generic movie helper merely because it accepts a filename.",
+    "Do not treat the released preload context as the long-lived resource owner.",
+    "Do not promote an exact main-menu movie instance without runtime filename or object-identity corroboration."
+  ],
+  "conclusion": "Version 1.3 static evidence reaches generic registry promotion and context release at 0x82E7F4F0 but still does not identify the exact owner that requests GFX_MainMenu.gfx."
+}

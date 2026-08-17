@@ -1,0 +1,39 @@
+# Agent / AI tooling
+.claude/
+.agents/
+AGENTS.md
+CLAUDE.md
+docs/ai_agents/local/
+
+# Proprietary and machine-local inputs.
+private/
+*.iso
+*.bin
+*.xex
+*.xexp
+*.exe
+*.dll
+*.pdb
+*.idb
+*.i64
+
+# Ghidra project state and raw query output.
+*.gpr
+*.rep/
+*.lock
+*.lock~
+*.gzf
+.ghidra/
+build/
+artifacts/
+logs/
+out/
+scratch/
+temp/
+tmp/
+
+# Local tool state.
+.idea/
+.vscode/
+__pycache__/
+*.pyc

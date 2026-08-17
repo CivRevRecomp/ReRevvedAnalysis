@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0014",
+  "topic": "frontend-gameplay-transition",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Which version 1.3 frontend state owner receives the confirmed game-start entry?",
+  "scope": {
+    "functions": ["0x821B0AF0", "0x82E60F70"],
+    "tables": ["0x8211EBD0"],
+    "fields": ["0x0", "0x4"]
+  },
+  "currentEvidence": {
+    "method": "identified receiving state 0x821B0AF0, vtable 0x8211EBD0, and entry 0x82E60F70 by the exact 8-byte allocation, key-2 field store, vtable installation, and vtable slot-0x4 target",
+    "entries": [
+      {
+        "role": "key-2 state factory",
+        "address": "0x821B0AF0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "game-start state vtable",
+        "address": "0x8211EBD0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "AudioGameStartInit",
+        "address": "0x82E60F70",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpMemoryWords.java", "ghidra/DumpReferences.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": ["generated:rerevved/sub_821B0AF0", "generated:rerevved/sub_82E60F70"]
+  },
+  "receivingState": {
+    "factory": "0x821B0AF0",
+    "size": "0x8",
+    "keyOffset": "0x4",
+    "key": 2,
+    "vtable": "0x8211EBD0",
+    "entrySlot": {"offset": "0x4", "target": "0x82E60F70"},
+    "result": "The factory allocates an 8-byte state, stores key 2 at offset 0x4, and installs vtable 0x8211EBD0. The table's slot 0x4 targets AudioGameStartInit.",
+    "boundary": "Static structure identifies the receiving state and entry role, not successful runtime entry into playable gameplay."
+  },
+  "transitionRequest": {
+    "result": "No current key-2 request producer is promoted because no static edge reaches a callback owner.",
+    "boundary": "The receiving state does not by itself prove which UI action or callback requests key 2 in version 1.3."
+  },
+  "factoryRegistration": {
+    "result": "No current registration initializer or factory-map global is promoted from address delta alone.",
+    "boundary": "The key stored by the constructed state is confirmed; the current map insertion site remains outside this packet's supported claims."
+  },
+  "guards": [
+    "Do not infer callback-object identity from address proximity.",
+    "Do not claim successful gameplay entry, scenario selection, or runtime audio initialization.",
+    "Do not infer a factory-map global or request producer without a current edge."
+  ],
+  "conclusion": "Version 1.3 defines the key-2 8-byte game-start receiving state at factory 0x821B0AF0; vtable 0x8211EBD0 slot 0x4 enters AudioGameStartInit at 0x82E60F70."
+}

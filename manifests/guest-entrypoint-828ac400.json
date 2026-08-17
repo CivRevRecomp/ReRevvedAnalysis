@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0039",
+  "topic": "guest-entrypoint-828ac400",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What is the exact current-image function at 0x828AC400?",
+  "currentEvidence": {
+    "address": "0x828AC400",
+    "method": "Unique whole-image three-instruction shape scan.",
+    "confidence": "confirmed"
+  },
+  "guestFunction": {
+    "entry": "0x828AC400",
+    "size": "0xC",
+    "endExclusive": "0x828AC40C",
+    "instructions": ["stw r4,0x24(r3)", "stw r4,0x8(r3)", "blr"],
+    "result": "Stores the incoming word at object offsets 0x24 and 0x8."
+  },
+  "generatedCoverage": {
+    "result": "The maintained generated function map registers 0x828AC400."
+  },
+  "guards": ["Do not assign a containing type or value meaning."],
+  "conclusion": "The current image contains the unique 0xC-byte dual-field setter at 0x828AC400."
+}

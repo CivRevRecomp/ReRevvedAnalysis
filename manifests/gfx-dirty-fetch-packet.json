@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0032",
+  "topic": "gfx-dirty-fetch-packet",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "How does version 1.3 convert the selected slot-0 fetch dirty bit and six-word shadow descriptor into a guest register-write packet?",
+  "scope": {
+    "fetchSelector": "0x8269AF10",
+    "indexedDraw": "0x82303C38",
+    "dirtyConsumer": "0x826A3048",
+    "flushAndIssueWrapper": "0x826A3568",
+    "fetchRunEmitter": "0x826ACEA0",
+    "ringRolloverWriter": "0x826AC610",
+    "boundary": "This packet traces only graphics-state dirty group +0x18, the slot-0 shadow entry at +0x480, and the guest command words emitted for that dirty run. It excludes runtime descriptor values, asset identity, host execution, later command processing, SDK state, hooks, and patches."
+  },
+  "dependencies": [
+    {
+      "topic": "gfx-backend-fetch-descriptor",
+      "use": "current fetch selector, selected shadow layout, and dirty-state producer"
+    },
+    {
+      "topic": "gfx-draw-producer",
+      "use": "current indexed-draw function and its calls to the flush-and-issue wrapper"
+    }
+  ],
+  "currentEvidence": {
+    "method": "current generated-code inspection of the exact dirty field, mask normalization, shadow stride, packet header, payload copy, rollover, and clear behavior, with foreground read-only Ghidra confirmation of function starts and bounded machine words",
+    "entries": [
+      {
+        "role": "dirty consumer",
+        "address": "0x826A3048",
+        "confidence": "strong",
+        "instructionCount": 327
+      },
+      {
+        "role": "flush and issue wrapper",
+        "address": "0x826A3568",
+        "confidence": "strong",
+        "instructionCount": 40
+      },
+      {
+        "role": "ring rollover writer",
+        "address": "0x826AC610",
+        "confidence": "strong",
+        "instructionCount": 46
+      },
+      {
+        "role": "fetch run emitter",
+        "address": "0x826ACEA0",
+        "confidence": "strong",
+        "instructionCount": 86
+      }
+    ],
+    "qualification": "The current function identities are supported by complete field, constant, call, and state-transition contracts."
+  },
+  "dirtyBitDerivation": {
+    "producer": "0x82302758 forms the supplied dirty mask as 0x8000000000000000 shifted right by renderer slot + 0x20 before calling 0x8269AF10.",
+    "slot0DirtyValue": "0x0000000080000000",
+    "dirtyStore": "0x8269B010 ORs the supplied 64-bit mask into graphics state +0x18.",
+    "consumerSnapshot": "0x826A3048 snapshots graphics state +0x18 before processing the fetch-dirty group.",
+    "normalization": "When the snapshot's low 32 bits are nonzero, 0x826A3204 shifts them into the high 32 bits and 0x826A320C calls 0x826ACEA0. Slot 0 therefore enters the emitter as 0x8000000000000000, whose leading-zero count selects ordinal 0."
+  },
+  "packetConstruction": {
+    "shadowAddress": "graphics state +0x480, equal to shadow index 0x30 multiplied by descriptor size 0x18",
+    "registerBaseFormula": "0x4800 + normalized texture ordinal * 6",
+    "slot0RegisterRange": [
+      "0x4800",
+      "0x4801",
+      "0x4802",
+      "0x4803",
+      "0x4804",
+      "0x4805"
+    ],
+    "slot0Header": "0x00054800, formed from register base 0x4800 and a six-dword run",
+    "payload": "The direct path copies three consecutive guest 64-bit pairs from the selected shadow run, keeping six descriptor dwords in address order.",
+    "directPath": "When the current command range has space, 0x826ACF80 begins the direct writer, emits alignment word 0x80000000 when required, emits the run header, and 0x826ACFA4 copies the shadow payload in 0x18-byte steps.",
+    "rolloverPath": "When the current range lacks space, 0x826ACF18 calls 0x826AC610 with grouping width 6, the selected register base, the shadow cursor, and the run word count. That helper emits the same header and source dwords while advancing or rolling the command range.",
+    "result": "Renderer slot 0, selected shadow index 0x30, and normalized texture ordinal 0 are separate indices that converge on this bounded packet construction."
+  },
+  "stateTransitions": {
+    "skipConditions": [
+      "0x8269AF10 skips descriptor reconstruction and the dirty update when its backend argument is null, although it still updates the selected-backend table.",
+      "0x82303C38 reaches 0x826A3568 only after its bounded draw gates pass.",
+      "0x826A3048 skips graphics-state group +0x18 when the 64-bit snapshot is zero and skips 0x826ACEA0 when the snapshot's low 32 bits are zero.",
+      "No descriptor-content validity test occurs between the low-32 dirty-mask test and the packet emitter."
+    ],
+    "replacementConditions": [
+      "A later non-null selection for renderer slot 0 can rewrite graphics state +0x480 before the dirty consumer copies it; the dirty bit does not encode a descriptor version.",
+      "Adjacent dirty texture ordinals are grouped into one register-write run, with six payload dwords per ordinal.",
+      "The dirty consumer does not use the selected-backend pointer table to establish a runtime texture or asset identity."
+    ],
+    "clearCondition": "After the low-32 fetch run and the separately masked high portion are processed, 0x826A323C stores zero to the full graphics-state +0x18 dirty group. Both direct and rollover writers complete before this clear."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/DumpFunctions.java",
+      "ghidra/DumpInstructions.java",
+      "ghidra/DumpMemoryWords.java"
+    ],
+    "targets": [
+      "0x826A3048",
+      "0x826A3568",
+      "0x826AC610",
+      "0x826ACEA0",
+      "0x826A3204",
+      "0x826A320C",
+      "0x826A323C",
+      "0x826ACF18",
+      "0x826ACF80",
+      "0x826ACFA4"
+    ],
+    "program": "rerevved_image.bin",
+    "qualification": "The PowerPC decompiler truncates these Xenon-heavy bodies at save-register thunks, so Ghidra confirms maintained starts and exact machine words while the generated version 1.3 bodies establish the full packet dataflow."
+  },
+  "guards": [
+    "Do not claim runtime descriptor values, draw ordinals, packet ordinals, backend pointers, texture identities, or logo identity.",
+    "Do not claim SDK register-file, swap-time, cache-key, or host-rendering observations in this guest static contract.",
+    "Do not equate renderer slot 0, selected shadow index 0x30, and normalized texture ordinal 0.",
+    "Do not infer runtime execution, descriptor validity, host binding, or visible output from packet construction.",
+    "This packet authorizes no runtime hook, launch, guest-memory write, Recomp patch, or SDK change."
+  ],
+  "conclusion": "Version 1.3 establishes the static dirty-fetch packet path. A slot-0 bind supplies dirty bit 0x0000000080000000; 0x826A3048 normalizes that low-32 bit into texture ordinal 0; and 0x826ACEA0 emits header 0x00054800 followed by the six current dwords from graphics state +0x480, using 0x826AC610 when the command range must roll. The consumer then clears graphics state +0x18."
+}

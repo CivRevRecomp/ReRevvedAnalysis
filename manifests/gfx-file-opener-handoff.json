@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0005",
+  "topic": "gfx-file-opener-handoff",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Does the version 1.3 installed GFx opener still resolve supplied filenames through the type-11 File Data registry before CcGFXStream creates a movie instance?",
+  "scope": {
+    "installer": "0x82E41E60",
+    "openerVtable": "0x82162F28",
+    "opener": "0x82E87B28",
+    "resourceLookup": "0x82C92950",
+    "fileDataExporter": "0x82C837C0",
+    "memoryFileConstructor": "0x823000A8",
+    "loaderOpen": "0x82217C38",
+    "genericOpen": "0x821E2D10",
+    "loaderPreflight": "0x821EFB18",
+    "streamLoad": "0x82C7D930",
+    "boundary": "This packet proves the static filename-specific opener chain and records bounded exact-name title observations. It does not generalize those observations to other filenames or frames."
+  },
+  "currentEvidence": {
+    "installer": {
+      "address": "0x82E41E60",
+      "method": "direct validation of the bounded installer, allocation size, owner fields, state kind, and current opener vtable",
+      "result": "The current function allocates the 0x18-byte opener, installs vtable 0x82162F28, stores it at owner +0x1C, and installs state kind 10 through the state bag at owner +0x20."
+    },
+    "opener": {
+      "address": "0x82E87B28",
+      "method": "exact diagnostic string, current opener vtable slot, and direct generated-code validation",
+      "result": "The current slot logs Opening file, requests numeric type 11 with the supplied filename, constructs a memory-backed GFx file from a non-empty result, and otherwise follows the ordinary loader fallback."
+    },
+    "genericOpen": {
+      "address": "0x821E2D10",
+      "method": "unique 38-instruction mnemonic match followed by current slot-dispatch validation",
+      "result": "The current function passes the supplied filename through opener slot +0x4 and validates the returned file object."
+    },
+    "fileDataExporter": {
+      "address": "0x82C837C0",
+      "method": "current File Data vtable slot and exact six-instruction field-export body",
+      "result": "The current function writes object field +0x14 to a non-null output and returns 1."
+    },
+    "streamLoad": {
+      "address": "0x82C7D930",
+      "method": "exact CcGFXStream identity string plus matching 664-byte, 166-instruction, 11-direct-call structure",
+      "result": "The current function keeps the definition-load and movie-instance creation boundary."
+    }
+  },
+  "installedOpener": {
+    "installer": "0x82E41E60",
+    "objectSize": "0x18",
+    "vtable": "0x82162F28",
+    "openSlot": "0x4",
+    "openTarget": "0x82E87B28",
+    "ownerField": "0x1C",
+    "stateBagField": "0x20",
+    "stateKind": 10,
+    "result": "The current installer publishes the resource-backed opener as state kind 10, and the opener vtable binds slot +0x4 to 0x82E87B28."
+  },
+  "loaderDispatch": {
+    "streamLoad": "0x82C7D930",
+    "loaderPreflight": "0x821EFB18",
+    "loaderOpen": "0x82217C38",
+    "genericOpen": "0x821E2D10",
+    "openerStateField": "0x10",
+    "result": "CcGFXStream passes its supplied filename into the loader preflight. That path reaches 0x82217C38, which reads the opener state and passes the same filename to 0x821E2D10 for slot +0x4 dispatch."
+  },
+  "registryLookup": {
+    "opener": "0x82E87B28",
+    "identityString": {
+      "address": "0x82166C1C",
+      "value": "Opening file %s, caching = %d"
+    },
+    "registryPointer": "0x8314F238",
+    "lookup": "0x82C92950",
+    "resourceType": 11,
+    "fileDataAccessor": "0x82C837C0",
+    "payloadField": "0x14",
+    "memoryFileConstructor": "0x823000A8",
+    "fallback": "0x82E806E0",
+    "result": "The opener passes the supplied filename and numeric type 11 to the current registry lookup. On a non-empty exported payload it constructs a memory-backed GFx file over payload+length; otherwise it follows the ordinary file loader path."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/DumpFunctions.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/FindPointerValues.java",
+      "ghidra/FindStrings.java"
+    ],
+    "program": "rerevved_image.bin"
+  },
+  "runtimeEvidence": {
+    "status": "bounded",
+    "session": "title/menu",
+    "date": "2026-08-15",
+    "exactNameFilter": ["GFX_MainMenu_logo", "GFX_MainMenu_logo.dds", "GFX_MainMenu.gfx"],
+    "observed": [
+      {
+        "requestedName": "GFX_MainMenu_logo",
+        "openedName": "GFX_MainMenu_logo.dds",
+        "resourceType": 11,
+        "branch": "type-11-cache",
+        "payload": "0x525d0034",
+        "size": 1048704,
+        "resourceCreated": true
+      },
+      {
+        "openedName": "GFX_MainMenu.gfx",
+        "resourceType": 11,
+        "branch": "type-11-cache",
+        "payload": "0x400ec674",
+        "size": 20069
+      }
+    ],
+    "filesystemFallbackObserved": false,
+    "qualification": "The records are exact-name, bounded observations from the title/menu sessions. Dynamic descriptor, resource, image, and output pointers are not stable identities, and no claim is made for unfiltered requests."
+  },
+  "guards": [
+    "Do not generalize the recorded exact-name type-11 cache observations to other filenames or sessions.",
+    "Do not collapse the File Data wrapper, memory-backed GFx file, movie definition, and movie instance into one object.",
+    "Do not infer active-frame presentation from this static filename handoff."
+  ],
+  "conclusion": "Version 1.3 establishes the installed resource-backed GFx opener and its static filename handoff through numeric type-11 File Data before CcGFXStream movie-instance creation."
+}

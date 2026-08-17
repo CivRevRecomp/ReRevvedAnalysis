@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0050",
+  "topic": "gfx-ui-image-family-inventory",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Which version 1.3 retail resources and GFx owners are statically supported for leader portraits, technology icons, and controller glyphs, and which of those families share the known logo architecture?",
+  "scope": {
+    "packages": ["Pregame.FPK", "Common0.FPK", "hoa.FPK", "pedia.FPK"],
+    "movies": ["GFX_ChooseCiv.gfx", "GFX_TechTree.gfx", "GFX_TechTreeBox.gfx", "GFX_MainMenu.gfx", "GFX_Key.gfx", "GFX_Keyboard.gfx", "HoA_KeyLegend.gfx", "buttonLegend.gfx"],
+    "movieClipHandler": "0x82295018",
+    "movieClipAttach": "0x82229C00",
+    "boundary": "This packet classifies current package entries, selected GFX tag streams, AVM1 request strings, and a bounded native MovieClipLoader boundary. It does not identify a runtime provider, prove SWF-to-GFX resolution, or connect MovieClipLoader requests to the tag-1001 external-image path."
+  },
+  "packageEvidence": [
+    {
+      "package": "Pregame.FPK",
+      "sha256": "14E50B0382542B345F29B129175CB1B1B9A4538547E8B5567CAA5A864531A2DE",
+      "movies": [
+        {"name": "gfx_mainmenu.gfx", "payloadOffset": 17418600, "size": 19716, "sha256": "0F09720A067BA190924F3ECD613CF3098D98653BECDF5DDE689BC309E9A4B87E"},
+        {"name": "gfx_chooseciv.gfx", "payloadOffset": 18268496, "size": 59646, "sha256": "A8EDDCE79CDCA74E2EF30F1175714D70A6217D8B133C0E4D0E188DDD2078864F"}
+      ]
+    },
+    {
+      "package": "Common0.FPK",
+      "sha256": "4D9A93570DD0255026A1E9BD7974916146BB355F693BE66FFF18BAF223A57594",
+      "movies": [
+        {"name": "gfx_techtree.gfx", "payloadOffset": 44368140, "size": 47682, "sha256": "AF6CF091217E6CB02B0F5EBF1F7F5D10F5E8235BF3871C259AE746323B3B5E1F"},
+        {"name": "gfx_techtreebox.gfx", "payloadOffset": 44415824, "size": 8559, "sha256": "A3ECFC5E37B078FFC5C4E041F9B9D8EEA62EF014C6C79A2E25E1136A9118B8A0"},
+        {"name": "gfx_key.gfx", "payloadOffset": 44514556, "size": 4703, "sha256": "36658E15D971F604298D91E17BBCF8019A7DEE0484F9B8CBDFC3F9E7AE91B72D"},
+        {"name": "gfx_keyboard.gfx", "payloadOffset": 44519260, "size": 33983, "sha256": "4311DDB5CFB7B3CE37EC7F3B3C3B40FA163EAF1B7E43CCCA107170DA56BF5F50"},
+        {"name": "hoa_keylegend.gfx", "payloadOffset": 11749676, "size": 8791, "sha256": "B373A0797A01469AFBCBB709760A6DCE0E94B88E98589FFF010ED5849F637035"}
+      ]
+    },
+    {
+      "package": "hoa.FPK",
+      "sha256": "10B60C0E4DE79E6DB8E1AB299207D33E5D52E97A3DB2F6318B5BDA46A24194F6",
+      "movies": [
+        {"name": "buttonlegend.gfx", "payloadOffset": 70152120, "size": 29089, "sha256": "ECFE089BF842E2E18146AE2B9C287924C50CE1BEE3C41BF8FD3307806733FA95"}
+      ]
+    },
+    {
+      "package": "pedia.FPK",
+      "sha256": "C94163D50323C889BC2228981EC928B01750F4FC50FA2AB14532992A563C8E59",
+      "result": "The current package contains 47 distinct tech_*.dds names and a secondary regular LDR_*.dds family. The exact UnitMC.gfx payload and native SWF-to-GFX resolver are not promoted."
+    }
+  ],
+  "leaderPortraits": {
+    "classification": "package-owned DDS with dynamic MovieClipLoader consumer",
+    "owner": {
+      "movie": "GFX_ChooseCiv.gfx",
+      "package": "Pregame.FPK",
+      "executableString": {"address": "0x82130C18", "value": "GFX_ChooseCiv.gfx", "referenceCount": 1},
+      "tag1001Count": 76,
+      "leaderTag1001Count": 0,
+      "standardBitmapTagCount": 0,
+      "avm1Blocks": ["0x2810", "0x3585", "0x44C2", "0x5628", "0x7C59", "0x87AC"],
+      "exactRequestStrings": ["../ObjectIcons/LDR_", "LDR_", "Lrg_", ".dds", "MovieClipLoader", "loadClip", "SetPortrait"],
+      "result": "The current movie constructs leader portrait filenames and requests them through MovieClipLoader.loadClip. None of its 76 tag-1001 declarations names an LDR portrait."
+    },
+    "resources": {
+      "packageNameCount": 34,
+      "largeNames": "17 ldr_lrg_<nation>.dds entries including default",
+      "regularNames": "17 ldr_<nation>.dds entries including default",
+      "executableLargeRange": "0x821306A4 through 0x821307E4",
+      "executableRegularRange": "0x821307F8 through 0x821308F8",
+      "referenceCountPerExecutableString": 1
+    },
+    "qualification": "The ActionScript request is exact, but static evidence does not select between matching package copies or establish a runtime request, provider, descriptor, or renderer tuple."
+  },
+  "technologyIcons": {
+    "classification": "package-owned DDS with dynamic MovieClipLoader consumer and unresolved provider",
+    "owners": [
+      {
+        "movie": "GFX_TechTree.gfx",
+        "package": "Common0.FPK",
+        "executableString": {"address": "0x8212D3F0", "value": "GFX_TechTree.gfx", "referenceCount": 1},
+        "tag1001Count": 48,
+        "technologyTag1001Count": 0,
+        "standardBitmapTagCount": 0,
+        "avm1Requests": ["GFX_TechTreeBox.swf", "Tech_Tree_BG.dds"],
+        "result": "The current movie creates MovieClipLoader instances for its box movie and background image."
+      },
+      {
+        "movie": "GFX_TechTreeBox.gfx",
+        "package": "Common0.FPK",
+        "tag1001Count": 25,
+        "technologyTag1001Count": 0,
+        "standardBitmapTagCount": 0,
+        "avm1Requests": ["UnitMC.swf"],
+        "followupCall": "SetPortrait",
+        "result": "The current movie requests UnitMC.swf and calls SetPortrait on the loaded destination with the selected technology identifier."
+      }
+    ],
+    "resources": {
+      "package": "pedia.FPK",
+      "distinctTechnologyDdsCount": 47,
+      "namePattern": "tech_<technology>.dds",
+      "additionalCommon0Name": "tech_astronomy.dds"
+    },
+    "qualification": "The UnitMC.swf request and technology identifier handoff are exact. The supplied UnitMC.gfx payload, SWF-to-GFX extension binding, package lookup, and runtime provider remain unresolved."
+  },
+  "controllerGlyphs": {
+    "classification": "mixed tag-1001 external images and non-tag1001 movie content",
+    "tag1001Owners": [
+      {
+        "movie": "GFX_MainMenu.gfx",
+        "package": "Pregame.FPK",
+        "tag1001Count": 57,
+        "standardBitmapTagCount": 0,
+        "confirmedSiblings": ["A.dds", "B.dds", "X.dds", "Y.dds", "STARTBUTTON.dds", "BACKBUTTON.dds", "PS3X.dds", "GFX_MainMenu_logo.dds"],
+        "result": "The current main-menu movie declares controller images and GFX_MainMenu_logo.dds as sibling tag-1001 external images."
+      },
+      {"movie": "GFX_Key.gfx", "package": "Common0.FPK", "tag1001Count": 55, "standardBitmapTagCount": 0},
+      {"movie": "GFX_Keyboard.gfx", "package": "Common0.FPK", "tag1001Count": 52, "standardBitmapTagCount": 0},
+      {"movie": "HoA_KeyLegend.gfx", "package": "Common0.FPK", "tag1001Count": 41, "standardBitmapTagCount": 0}
+    ],
+    "buttonLegend": {
+      "movie": "buttonLegend.gfx",
+      "package": "hoa.FPK",
+      "executableString": {"address": "0x82126B24", "value": "buttonLegend.gfx", "referenceCount": 0},
+      "tag1001Count": 0,
+      "standardBitmapTagCount": 0,
+      "result": "The bounded current movie contains neither tag-1001 external images nor standard JPEG/lossless bitmap tags. That absence does not distinguish vector, font, import, or other movie-owned artwork."
+    },
+    "qualification": "Only the main-menu tag-1001 siblings inherit the generic external-image architecture. No current static owner selects a particular visible glyph or connects buttonLegend.gfx to that architecture."
+  },
+  "sharedArchitecture": {
+    "defineExternalImage": {
+      "tagLoader": "0x821E9390",
+      "descriptorBuilder": "0x821E9178",
+      "resourceCreator": "0x822189A8",
+      "imageCreator": "0x821E2F80",
+      "opener": "0x82E87B28",
+      "textureFactory": "0x82302DC8",
+      "uploadTarget": "0x82304CF0",
+      "result": "Tag-1001 entries can use the accepted current external-image chain, which remains separate from the engine type-7 texture registry."
+    },
+    "movieClipLoader": {
+      "handler": "0x82295018",
+      "methodTableEntry": "0x8211DB74",
+      "firstNativeDispatch": "0x82295060 through packet +0x8 receiver vtable slot +0x8",
+      "requestHandoffs": ["0x82295190 to 0x82229AA0", "0x8229529C to 0x82229608"],
+      "requestAttach": "0x82229C00",
+      "identityConfidence": "exact method-registration identity plus matching handler contract",
+      "result": "The current loadClip registration points directly to 0x82295018. The handler keeps the two-argument gate, first request-dependent indirect dispatch, argument extraction, request construction, and later attachment flow.",
+      "qualification": "The current chain has no direct edge to 0x822189A8 or 0x821E2F80 and does not identify the indirect target, filename provider, package resolver, or a convergence edge to external request kind 2."
+    }
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": ["ghidra/FindStrings.java", "ghidra/DumpFunctions.java"],
+    "program": "rerevved_image.bin",
+    "qualification": "Selected GFX slices were independently bounded by GFX signature, declared size, package offset, size, and SHA-256 before tag and AVM1 inspection."
+  },
+  "guards": [
+    "Do not equate tag-1001 DefineExternalImage declarations with MovieClipLoader.loadClip requests.",
+    "Do not infer that absence of tag 1001 or standard bitmap tags proves vector, font, import, or visible-frame ownership.",
+    "Do not assign a runtime provider, package selection, SWF-to-GFX resolver, descriptor tuple, format, mapping, writer, subtype, selector, or renderer identity.",
+    "Do not copy the known logo descriptor tuple to controller, portrait, or technology resources.",
+    "This packet authorizes no runtime hook, launch, guest-memory write, Recomp patch, or SDK change."
+  ],
+  "conclusion": "Version 1.3 defines three distinct UI image families. Main-menu controller paths are tag-1001 siblings of GFX_MainMenu_logo.dds and share its generic external-image architecture. GFX_ChooseCiv.gfx portraits and the GFX_TechTree.gfx/GFX_TechTreeBox.gfx technology chain instead construct MovieClipLoader requests through the current native boundary. No bounded static evidence makes those two loader classifications converge."
+}

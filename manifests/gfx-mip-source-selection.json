@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0053",
+  "topic": "gfx-mip-source-selection",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Which version 1.3 helpers calculate decoded-image level extents and select a bounded mip source?",
+  "scope": {
+    "formatExtent": "0x821E04A8",
+    "mipSelector": "0x821E0568",
+    "boundary": "This packet covers the two decoded-image record helpers only. It does not identify the renderer upload entry, backend format names, pixel channels, or runtime texture contents."
+  },
+  "currentEvidence": {
+    "method": "current ReXGlue generated-function fingerprints followed by foreground read-only Ghidra queries",
+    "mipSelector": {
+      "address": "0x821E0568",
+      "instructionCount": 85,
+      "bodySize": 340,
+      "shapeHash": "73EC631E0612EC86375FE4D3C9F655020552B414623DF65426E420945A80A4CD",
+      "mnemonicHash": "8DB389F934CD227A27AE993B856204A5CC24A0BDCB3B32D1B4EDE4A1CBD628A4",
+      "result": "The address identifies the unique version 1.3 function with the recorded normalized operand shape and instruction count."
+    },
+    "formatExtent": {
+      "address": "0x821E04A8",
+      "result": "The selector calls the current helper at its call site. Independent decompilation of both current helpers produces the same format branches and extent formulas despite one additional instruction."
+    }
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/DumpFunctions.java"
+    ],
+    "generatedCorroboration": [
+      "generated:rerevved/sub_821E04A8",
+      "generated:rerevved/sub_821E0568"
+    ],
+    "qualification": "Ghidra decompiles 0x821E04A8 completely. The version 1.3 listing for 0x821E0568 remains truncated after its save-register thunk, so its full control flow is corroborated by the uniquely matched generated body."
+  },
+  "recordLayout": {
+    "size": "0x1C",
+    "fields": [
+      { "offset": "0x0", "role": "numeric format selector" },
+      { "offset": "0x4", "role": "decoded width" },
+      { "offset": "0x8", "role": "decoded height" },
+      { "offset": "0xC", "role": "row pitch or row stride" },
+      { "offset": "0x10", "role": "base data pointer" },
+      { "offset": "0x14", "role": "data-region byte extent" },
+      { "offset": "0x18", "role": "level count or level bound" }
+    ],
+    "result": "The version 1.3 selector reads seven words at offsets 0x0 through 0x18 and treats the input as a vptr-less record."
+  },
+  "formatExtent": {
+    "address": "0x821E04A8",
+    "rules": [
+      { "format": 1, "rule": "width times 4, then times height" },
+      { "format": 2, "rule": "(width + 1) times 3 rounded down to a multiple of 4, then times height" },
+      { "format": 9, "rule": "width times height" },
+      { "format": 10, "rule": "max(width >> 2, 1) times max(height >> 2, 1) times 8" },
+      { "formats": [11, 12], "rule": "max(width >> 2, 1) times max(height >> 2, 1) times 16" }
+    ],
+    "result": "The helper returns zero for unsupported numeric selectors and otherwise returns the total byte extent defined by the selected format rule."
+  },
+  "mipSelection": {
+    "address": "0x821E0568",
+    "levelZero": "Returns the pointer stored at record offset 0x10 and optionally writes width, height, and pitch from offsets 0x4, 0x8, and 0xC.",
+    "laterLevels": "Halves width and height with a floor of one for each level, accumulates the per-format extent from 0x821E04A8, and computes the pitch rule for the selected format.",
+    "bounds": "Returns the derived pointer only while it remains below base pointer + byte extent from offsets 0x10 and 0x14. A level beyond the bound returns zero.",
+    "result": "The record layout, level loop, format constants, output writes, and exclusive upper-bound check match the established source semantics."
+  },
+  "conclusion": "Version 1.3 establishes the decoded-image record layout and bounded mip selection semantics at 0x821E04A8 and 0x821E0568.",
+  "guards": [
+    "Do not assign public texture-format names to the numeric selectors.",
+    "Do not infer pixel channel order, tiling, or backend upload behavior from these helpers.",
+    "Do not treat this static function identity as runtime proof that a particular asset uses the mip path."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "sourceXex": {
+    "name": "default.xex",
+    "version": "0.0.0.2",
+    "size": 16822272,
+    "sha256": "B59B8957A3ED9DD90E9296C96D5C7AB1B16078D3F08B015582714A06C7D6A7BD"
+  },
+  "titleUpdate": {
+    "name": "default.xexp",
+    "sourceVersion": "0.0.0.2",
+    "targetVersion": "0.0.3.2",
+    "size": 3291136,
+    "sha256": "C1FC6149A63550987D991EFDBB80E3697845A9A49D3F2EC180EA9817DB8D12D4"
+  },
+  "analysisProgram": {
+    "name": "rerevved_image.bin",
+    "version": "0.0.3.2",
+    "imageBase": "0x82000000",
+    "imageSize": 18939904,
+    "processor": "PowerPC:BE:32:default",
+    "storage": "machine-local",
+    "flatImageSha256": "5C7A8C3AD9B6A9D39CC9BBF3DA5AB23015A568C65C723D298F846086324C4680"
+  }
+}

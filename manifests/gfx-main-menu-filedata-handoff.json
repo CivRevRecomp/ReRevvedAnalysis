@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0004",
+  "topic": "gfx-main-menu-filedata-handoff",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Where does the version 1.3 main-menu preload completion path register loaded files as type-11 File Data resources?",
+  "scope": {
+    "consumer": "0x82E7F4F0",
+    "stagingCaller": "0x82E2C770",
+    "registryPointer": "0x8314F238",
+    "registration": "0x82C92C38",
+    "factory": "0x82C91E38",
+    "fileDataVtable": "0x82160E54",
+    "streamLoad": "0x82C7D930",
+    "boundary": "This packet establishes the completed-preload entry handoff and the generic type-11 wrapper. It does not prove which loop entry is GFX_MainMenu.gfx at runtime."
+  },
+  "currentEvidence": {
+    "consumer": {
+      "address": "0x82E7F4F0",
+      "method": "direct validation of the bounded preload-completion structure, its sole current call from the 72-instruction staging caller, and type-11 registration",
+      "result": "The current loop waits for a completed preload context, enumerates valid entries, builds length-prefixed copies, and calls the current registration function with numeric type 11."
+    },
+    "stagingCaller": {
+      "address": "0x82E2C770",
+      "method": "matching 288-byte, 72-instruction, seven-direct-call structure plus foreground read-only caller/callee validation",
+      "result": "The current staging routine directly invokes the preload completion function before its optional display-list clear."
+    },
+    "fileDataInitializer": {
+      "address": "0x822E9500",
+      "method": "unique shape-and-instruction-count match followed by foreground read-only decompilation",
+      "result": "The current function stores buffer+4 at object offset 0x14, or null when no buffer is supplied."
+    },
+    "typeId": {
+      "address": "0x821B4128",
+      "method": "unique exact generated fingerprint and foreground read-only decompilation",
+      "result": "The current method returns numeric resource type 11."
+    },
+    "typeName": {
+      "address": "0x822E94F0",
+      "method": "current vtable slot and exact string reference",
+      "result": "The current method returns the exact string File Data at 0x82160C7C."
+    }
+  },
+  "loadedEntry": {
+    "consumer": "0x82E7F4F0",
+    "entryNameField": "0x4",
+    "sizeSlot": "0x8",
+    "dataSlot": "0xC",
+    "registryPointer": "0x8314F238",
+    "registerCall": "0x82C92C38",
+    "resourceType": 11,
+    "result": "For each valid completed entry, the current loop obtains its name, size, and data, copies the data behind a four-byte length prefix, and registers the same name and copied buffer as numeric resource type 11."
+  },
+  "fileDataResource": {
+    "factory": "0x82C91E38",
+    "vtable": "0x82160E54",
+    "objectSize": "0x18",
+    "keyField": "0x4",
+    "payloadField": "0x14",
+    "initializeSlot": "0x10",
+    "initializeTarget": "0x822E9500",
+    "typeIdSlot": "0x14",
+    "typeIdTarget": "0x821B4128",
+    "typeId": 11,
+    "typeNameSlot": "0x18",
+    "typeNameTarget": "0x822E94F0",
+    "typeNameAddress": "0x82160C7C",
+    "typeName": "File Data",
+    "result": "The current numeric factory's type-11 case allocates 0x18 bytes and installs vtable 0x82160E54. Registration stores the normalized key at +0x4 and dispatches slot +0x10, whose target stores buffer+4 at +0x14."
+  },
+  "movieCreationLead": {
+    "streamLoad": "0x82C7D930",
+    "identityString": {
+      "address": "0x82162C7C",
+      "value": "CcGFXStream::LoadStream %s, cache=%s"
+    },
+    "definitionLoad": "0x821EFB18",
+    "movieDefinitionField": "0x6C",
+    "createInstanceSlot": "0x44",
+    "movieInstanceField": "0x70",
+    "result": "The current CcGFXStream path passes its filename to the Scaleform loader preflight, stores the movie definition at +0x6C, creates an instance through definition slot +0x44, and stores that instance at +0x70."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/DumpFunctions.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/FindStrings.java"
+    ],
+    "program": "rerevved_image.bin"
+  },
+  "runtimeEvidence": {
+    "status": "bounded",
+    "session": "title/menu",
+    "date": "2026-08-15",
+    "observedMovie": {
+      "name": "GFX_MainMenu.gfx",
+      "resourceType": 11,
+      "branch": "type-11-cache",
+      "payload": "0x400ec674",
+      "size": 20069
+    },
+    "qualification": "The exact-name opener observation confirms a type-11 cache result for GFX_MainMenu.gfx, but it does not identify which preload-loop entry supplied the data or prove active-frame execution."
+  },
+  "guards": [
+    "Do not equate the type-11 File Data wrapper with a GFx movie definition, movie instance, or image resource.",
+    "Do not assign GFX_MainMenu.gfx to a particular preload loop entry without a direct static edge or runtime observation.",
+    "Do not generalize the exact-name cache observation to another preload entry or infer active-frame execution."
+  ],
+  "conclusion": "Version 1.3 establishes the main-menu preload completion handoff into a 0x18-byte type-11 File Data resource and the downstream CcGFXStream movie-instance boundary."
+}

@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0017",
+  "topic": "scene-active-gate-publication",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What object does the version 1.3 scene-active global reference, which vtable belongs to its containing owner, and what is one downstream update edge?",
+  "scope": {
+    "functions": ["0x82E294D0", "0x82D3D930", "0x82D3D890", "0x82E60F70"],
+    "globals": ["0x8314F094"],
+    "tables": ["0x82121100"],
+    "fields": ["0x0", "0x1", "0x4", "0xC0"],
+    "boundary": "This packet proves the containing-owner vtable, embedded vptr-less gate, publication store, active-byte update, and one downstream caller. It does not establish runtime activation or classify the gate as a scene graph."
+  },
+  "dependencies": [
+    { "topic": "scene-render-tree-publication", "use": "current scene-tree global and distinction from the intervening version 1.3 global" }
+  ],
+  "currentEvidence": {
+    "method": "identified the embedded gate at owner offset 0xC0 in 0x82D3D930, published by 0x82E294D0 at global 0x8314F094, by the exact 8-byte constructor, offset-0x1 toggle at 0x82D3D890, downstream value-1 call, generated-code, owner-vtable memory, and foreground read-only Ghidra corroboration",
+    "entries": [
+      {
+        "role": "application-owner publisher",
+        "address": "0x82E294D0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "scene-active gate constructor",
+        "address": "0x82D3D930",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "scene-active flag toggle",
+        "address": "0x82D3D890",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "AudioGameStartInit",
+        "address": "0x82E60F70",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "scene-active gate global",
+        "address": "0x8314F094",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "application-owner vtable",
+        "address": "0x82121100",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "Version 1.3 uses an 8-byte vptr-less gate with this byte layout at owner offset 0xC0."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpInstructions.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpReferences.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82E294D0",
+      "generated:rerevved/sub_82D3D930",
+      "generated:rerevved/sub_82D3D890",
+      "generated:rerevved/sub_82E60F70"
+    ],
+    "decodeBoundary": "The maintained Ghidra program has truncated bodies at the publisher, constructor, and downstream call site. Generated instruction text supplies those exact sites; Ghidra independently confirms the function boundaries, owner-vtable words, and a recovered global reference."
+  },
+  "publication": {
+    "publisher": "0x82E294D0",
+    "ownerVtable": "0x82121100",
+    "ownerVtableStoreInstruction": "0x82E294F4",
+    "embeddedOffset": "0xC0",
+    "embeddedConstructor": "0x82D3D930",
+    "constructorCallInstruction": "0x82E29504",
+    "global": "0x8314F094",
+    "publicationInstruction": "0x82E29544",
+    "postPublicationClearInstruction": "0x82E29554",
+    "result": "ScenePublishStore installs vtable 0x82121100 in its containing owner, constructs an 8-byte scene-active gate at owner offset 0xC0, publishes that embedded address through 0x8314F094, then clears the gate's offset-0x1 byte.",
+    "boundary": "The containing owner's allocation size and original concrete class name remain unresolved."
+  },
+  "gateConstruction": {
+    "constructor": "0x82D3D930",
+    "size": "0x8",
+    "initialActiveStoreInstruction": "0x82D3D950",
+    "callbackStateStoreInstruction": "0x82D3D958",
+    "byteZeroStoreInstruction": "0x82D3D96C",
+    "result": "SceneActiveGateCtor writes one to byte 0x1, clears word 0x4, later writes one to byte 0x0, and registers the address of word 0x4 with its bounded callback path.",
+    "boundary": "The meaning of byte 0x0 and the registered callback's wider lifecycle remain unresolved."
+  },
+  "vtableBoundary": {
+    "result": "Vtable 0x82121100 belongs to the containing application owner. The object published through 0x8314F094 begins with byte state and has no vptr.",
+    "guard": "Do not assign vtable 0x82121100 to the embedded scene-active gate or infer a gate vtable from the containing owner."
+  },
+  "downstreamUpdate": {
+    "producer": "0x82E60F70",
+    "globalLoadInstruction": "0x82E612C0",
+    "callInstruction": "0x82E612D0",
+    "target": "0x82D3D890",
+    "targetStoreInstruction": "0x82D3D8C4",
+    "value": 1,
+    "fieldOffset": "0x1",
+    "result": "AudioGameStartInit checks 0x8314F094 and calls SceneFlagToggle with value 1. SceneFlagToggle calls 0x82815868 with a mode derived from the requested boolean and stores the request at gate offset 0x1.",
+    "boundary": "Static evidence proves the call and field write. It does not establish the host-visible effect of 0x82815868 or successful runtime scene activation."
+  },
+  "rejectedLeads": {
+    "interveningGlobal": {
+      "result": "Global 0x8314F090 is not the active gate. Version 1.3 inserted it between the scene-tree global at 0x8314F08C and the active-gate global at 0x8314F094."
+    },
+    "embeddedVtable": {
+      "result": "The published gate has no vptr; 0x82121100 is stored at containing-owner offset 0x0, not embedded offset 0xC0."
+    },
+    "sceneGraphIdentity": {
+      "result": "The active gate controls scene-related work but is not itself evidence of a scene graph, world map, or playable scenario owner."
+    }
+  },
+  "guards": [
+    "Keep the application owner and embedded scene-active gate as distinct catalog objects.",
+    "Use owner offset 0xC0 for the embedded gate; do not infer another offset by adjacency.",
+    "Do not claim runtime scene activation from the static active-byte write.",
+    "Do not broaden through the other callers that bracket the same gate.",
+    "Do not classify the gate as a scene graph or playable-world owner."
+  ],
+  "conclusion": "Version 1.3 global 0x8314F094 references an 8-byte vptr-less active gate embedded at application-owner offset 0xC0. The containing owner uses vtable 0x82121100. AudioGameStartInit at 0x82E60F70 provides the bounded downstream edge by calling SceneFlagToggle at 0x82D3D890, which stores active value 1 at gate offset 0x1."
+}

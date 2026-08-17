@@ -1,0 +1,1589 @@
+{
+  "schemaVersion": 1,
+  "catalog": "symbols",
+  "records": [
+    {
+      "id": "RVA-SYM-0009", "name": "frontend_root_ptr_82FFD624", "kind": "global", "address": "0x82FFD624", "image": "../image.json",
+      "claim": "Stores the frontend root pointer whose offset 0x5C supplies the named-file manager.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-selection.json#/manager"}],
+      "qualification": {"alternatives": ["The concrete frontend-root class and complete layout remain unresolved."]}
+    },
+    {
+      "id": "RVA-SYM-0010", "name": "main_menu_preload_context_8314EFB0", "kind": "global", "address": "0x8314EFB0", "image": "../image.json",
+      "claim": "Stores the version 1.3 named-file preload context built by the self-identifying main-menu preload routine.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-selection.json#/manager"}],
+      "qualification": {"falsificationCondition": "The preload and completion routines do not share, start, release, and clear the context at 0x8314EFB0."}
+    },
+    {
+      "id": "RVA-SYM-0011",
+      "name": "CcMainMenuGameStatePreloadDataStart",
+      "kind": "function",
+      "address": "0x82E7EA60",
+      "image": "../image.json",
+      "claim": "Builds the main-menu named-file preload list and passes the exact GFX_MainMenu_logo.dds path to the current named-file helper.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-logo-texture-resource.json#/logoPreload" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpInstructions.java:0x82E7ED28" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E7EA60" }
+      ],
+      "qualification": {
+        "alternatives": ["The preload call does not prove that the logo completed loading or was served by the type-11 opener at runtime."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0012", "name": "MainMenuRegisterNamedFile", "kind": "function", "address": "0x82E7E410", "image": "../image.json",
+      "claim": "Passes a supplied path and current context count to the root-plus-0x5C manager add-file routine.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-selection.json#/manager"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82E7E410"}],
+      "qualification": {"falsificationCondition": "The helper does not use frontend root 0x82FFD624 and context global 0x8314EFB0."}
+    },
+    {
+      "id": "RVA-SYM-0013", "name": "NamedFileManagerAdd", "kind": "function", "address": "0x82D31620", "image": "../image.json",
+      "claim": "Adds a supplied named file to a manager-owned load context at its supplied index.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-selection.json#/manager"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82D31620"}],
+      "qualification": {"alternatives": ["The manager's original class name remains unresolved."]}
+    },
+    {
+      "id": "RVA-SYM-0015", "name": "NamedFileManagerStart", "kind": "function", "address": "0x82D30FF0", "image": "../image.json",
+      "claim": "Starts the manager-owned named-file context after the main-menu registration sequence.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-selection.json#/manager"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82D30FF0"}],
+      "qualification": {"alternatives": ["The semantic manager state represented by its internal flags remains unresolved."]}
+    },
+    {
+      "id": "RVA-SYM-0016",
+      "name": "GfxCompleteMainMenuPreload",
+      "kind": "function",
+      "address": "0x82E7F4F0",
+      "image": "../image.json",
+      "claim": "Enumerates completed preload entries, copies each payload behind a four-byte length prefix, and registers it as numeric resource type 11.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/loadedEntry" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82E7F4F0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E7F4F0" }
+      ],
+      "qualification": {
+        "alternatives": ["No individual preload entry is identified as GFX_MainMenu.gfx."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0020",
+      "name": "GfxResourceRegistryPointer",
+      "kind": "global",
+      "address": "0x8314F238",
+      "image": "../image.json",
+      "claim": "Stores the resource-registry pointer consumed by the current preload-registration and resource-backed file-opener paths.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/loadedEntry/registryPointer" },
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup/registryPointer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x8314F238" }
+      ],
+      "qualification": {
+        "alternatives": ["The concrete registry-owner type remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0021",
+      "name": "GfxRegisterNamedResource",
+      "kind": "function",
+      "address": "0x82C92C38",
+      "image": "../image.json",
+      "claim": "Creates a numeric resource, stores its normalized key, dispatches its initializer, and inserts it into the resource container.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/registrationBehavior" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82C92C38" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C92C38" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the bounded texture-resource path is interpreted in this packet."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0022",
+      "name": "GfxCreateResourceByType",
+      "kind": "function",
+      "address": "0x82C91E38",
+      "image": "../image.json",
+      "claim": "Allocates resources by numeric type; the bounded type-7 and type-11 cases create the texture and File Data resource objects and install their current vtables.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/factoryBehavior" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82C91E38" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C91E38" }
+      ],
+      "qualification": {
+        "alternatives": ["Numeric resource cases other than 7 and 11 remain outside the current interpretation."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0023",
+      "name": "GfxInitializeFileDataResource",
+      "kind": "function",
+      "address": "0x822E9500",
+      "image": "../image.json",
+      "claim": "Stores the supplied length-prefixed buffer's data pointer at File Data resource offset 0x14, or null when no buffer is supplied.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/currentEvidence/fileDataInitializer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822E9500" }
+      ],
+      "qualification": {
+        "alternatives": ["Ownership of the four-byte length prefix remains outside this bounded initializer claim."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0024",
+      "name": "GfxFileDataResourceTypeId",
+      "kind": "function",
+      "address": "0x821B4128",
+      "image": "../image.json",
+      "claim": "Returns numeric resource type 11.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/currentEvidence/typeId" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x821B4128" }
+      ],
+      "qualification": {
+        "alternatives": ["The value is retained as an internal numeric resource type."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0025",
+      "name": "GfxFileDataResourceTypeName",
+      "kind": "function",
+      "address": "0x822E94F0",
+      "image": "../image.json",
+      "claim": "Returns the exact resource type string File Data.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/currentEvidence/typeName" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822E94F0" }
+      ],
+      "qualification": {
+        "alternatives": ["No public class identity beyond the returned string is inferred."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0026",
+      "name": "CcGFXStreamLoadStream",
+      "kind": "function",
+      "address": "0x82C7D930",
+      "image": "../image.json",
+      "claim": "Loads a supplied GFx filename, stores the resulting movie definition at offset 0x6C, creates its movie instance, and stores the instance at offset 0x70.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/movieCreationLead" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C7D930" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime claim is made about a particular loaded filename or displayed frame."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0027",
+      "name": "GfxInstallResourceFileOpener",
+      "kind": "function",
+      "address": "0x82E41E60",
+      "image": "../image.json",
+      "claim": "Allocates the resource-backed opener, installs its vtable, stores it at owner offset 0x1C, and publishes state kind 10.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/installedOpener" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E41E60" }
+      ],
+      "qualification": {
+        "alternatives": ["The enclosing owner and state-bag types remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0028",
+      "name": "GfxOpenResourceBackedFile",
+      "kind": "function",
+      "address": "0x82E87B28",
+      "image": "../image.json",
+      "claim": "Looks up the supplied filename as numeric resource type 11, constructs a memory-backed GFx file from a non-empty payload, and otherwise follows the ordinary loader fallback.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E87B28" }
+      ],
+      "qualification": {
+        "alternatives": ["A cache hit for any particular runtime filename is not established."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0029",
+      "name": "ResLoadByName",
+      "kind": "function",
+      "address": "0x82C92950",
+      "image": "../image.json",
+      "claim": "Looks up a normalized name and numeric resource type, then dispatches the matched resource's export slot into the supplied output.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C92950" }
+      ],
+      "qualification": {
+        "alternatives": ["Container insertion, creation flags, and other resource types remain outside this use."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0030",
+      "name": "GfxExportFileDataResource",
+      "kind": "function",
+      "address": "0x82C837C0",
+      "image": "../image.json",
+      "claim": "Copies File Data resource offset 0x14 into a non-null output and returns 1.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/currentEvidence/fileDataExporter" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82C837C0" }
+      ],
+      "qualification": {
+        "alternatives": ["The exported pointer is interpreted only as the retained File Data payload."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0031",
+      "name": "GfxInitializeMemoryFile",
+      "kind": "function",
+      "address": "0x823000A8",
+      "image": "../image.json",
+      "claim": "Initializes the memory-backed GFx file constructed from a non-empty File Data payload.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup/memoryFileConstructor" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_823000A8" }
+      ],
+      "qualification": {
+        "alternatives": ["Its complete object layout remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0032",
+      "name": "GfxLoaderOpenFile",
+      "kind": "function",
+      "address": "0x82217C38",
+      "image": "../image.json",
+      "claim": "Reads the loader's opener state and passes the supplied filename to the generic GFx open function.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/loaderDispatch" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82217C38" }
+      ],
+      "qualification": {
+        "alternatives": ["The surrounding loader-state type remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0033",
+      "name": "GfxOpenFile",
+      "kind": "function",
+      "address": "0x821E2D10",
+      "image": "../image.json",
+      "claim": "Passes the supplied filename through the installed opener's slot at offset 0x4 and validates the returned file object.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/currentEvidence/genericOpen" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E2D10" }
+      ],
+      "qualification": {
+        "alternatives": ["The concrete public loader class name remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0034",
+      "name": "GfxLoaderPreflight",
+      "kind": "function",
+      "address": "0x821EFB18",
+      "image": "../image.json",
+      "claim": "Normalizes and preflights the supplied GFx path before dispatching it through the loader's open helper.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/loaderDispatch" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821EFB18" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the filename-preserving route into GfxLoaderOpenFile is claimed."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0035",
+      "name": "GFX_MainMenuLogoDdsString",
+      "kind": "global",
+      "address": "0x82130908",
+      "image": "../image.json",
+      "claim": "Contains the exact guest string GFX_MainMenu_logo.dds and has one current reference from the main-menu preload list.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-logo-texture-resource.json#/currentEvidence/logoFilename" },
+        { "kind": "ghidra-static", "locator": "ghidra/FindStrings.java:0x82130908" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x82130908" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime cache hit, image creation, or presentation is inferred from the static reference."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0041",
+      "name": "GfxInitializeTextureResource",
+      "kind": "function",
+      "address": "0x82C8DA08",
+      "image": "../image.json",
+      "claim": "Assigns the supplied retained texture pointer to resource offset 0x18 and publishes the key/value mapping.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/currentEvidence/initializer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82C8DA08" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C8DA08" }
+      ],
+      "qualification": {
+        "alternatives": ["The concrete registry-owner type remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0043",
+      "name": "GfxTextureResourceTypeId",
+      "kind": "function",
+      "address": "0x822EBA40",
+      "image": "../image.json",
+      "claim": "Returns numeric resource type 7.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/vtableLayout/slots/2" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822EBA40" }
+      ],
+      "qualification": {
+        "alternatives": ["The value is retained as an internal numeric resource type."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0044",
+      "name": "GfxTextureResourceTypeName",
+      "kind": "function",
+      "address": "0x822EBA48",
+      "image": "../image.json",
+      "claim": "Returns the exact resource type string Texture.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/vtableLayout/slots/3" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822EBA48" }
+      ],
+      "qualification": {
+        "alternatives": ["No public class name beyond the returned string is assigned."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0050",
+      "name": "GfxLoadDefineExternalImageTag",
+      "kind": "function",
+      "address": "0x821E9390",
+      "image": "../image.json",
+      "claim": "Parses the DefineExternalImage tag fields, emits the exact diagnostic identity, and calls the deferred descriptor builder.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/tagLoader" },
+        { "kind": "ghidra-static", "locator": "ghidra/FindStrings.java:0x8213C888" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E9390" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime movie or asset identity is inferred from the generic tag parser."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0051",
+      "name": "GfxBuildExternalImageDescriptor",
+      "kind": "function",
+      "address": "0x821E9178",
+      "image": "../image.json",
+      "claim": "Builds and registers the 0x28-byte deferred descriptor for a parsed external-image tag.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/descriptorBuilder" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E9178" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete public descriptor type remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0052",
+      "name": "GfxInstallExternalImageCreatorState",
+      "kind": "function",
+      "address": "0x821EF610",
+      "image": "../image.json",
+      "claim": "Allocates the loader's state-kind-12 external-image creator, installs its current vtable, and publishes it through the loader state bag.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/imageCreatorState" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821EF610" }
+      ],
+      "qualification": {
+        "alternatives": ["Other loader state kinds remain outside this bounded installer claim."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0053",
+      "name": "GFxImageFileResCreate",
+      "kind": "function",
+      "address": "0x822189A8",
+      "image": "../image.json",
+      "claim": "Creates the Scaleform image-file resource request and dispatches its external-image branch through the snapshotted state-kind-12 creator.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/resourceCreator" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8213F17C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822189A8" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime request or asset identity is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0054",
+      "name": "GfxCreateExternalImage",
+      "kind": "function",
+      "address": "0x821E2F80",
+      "image": "../image.json",
+      "claim": "Handles external-image request kind 2 by opening the descriptor filename, decoding it by format, allocating a renderer texture, and dispatching its upload slot.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/imageCreator" },
+        { "kind": "ghidra-static", "locator": "ghidra/FindPointerValues.java:0x821E2F80" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E2F80" }
+      ],
+      "qualification": {
+        "alternatives": ["Request kinds other than external file use different branches in this callback."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0055",
+      "name": "GfxInitializeRenderer",
+      "kind": "function",
+      "address": "0x82301D00",
+      "image": "../image.json",
+      "claim": "Initializes the Scaleform renderer object and installs vtable 0x82169E30.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/rendererConstructor" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82301D00" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the renderer vtable identity needed by this packet is interpreted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0056",
+      "name": "GfxAllocateRendererTexture",
+      "kind": "function",
+      "address": "0x82302DC8",
+      "image": "../image.json",
+      "claim": "Allocates a 0x30-byte renderer texture, installs vtable 0x82169EC4, stores its renderer owner at +0x1C, and clears its dimensions and backend fields.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/textureFactory" },
+        { "kind": "ghidra-static", "locator": "ghidra/FindPointerValues.java:0x82302DC8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302DC8" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete concrete class name and ownership rules remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0057",
+      "name": "GfxUploadRendererTexture",
+      "kind": "function",
+      "address": "0x82304CF0",
+      "image": "../image.json",
+      "claim": "Consumes a seven-word decoded-image record, selects or converts its bounded source, uploads through 0x82578E00, records width and height, and stores the created backend texture at +0x28.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/currentEvidence/uploadTarget" },
+        { "kind": "topic-manifest", "locator": "../gfx-decoded-image-upload.json#/sourceSelection" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82169EC4" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82304CF0" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic platform API names behind backend allocation and upload remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0154",
+      "name": "GfxSourceTableViewBuild",
+      "kind": "function",
+      "address": "0x821F3F48",
+      "image": "../image.json",
+      "claim": "Builds the temporary pointer-backed source-table view whose primary base and count occupy offsets 0x4 and 0x48.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-source-count-contract.json#/sourceContainer/temporaryView" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x821F3F48" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821F3F48" }
+      ],
+      "qualification": { "alternatives": ["The original class and function name remain unresolved."] }
+    },
+    {
+      "id": "RVA-SYM-0155",
+      "name": "GfxSourceEntryIndexValidate",
+      "kind": "function",
+      "address": "0x821F4B48",
+      "image": "../image.json",
+      "claim": "Obtains a source-entry base and count, rejects candidate indices outside that count, and only then addresses the 0x28-byte entry.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-source-count-contract.json#/mappingSemantics/boundedCheck" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821F4B48" }
+      ],
+      "qualification": { "alternatives": ["The public meanings of the accepted raw entry-byte values remain unresolved."] }
+    },
+    {
+      "id": "RVA-SYM-0156",
+      "name": "GfxMeshResourceSourceSubmit",
+      "kind": "function",
+      "address": "0x82266358",
+      "image": "../image.json",
+      "claim": "Resolves up to three descriptor selectors as zero-based 0x28-byte source-entry indices and submits successful results in resource order.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-source-count-contract.json#/mappingSemantics" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82266358" }
+      ],
+      "qualification": { "alternatives": ["This consumer trusts producer-supplied selector membership; its descriptor loop bound is distinct from the source-entry count."] }
+    },
+    {
+      "id": "RVA-SYM-0157",
+      "name": "GfxMeshSourceBatchDispatch",
+      "kind": "function",
+      "address": "0x822683B0",
+      "image": "../image.json",
+      "claim": "Dispatches mesh descriptors while forwarding source-table base context +0x4 and authoritative count context +0x48 to GfxMeshResourceSourceSubmit.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-source-count-contract.json#/submitHandoff" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822683B0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822683B0" }
+      ],
+      "qualification": { "alternatives": ["The original class and function name remain unresolved."] }
+    },
+    {
+      "id": "RVA-SYM-0164",
+      "name": "GfxMeshSourceFinalize",
+      "kind": "function",
+      "address": "0x821F4948",
+      "image": "../image.json",
+      "claim": "Obtains the bounded primary source base and count from the source provider and forwards them as a paired input to GfxCoupledFillMeshBuild.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-source-count-contract.json#/sourceContainer/directView" },
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/callers/primary" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x821F4948" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821F4948" }
+      ],
+      "qualification": { "alternatives": ["No runtime source cardinality or asset identity is asserted."] }
+    },
+    {
+      "id": "RVA-SYM-0165",
+      "name": "GfxFormatLevelExtent",
+      "kind": "function",
+      "address": "0x821E04A8",
+      "image": "../image.json",
+      "claim": "Computes total byte extent for decoded-image numeric formats 1, 2, 9, 10, 11, and 12.",
+      "confidence": "confirmed",
+      "evidence": [
+        {
+          "kind": "topic-manifest",
+          "locator": "../gfx-mip-source-selection.json#/formatExtent"
+        },
+        {
+          "kind": "ghidra-static",
+          "locator": "ghidra/DumpFunctions.java:0x821E04A8"
+        },
+        {
+          "kind": "generated-code",
+          "locator": "generated:rerevved/sub_821E04A8"
+        }
+      ],
+      "qualification": {
+        "alternatives": [
+          "Public texture-format names and pixel-layout semantics remain unresolved."
+        ]
+      }
+    },
+    {
+      "id": "RVA-SYM-0166",
+      "name": "GfxSelectMipSource",
+      "kind": "function",
+      "address": "0x821E0568",
+      "image": "../image.json",
+      "claim": "Selects a decoded-image level pointer, dimensions, and pitch while enforcing the record's level and byte-extent bounds.",
+      "confidence": "strong",
+      "evidence": [
+        {
+          "kind": "topic-manifest",
+          "locator": "../gfx-mip-source-selection.json#/mipSelection"
+        },
+        {
+          "kind": "ghidra-static",
+          "locator": "ghidra/DumpFunctions.java:0x821E0568"
+        },
+        {
+          "kind": "generated-code",
+          "locator": "generated:rerevved/sub_821E0568"
+        }
+      ],
+      "qualification": {
+        "alternatives": [
+          "The Ghidra function body remains truncated, so generated code supplies the full current control-flow evidence."
+        ]
+      }
+    },
+    {
+      "id": "RVA-SYM-0167",
+      "name": "GfxSetRendererMatrix",
+      "kind": "function",
+      "address": "0x82303650",
+      "image": "../image.json",
+      "claim": "Copies a six-word GFx matrix record into renderer offsets 0xFC through 0x110.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-renderer-state-setters.json#/matrixSetter" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82303650" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82303650" }
+      ],
+      "qualification": {
+        "alternatives": ["The caller and active draw remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0168",
+      "name": "GfxSetRendererFillState",
+      "kind": "function",
+      "address": "0x82303BE0",
+      "image": "../image.json",
+      "claim": "Tail-dispatches renderer subobjects rooted at offsets 0x114 and 0x21C8 to 0x82302C98.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-renderer-state-setters.json#/fillStateSetter" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82303BE0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82303BE0" }
+      ],
+      "qualification": {
+        "alternatives": ["The concrete subobject types remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0169",
+      "name": "GfxSetRendererVertexState",
+      "kind": "function",
+      "address": "0x82303BF0",
+      "image": "../image.json",
+      "claim": "Stores the vertex-buffer pointer at renderer offset 0x164 and vertex format at 0x16C.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-renderer-state-setters.json#/vertexStateSetter" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82303BF0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82303BF0" }
+      ],
+      "qualification": {
+        "alternatives": ["The buffer contents and runtime execution remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0170",
+      "name": "GfxSetRendererIndexState",
+      "kind": "function",
+      "address": "0x82303C00",
+      "image": "../image.json",
+      "claim": "Stores the index-buffer pointer at renderer offset 0x168 and normalizes accepted format selectors into offset 0x170.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-renderer-state-setters.json#/indexStateSetter" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82303C00" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82303C00" }
+      ],
+      "qualification": {
+        "alternatives": ["Public index-format names are not assigned to the numeric values."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0171",
+      "name": "GfxDecodeFormat10Image",
+      "kind": "function",
+      "address": "0x821E1410",
+      "image": "../image.json",
+      "claim": "Runs the identified descriptor-format-10 decode path and copies decoded levels into a kind-2 image record.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-format10-image-decoder.json#/decoderBehavior" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x821E1410" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821E1410" }
+      ],
+      "qualification": {
+        "alternatives": ["The public format name and helper identities remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0001",
+      "name": "GfxCoupledFillMeshBuild",
+      "kind": "function",
+      "address": "0x822688C0",
+      "image": "../image.json",
+      "claim": "Consumes bounded source entries and config state, selects numeric vertex format 3 or 4, and dispatches the simple or complex descriptor writer.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/formatAndWriterSelection" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822688C0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822688C0" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime source tuple, asset identity, or selected branch is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0006",
+      "name": "GfxCoupledFillAlternateCaller",
+      "kind": "function",
+      "address": "0x821FBC38",
+      "image": "../image.json",
+      "claim": "Calls GfxCoupledFillMeshBuild from two branches while preserving the bounded source pair and config owner as distinct inputs.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/callers/alternate" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x821FBC38" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821FBC38" }
+      ],
+      "qualification": {
+        "alternatives": ["The concrete provider type and runtime caller branch remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0158",
+      "name": "GfxMeshSourceReferenceEncode",
+      "kind": "function",
+      "address": "0x822C9580",
+      "image": "../image.json",
+      "claim": "Bounds derived source ordinals against the supplied count, tags resource-bearing references, and records the temporary source-bearing flag at offset 0x8C.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/sourceReferenceEncoder" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822C9580" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822C9580" }
+      ],
+      "qualification": {
+        "alternatives": ["No concrete source count, selector, or asset identity is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0159",
+      "name": "GfxComplexFillDescriptorWrite",
+      "kind": "function",
+      "address": "0x822CA718",
+      "image": "../image.json",
+      "claim": "Emits complex vertices and publishes descriptor resource cardinality and fill subtype as one coupled result.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-coupled-fill-producer.json#/descriptorProduction/complexWriter" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822CA718" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822CA718" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime descriptor tuple or renderer variant is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0003",
+      "name": "GfxTextureBind",
+      "kind": "function",
+      "address": "0x82302758",
+      "image": "../image.json",
+      "claim": "Binds a non-null texture record through a selected renderer slot, lazily creating its backend when texture offset 0x28 is zero.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-draw-producer.json#/fillAndTransform/textureBind" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82302758" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302758" }
+      ],
+      "qualification": {
+        "alternatives": ["The bound texture's asset identity and runtime backend value remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0153",
+      "name": "GfxFillStateApply",
+      "kind": "function",
+      "address": "0x82302A50",
+      "image": "../image.json",
+      "claim": "Applies the active GFx fill type and selects the texture and base pixel-shader contract: subtype 1 or 2 uses base variant 7 without a secondary bind, while other textured type-3 subtypes use base variant 8 after attempting the secondary slot-1 bind.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-draw-producer.json#/fillAndTransform/activeFill" },
+        { "kind": "topic-manifest", "locator": "../gfx-variant8-tf1-semantics.json#/variantContract" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82302A50" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302A50" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime fill subtype, texture identity, selected shader variant, or visible result is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0152",
+      "name": "GfxFillResourceStateBuild",
+      "kind": "function",
+      "address": "0x82302C98",
+      "image": "../image.json",
+      "claim": "Builds an active type-3 fill state, stores the incoming descriptor subtype at +0x4, and copies non-null primary and secondary resource records to +0x2C and +0x50.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-variant8-tf1-semantics.json#/subtypeFlow" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82302C98" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302C98" }
+      ],
+      "qualification": {
+        "alternatives": ["The original class and function name remain unresolved; no runtime fill contents are asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0173",
+      "name": "GfxPixelShaderSelect",
+      "kind": "function",
+      "address": "0x82302620",
+      "image": "../image.json",
+      "claim": "Selects the requested pixel-shader object from renderer field (variant + 21) * 4, with an optional 12-variant bank offset controlled by renderer flag +0x14 bit 0x2.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-variant8-tf1-semantics.json#/shaderSelection" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82302620" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302620" }
+      ],
+      "qualification": {
+        "alternatives": ["Renderer fields +0x70 and +0x74 are the base-bank objects for variants 7 and 8; no runtime selection is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0174",
+      "name": "GfxShaderProgramInitialize",
+      "kind": "function",
+      "address": "0x82302348",
+      "image": "../image.json",
+      "claim": "Builds the renderer shader-object arrays from fixed source-pointer tables, including the 24-entry pixel-program table beginning at 0x82F7B9E0.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-variant8-tf1-semantics.json#/shaderSelection/initializer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82F7B9F8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82302348" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the variant-7 and variant-8 pixel-source entries are semantically classified by this packet."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0172",
+      "name": "GfxIndexedDraw",
+      "kind": "function",
+      "address": "0x82303C38",
+      "image": "../image.json",
+      "claim": "Checks the renderer's active, vertex-buffer, index-buffer, index-format, and positive-count gates before issuing indexed triangle draws.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-draw-producer.json#/drawSubmission" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82169E30" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82303C38" }
+      ],
+      "qualification": {
+        "alternatives": ["No runtime count, buffer address, asset identity, or visible-pixel result is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0042",
+      "name": "GfxExportTextureResource",
+      "kind": "function",
+      "address": "0x82C8D540",
+      "image": "../image.json",
+      "claim": "Copies the retained texture pointer from owner offset 0x18 into a non-null output and returns 1.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/exportBehavior" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82C8D540" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C8D540" }
+      ],
+      "qualification": {
+        "alternatives": ["The generic object closure is established; a logo-specific path remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0147",
+      "name": "BackendTextureFetchTemplateInit",
+      "kind": "function",
+      "address": "0x8269A378",
+      "image": "../image.json",
+      "claim": "Initializes the 0x34-byte backend texture object, including the six-dword fetch template at offsets +0x1C through +0x30.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-backend-fetch-descriptor.json#/backendTexture" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x8269A378" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_8269A378" }
+      ],
+      "qualification": {
+        "alternatives": ["The original function and backend class names remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0148",
+      "name": "BackendTextureCreate",
+      "kind": "function",
+      "address": "0x8269AB90",
+      "image": "../image.json",
+      "claim": "Allocates the 0x34-byte backend texture, initializes its six-word template, allocates backing ranges, and completes address-bearing dwords +0x20 and +0x30.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-backend-fetch-descriptor.json#/backendTexture" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8269AC1C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_8269AB90" }
+      ],
+      "qualification": {
+        "alternatives": ["The backing allocation's platform API name remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0149",
+      "name": "TextureFetchDescriptorSelect",
+      "kind": "function",
+      "address": "0x8269AF10",
+      "image": "../image.json",
+      "claim": "Merges a backend's six template dwords with slot-local state at shadow index renderer slot +0x30, marks the supplied fetch bit dirty, and records the selected backend.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-backend-fetch-descriptor.json#/fetchSelection" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8269B00C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_8269AF10" }
+      ],
+      "qualification": {
+        "alternatives": ["This function establishes guest shadow selection and dirtying, not later command-packet emission."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0150",
+      "name": "GraphicsDirtyStateAndDrawPrepare",
+      "kind": "function",
+      "address": "0x826A3048",
+      "image": "../image.json",
+      "claim": "Processes graphics-state dirty groups, then constructs the immediate indexed-draw state, including logical vertex fetch 0 at physical registers 0x48BE and 0x48BF.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-dirty-fetch-packet.json#/dirtyBitDerivation" },
+        { "kind": "topic-manifest", "locator": "../gfx-fetch-allocation.json#/vertexFetchProducer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x826A320C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_826A3048" }
+      ],
+      "qualification": {
+        "alternatives": ["The original function name and the meanings of dirty groups outside +0x18 remain unresolved; no runtime descriptor or draw is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0151",
+      "name": "FetchDirtyRunPacketEmit",
+      "kind": "function",
+      "address": "0x826ACEA0",
+      "image": "../image.json",
+      "claim": "Converts contiguous dirty texture ordinals into guest register-write runs and copies six shadow dwords per ordinal; slot 0 yields header 0x00054800 for registers 0x4800 through 0x4805.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-dirty-fetch-packet.json#/packetConstruction" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x826ACF80" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_826ACEA0" }
+      ],
+      "qualification": {
+        "alternatives": ["This is a static guest packet-construction identity; no runtime payload, host execution, or visible result is asserted."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0004",
+      "name": "GfxComplexFillConstantDispatch",
+      "kind": "function",
+      "address": "0x821F80D0",
+      "image": "../image.json",
+      "claim": "Loads a static floating-point value into f2 and tail-dispatches to GfxCoupledFillAlternateCaller.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/dispatch/wrappers/0" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x821F80D0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821F80D0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The terminal branch at 0x821F80D8 does not target 0x821FBC38."
+      }
+    },
+    {
+      "id": "RVA-SYM-0005",
+      "name": "GfxComplexFillObjectDispatch",
+      "kind": "function",
+      "address": "0x821F8600",
+      "image": "../image.json",
+      "claim": "Loads f2 from object offset +0x7C and tail-dispatches to GfxCoupledFillAlternateCaller.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/dispatch/wrappers/1" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x821F8600" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821F8600" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The load at 0x821F8600 does not read object +0x7C or the terminal branch at 0x821F8604 does not target 0x821FBC38."
+      }
+    },
+    {
+      "id": "RVA-SYM-0007",
+      "name": "GfxComplexFillBaseInitialize",
+      "kind": "function",
+      "address": "0x821F80E0",
+      "image": "../image.json",
+      "claim": "Initializes the bounded object state and installs vtable 0x8213D408 at offset +0x0.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/baseReplacement" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x821F816C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821F80E0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The store at 0x821F816C does not place 0x8213D408 in the object vptr."
+      }
+    },
+    {
+      "id": "RVA-SYM-0008",
+      "name": "GfxComplexFillOwnerConstruct",
+      "kind": "function",
+      "address": "0x82214450",
+      "image": "../image.json",
+      "claim": "Calls the base initializer, replaces the vptr with 0x8213F088, and directly constructs two 0x3C child objects stored at parent offsets +0x90 and +0x94.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/ownership" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82214564" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82214450" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic class name, destruction path, release order, and exclusive lifetime remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0002",
+      "name": "GfxMovieViewTransformContextBuild",
+      "kind": "function",
+      "address": "0x82298898",
+      "image": "../image.json",
+      "claim": "Copies six consecutive movie-view transform floats supplied by the caller into context offsets +0x24 through +0x38.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-complex-fill.json#/producer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82298A64" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82298898" }
+      ],
+      "qualification": {
+        "alternatives": ["No version 1.3 runtime trace identifies a particular asset request using the produced context."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0045",
+      "name": "GfxTextureBackendEnsure",
+      "kind": "function",
+      "address": "0x82305FD8",
+      "image": "../image.json",
+      "claim": "Initializes or refreshes renderer-texture backend state when called from a bind path whose backend field is null.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-complex-fill.json#/textureBind" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82305FD8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82305FD8" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete backend allocation and upload semantics remain outside this bounded call-edge claim."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0123",
+      "name": "SceneTreePublisherInit",
+      "kind": "function",
+      "address": "0x82D52AE8",
+      "image": "../image.json",
+      "claim": "Contains the bounded block that allocates, constructs, and publishes the 0x2C-byte scene render tree through 0x8314F08C.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/publication" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D52AE8" }
+      ],
+      "qualification": {
+        "alternatives": ["The bounded publisher role is a block inside this wider initializer, not a standalone target function."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0124",
+      "name": "SceneTreeCtor",
+      "kind": "function",
+      "address": "0x82D4BF58",
+      "image": "../image.json",
+      "claim": "Initializes the vptr-less scene render tree, including its critical section at offset 0x10.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/layout" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4BF58" }
+      ],
+      "qualification": {
+        "alternatives": ["The original concrete class name and meanings of the remaining fields are unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0125",
+      "name": "SceneTreeRender",
+      "kind": "function",
+      "address": "0x82D4C348",
+      "image": "../image.json",
+      "claim": "Locks the scene render tree and records its incoming render parameters at offsets 0x8 and 0xC before bounded downstream work.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/renderEdge" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpInstructions.java:0x82D4C348" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C348" }
+      ],
+      "qualification": {
+        "alternatives": ["The rendered collection and successful runtime rendering remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0126",
+      "name": "SceneRenderGate",
+      "kind": "function",
+      "address": "0x82E43830",
+      "image": "../image.json",
+      "claim": "Checks the published scene render tree and directly calls SceneTreeRender when its bounded gate conditions pass.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/renderEdge" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpInstructions.java:0x82E43830" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E43830" }
+      ],
+      "qualification": {
+        "falsificationCondition": "0x82E43830 does not load 0x8314F08C into r3 and call 0x82D4C348."
+      }
+    },
+    {
+      "id": "RVA-SYM-0127",
+      "name": "scene_render_tree_8314F08C",
+      "kind": "global",
+      "address": "0x8314F08C",
+      "image": "../image.json",
+      "claim": "Stores the pointer to the heap-published 0x2C-byte scene render tree.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-publication.json#/publication" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x8314F08C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D52AE8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The bounded publisher block does not store its constructed 0x2C-byte object pointer at 0x8314F08C."
+      }
+    },
+    {
+      "id": "RVA-SYM-0128",
+      "name": "RenderMgrUpdate",
+      "kind": "function",
+      "address": "0x82D526A0",
+      "image": "../image.json",
+      "claim": "Consumes the published scene render tree and directly reapplies its offset-0x2 state through RenderRoot4156Walk when manager byte 0x4C2 is set.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-update.json#/updateEdge" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82D526A0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D526A0" }
+      ],
+      "qualification": {
+        "alternatives": ["The edge reapplies the existing tree byte and does not by itself prove a state-value transition."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0129",
+      "name": "RenderRoot4156Walk",
+      "kind": "function",
+      "address": "0x82D4C4B8",
+      "image": "../image.json",
+      "claim": "Locks the scene render tree, stores its byte argument at offset 0x2, and conditionally performs bounded root work.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-tree-update.json#/updateEdge" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82D4C4B8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C4B8" }
+      ],
+      "qualification": {
+        "alternatives": ["The object at tree offset 0x4 and the conditional downstream dispatch remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0130",
+      "name": "SceneRootSetContent",
+      "kind": "function",
+      "address": "0x82D4C2A8",
+      "image": "../image.json",
+      "claim": "Stores a supplied non-null scene-root content pointer at scene render tree offset 0x4 after bounded handling of the previous pointer.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-root-content.json#/producer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82D4C2A8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4C2A8" }
+      ],
+      "qualification": {
+        "alternatives": ["The supplied object's original class name and complete ownership policy remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0131",
+      "name": "SceneTreeWalkRecurse",
+      "kind": "function",
+      "address": "0x82D51160",
+      "image": "../image.json",
+      "claim": "Returns the non-null scene-root content object that SceneTreeRender passes to SceneRootSetContent.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-render-root-content.json#/producer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82D51160" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D51160" }
+      ],
+      "qualification": {
+        "alternatives": ["The original concrete class name, complete pool lifetime, and child graph remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0132",
+      "name": "SceneRootContentPoolGrow",
+      "kind": "function",
+      "address": "0x822D1708",
+      "image": "../image.json",
+      "claim": "Allocates and constructs 0xA8-byte entries retained by scene-root content pool 0x8314FA54.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/constructionIdentity" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x822D1708" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822D1708" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete pool growth, reclamation, and shutdown policy remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0133",
+      "name": "SceneRootContentAcquire",
+      "kind": "function",
+      "address": "0x82D503D0",
+      "image": "../image.json",
+      "claim": "Returns an entry from scene-root content pool 0x8314FA54.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/constructionIdentity" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82D503D0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D503D0" }
+      ],
+      "qualification": {
+        "alternatives": ["The acquisition can return null, and successful runtime acquisition is not established."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0134",
+      "name": "SceneRootContentSlot0Thunk",
+      "kind": "function",
+      "address": "0x82E49CE0",
+      "image": "../image.json",
+      "claim": "Vtable 0x82147EF8 slot 0 entry that branches directly to 0x82D548B8.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/slot0Consumer" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147EF8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E49CE0" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic method name remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0135",
+      "name": "SceneRootContentSlot0Body",
+      "kind": "function",
+      "address": "0x82D548B8",
+      "image": "../image.json",
+      "claim": "Consumes a prepared record into bounded scene-root content fields when its offset-0x14 gate is clear.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/slot0Consumer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D548B8" }
+      ],
+      "qualification": {
+        "alternatives": ["The original method name and anonymous prepared-record scalar meanings remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0141",
+      "name": "SceneRootPreparedRecordPopulate",
+      "kind": "function",
+      "address": "0x82D4F678",
+      "image": "../image.json",
+      "claim": "Populates bounded prepared-record fields, including sign-extending source halfword 0x6 into record word 0x0 and using record byte 0x1C to select record word 0x18.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-producers.json#/wordProducer" },
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-producers.json#/byteRoleConstraint" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82D4F678" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D4F678" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete prepared-record type and semantic meanings of the source halfword and selected constants remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0140",
+      "name": "SceneNodeRenderVisit",
+      "kind": "function",
+      "address": "0x82D55C68",
+      "image": "../image.json",
+      "claim": "Preserves the incoming scene-root content object and uses byte 0x38 as the first bounded local-value gate before conditionally passing word 0x1C to 0x82D50820.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-field-roles.json#/firstConsumerRoles" },
+        { "kind": "topic-manifest", "locator": "../scene-node-render-entry.json#/directEntry" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D55C68" }
+      ],
+      "qualification": {
+        "alternatives": ["The original method name, anonymous field meanings, excluded callee result, and runtime execution remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0136",
+      "name": "RefCountedPointerAssign",
+      "kind": "function",
+      "address": "0x821B2440",
+      "image": "../image.json",
+      "claim": "Assigns a refcounted pointer through destination storage, releasing the prior value and retaining the new value when the pointers differ.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/refcountedAssignment" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x821B2440" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_821B2440" }
+      ],
+      "qualification": {
+        "alternatives": ["The pointed-to concrete type and complete ownership policy remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0137",
+      "name": "SceneNodeRenderWrap",
+      "kind": "function",
+      "address": "0x82D55808",
+      "image": "../image.json",
+      "claim": "Begins by dispatching scene-root content vtable slot 0x14 with a zero argument and continues only when the low return byte is nonzero.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/nodeDispatchBoundary" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpFunctions.java:0x82D55808" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D55808" }
+      ],
+      "qualification": {
+        "alternatives": ["Later wrapper dispatches and successful runtime rendering remain outside this bounded claim."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0138",
+      "name": "SceneRootContentSlot14Target",
+      "kind": "function",
+      "address": "0x82E49B58",
+      "image": "../image.json",
+      "claim": "Scene-root content vtable slot 0x14 target selected as the first downstream dispatch by SceneNodeRenderWrap.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/nodeDispatchBoundary" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147F0C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E49B58" }
+      ],
+      "qualification": {
+        "alternatives": ["The target's semantic method name and runtime return remain unresolved in this packet."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0139",
+      "name": "sub_82E4A098",
+      "kind": "function",
+      "address": "0x82E4A098",
+      "image": "../image.json",
+      "claim": "Scene-root content vtable slot 0x40 wrapper that writes zero to r5 and branches directly to SceneNodeRenderVisit while preserving r3 and r4.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-node-render-entry.json#/directEntry" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpInstructions.java:0x82E4A098" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E4A098" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic slot and wrapper names and successful runtime dispatch remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0109",
+      "name": "AudioGameStartInit",
+      "kind": "function",
+      "address": "0x82E60F70",
+      "image": "../image.json",
+      "claim": "Entry method whose terminal scene-state path checks the scene-active global and requests active value 1.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/downstreamUpdate" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E60F70" }
+      ],
+      "qualification": {
+        "alternatives": ["Successful runtime initialization and entry into playable gameplay remain unconfirmed."]
+      }
+    },
+    {"id":"RVA-SYM-0064","name":"InputPoller","kind":"function","address":"0x82C14EE8","image":"../image.json","claim":"Refreshes controller snapshots and enters the bounded delta-emission chain.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/controllerEvents"}],"qualification":{"alternatives":["Runtime poll cadence remains unconfirmed."]}},
+    {"id":"RVA-SYM-0065","name":"ControllerDeltaEmit","kind":"function","address":"0x82C14AD8","image":"../image.json","claim":"Compares controller snapshots and emits records for changed fields.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/controllerEvents"},{"kind":"generated-code","locator":"generated:rerevved/sub_82C14AD8"}],"qualification":{"alternatives":["Complete downstream fan-out remains unresolved."]}},
+    {"id":"RVA-SYM-0066","name":"ControllerEventBuild","kind":"function","address":"0x82C14A30","image":"../image.json","claim":"Builds and appends one 0x18-byte controller event record.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/controllerEvents"}],"qualification":{"alternatives":["Event-type semantic names remain bounded to observed values."]}},
+    {"id":"RVA-SYM-0067","name":"CcGameInputProcessorDispatch","kind":"function","address":"0x82E555A0","image":"../image.json","claim":"Implements the CcGameInputProcessor vtable dispatch boundary.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/frontendDispatch"},{"kind":"generated-code","locator":"generated:rerevved/sub_82E555A0"}],"qualification":{"alternatives":["Downstream state-slot names remain unresolved."]}},
+    {"id":"RVA-SYM-0072","name":"InputPollerCtor","kind":"function","address":"0x82C15038","image":"../image.json","claim":"Initializes the controller poller and installs vtable 0x8216A26C.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/controllerEvents"},{"kind":"generated-code","locator":"generated:rerevved/sub_82C15038"}],"qualification":{"alternatives":["Complete poller layout remains unresolved."]}},
+    {"id":"RVA-SYM-0115","name":"InGameScreenRun","kind":"function","address":"0x82DD32D0","image":"../image.json","claim":"Allocates and retains the version 1.3 Hall of Achievements resource owner.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../ingame-screen-hoa-resource-owner.json#/ownerConstruction"}],"qualification":{"alternatives":["The imported name does not imply a playable-map owner."]}},
+    {"id":"RVA-SYM-0116","name":"HallOfAchievementsEnvironmentCtor","kind":"function","address":"0x82DCE090","image":"../image.json","claim":"Constructs the Hall of Achievements resource owner and issues its HOA resource lookups.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../ingame-screen-hoa-resource-owner.json#/ownerConstruction"},{"kind":"generated-code","locator":"generated:rerevved/sub_82DCE090"}],"qualification":{"alternatives":["Runtime load success remains unconfirmed."]}},
+    {"id":"RVA-SYM-0117","name":"hoa_area_resource_name_table_82F7A6A0","kind":"global","address":"0x82F7A6A0","image":"../image.json","claim":"Stores the HOA resource-name pointer table whose first entry is HOA_01Main.xml.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../ingame-screen-hoa-resource-owner.json#/firstAreaResource"}],"qualification":{"falsificationCondition":"The first pointer at 0x82F7A6A0 does not resolve to HOA_01Main.xml."}},
+    {"id":"RVA-SYM-0118","name":"string_HOA_01Main_xml","kind":"global","address":"0x8212EA24","image":"../image.json","claim":"Contains the HOA_01Main.xml resource name used by the first bounded owner lookup.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../ingame-screen-hoa-resource-owner.json#/firstAreaResource"},{"kind":"ghidra-static","locator":"ghidra/FindStrings.java:0x8212EA24"}],"qualification":{"alternatives":["The string reference does not prove runtime load success."]}},
+    {
+      "id": "RVA-SYM-0059", "name": "LegalScreenOwnerUpdate", "kind": "function", "address": "0x82DEE860", "image": "../image.json",
+      "claim": "Triggers the main-menu preload once when owner byte 0x11 is set and byte 0x434 is clear.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-preload-owner.json#/preloadTrigger"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82DEE860"}],
+      "qualification": {"alternatives": ["The owner's original concrete class name remains unresolved."]}
+    },
+    {
+      "id": "RVA-SYM-0060", "name": "LegalScreenOwnerCtor", "kind": "function", "address": "0x82DEE920", "image": "../image.json",
+      "claim": "Registers GFX_LegalScreen.gfx and installs final owner vtable 0x82126EF4.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-preload-owner.json#/legalScreenOwner"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82DEE920"}],
+      "qualification": {"alternatives": ["The full owner layout remains unresolved."]}
+    },
+    {
+      "id": "RVA-SYM-0108", "name": "FrontendStateKey2Factory", "kind": "function", "address": "0x821B0AF0", "image": "../image.json",
+      "claim": "Allocates the 8-byte key-2 receiving state and installs vtable 0x8211EBD0.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-gameplay-transition.json#/receivingState"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_821B0AF0"}],
+      "qualification": {"alternatives": ["The current request producer and map registration site are not promoted."]}
+    },
+    {
+      "id": "RVA-SYM-0110", "name": "FrameTimingOwnerPublish", "kind": "function", "address": "0x82E293E8", "image": "../image.json",
+      "claim": "Allocates, initializes, and publishes the shared 0x48-byte frame-timing owner.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/ownerPublication"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82E293E8"}],
+      "qualification": {"alternatives": ["The original concrete class name remains unresolved."]}
+    },
+    {
+      "id": "RVA-SYM-0111", "name": "frame_timing_owner_8314F280", "kind": "global", "address": "0x8314F280", "image": "../image.json",
+      "claim": "Stores the shared frame-timing owner used by game-start reset and frontend/GFx per-frame timing.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/ownerPublication"}],
+      "qualification": {"falsificationCondition": "The publisher and consumers do not share the object at 0x8314F280."}
+    },
+    {
+      "id": "RVA-SYM-0112", "name": "FrameTimingReset", "kind": "function", "address": "0x82C7EBF8", "image": "../image.json",
+      "claim": "Resets the frame-timing owner's accumulated time, delta, working state, and counter fields.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/gameStartInitialization"}],
+      "qualification": {"alternatives": ["Successful runtime game-start dispatch remains unconfirmed."]}
+    },
+    {
+      "id": "RVA-SYM-0113", "name": "FrameTimingAdvance", "kind": "function", "address": "0x82C7EB68", "image": "../image.json",
+      "claim": "Advances the frame-timing owner's sample, delta, accumulated time, and update counter.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/perFrameUpdate"}],
+      "qualification": {"alternatives": ["Runtime cadence and precision remain unconfirmed."]}
+    },
+    {
+      "id": "RVA-SYM-0114", "name": "FeGfxPerFrameStep", "kind": "function", "address": "0x82C5F680", "image": "../image.json",
+      "claim": "Invokes frame-timing slot 0x8 and consumes the resulting timing values in frontend and GFx update calls.", "confidence": "strong",
+      "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/perFrameUpdate"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82C5F680"}],
+      "qualification": {"alternatives": ["Static dispatch does not prove successful runtime rendering."]}
+    },
+    {
+      "id": "RVA-SYM-0119",
+      "name": "ScenePublishStore",
+      "kind": "function",
+      "address": "0x82E294D0",
+      "image": "../image.json",
+      "claim": "Initializes an application owner, constructs its embedded scene-active gate at offset 0xC0, and publishes the gate through 0x8314F094.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/publication" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E294D0" }
+      ],
+      "qualification": {
+        "alternatives": ["The containing application owner's original class name and allocation size remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0120",
+      "name": "SceneActiveGateCtor",
+      "kind": "function",
+      "address": "0x82D3D930",
+      "image": "../image.json",
+      "claim": "Initializes the 8-byte scene-active gate's byte state and callback storage.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/gateConstruction" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D3D930" }
+      ],
+      "qualification": {
+        "falsificationCondition": "0x82D3D930 does not initialize gate offsets 0x0, 0x1, and 0x4."
+      }
+    },
+    {
+      "id": "RVA-SYM-0121",
+      "name": "SceneFlagToggle",
+      "kind": "function",
+      "address": "0x82D3D890",
+      "image": "../image.json",
+      "claim": "Updates the scene-active gate's offset-0x1 byte after calling 0x82815868 with a mode derived from the requested boolean value.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/downstreamUpdate" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D3D890" }
+      ],
+      "qualification": {
+        "alternatives": ["The host-visible effect of the 0x82815868 call remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0122",
+      "name": "scene_active_gate_8314F094",
+      "kind": "global",
+      "address": "0x8314F094",
+      "image": "../image.json",
+      "claim": "Stores the pointer to the 8-byte scene-active gate embedded at application-owner offset 0xC0.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/publication" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x8314F094" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E294D0" }
+      ],
+      "qualification": {
+        "falsificationCondition": "ScenePublishStore does not store its owner-plus-0xC0 pointer at 0x8314F094."
+      }
+    },
+    {"id":"RVA-SYM-0073","name":"AppResLoadBuild","kind":"function","address":"0x82E2E3B8","image":"../image.json","claim":"Builds and publishes application resource owners, including sign-in and localization state.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/signInStateOwner"},{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"}],"qualification":{"alternatives":["Only owners required by the selected topics are named."]}},
+    {"id":"RVA-SYM-0075","name":"SigninStateOwnerCtor","kind":"function","address":"0x82D8D548","image":"../image.json","claim":"Constructs the 0x78-byte sign-in state owner.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/signInStateOwner"}],"qualification":{"alternatives":["The concrete class name remains unresolved."]}},
+    {"id":"RVA-SYM-0076","name":"SigninStateOwnerGlobal","kind":"global","address":"0x8314EFE0","image":"../image.json","claim":"Stores the pointer to the 0x78-byte sign-in state owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/signInStateOwner"}],"qualification":{"falsificationCondition":"The resource builder does not publish the constructed owner here."}},
+    {"id":"RVA-SYM-0080","name":"SelectedSaveUserResolve","kind":"function","address":"0x82E633C0","image":"../image.json","claim":"Returns an eligible selected user index or a negative result.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/saveEnumeration"}],"qualification":{"alternatives":["Every rejection condition remains unresolved."]}},
+    {"id":"RVA-SYM-0081","name":"SaveContentEnumerate","kind":"function","address":"0x82DDDFC0","image":"../image.json","claim":"Enumerates eleven type-1 content records using a 0x164-byte stride.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/saveEnumeration"}],"qualification":{"alternatives":["Successful runtime enumeration remains unconfirmed."]}},
+    {"id":"RVA-SYM-0082","name":"XamContentCreateEnumeratorWrap","kind":"function","address":"0x8280DC58","image":"../image.json","claim":"Wrapper boundary used to create the content enumerator.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/saveEnumeration"}],"qualification":{"falsificationCondition":"SaveContentEnumerate does not call this wrapper."}},
+    {"id":"RVA-SYM-0092","name":"LocalizationOwnerCtor","kind":"function","address":"0x82E69F38","image":"../image.json","claim":"Constructs the 0x14C-byte localization owner and installs vtable 0x82120FC0.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"}],"qualification":{"alternatives":["The concrete class name remains unresolved."]}},
+    {"id":"RVA-SYM-0093","name":"LocalizationOwnerGlobal","kind":"global","address":"0x8314F2C8","image":"../image.json","claim":"Stores the localization owner constructed during resource setup.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"}],"qualification":{"falsificationCondition":"The resource builder does not publish the 0x14C-byte owner here."}},
+    {"id":"RVA-SYM-0094","name":"LocaleConfigResolve","kind":"function","address":"0x8281A258","image":"../image.json","claim":"Returns a bounded platform locale selector with a region fallback.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"}],"qualification":{"alternatives":["Numeric selectors are not assigned language names."]}},
+    {"id":"RVA-SYM-0095","name":"LocaleSelectAndApply","kind":"function","address":"0x82E6AD10","image":"../image.json","claim":"Maps and validates an internal locale ID before applying it.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"}],"qualification":{"alternatives":["Internal IDs are not external language identifiers."]}},
+    {"id":"RVA-SYM-0096","name":"LocaleApply","kind":"function","address":"0x82E6AAA8","image":"../image.json","claim":"Stores the selected locale ID at owner offset 0x7C and refreshes dependent state.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"}],"qualification":{"alternatives":["Complete refresh behavior remains unresolved."]}},
+    {"id":"RVA-SYM-0099","name":"PlatformElapsedSeconds","kind":"function","address":"0x82D2D2F8","image":"../image.json","claim":"Lazily initializes timing state and returns a scaled timebase delta.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/timingState"}],"qualification":{"alternatives":["Runtime precision remains unconfirmed."]}},
+    {"id":"RVA-SYM-0100","name":"QueryPerformanceFrequencyWrap","kind":"function","address":"0x8280F0C8","image":"../image.json","claim":"Writes the performance-frequency result to a 64-bit output.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/timingState"}],"qualification":{"falsificationCondition":"The wrapper does not call KeQueryPerformanceFrequency and store its result."}},
+    {"id":"RVA-SYM-0101","name":"QueryTimebaseWrap","kind":"function","address":"0x8280F100","image":"../image.json","claim":"Reads the guest timebase into a 64-bit output.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/timingState"}],"qualification":{"alternatives":["Runtime precision remains unconfirmed."]}},
+    {"id":"RVA-SYM-0103","name":"ApplicationSettingsInit","kind":"function","address":"0x82E2CEE8","image":"../image.json","claim":"Initializes settings and passes application video fields to the video-mode resolver.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/videoModeWrapper"}],"qualification":{"alternatives":["Only the video-mode edge is named."]}},
+    {"id":"RVA-SYM-0104","name":"ApplicationVideoModeResolve","kind":"function","address":"0x82E2A4B8","image":"../image.json","claim":"Calls XGetVideoMode and writes bounded width, height, and wide-mode outputs.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/videoModeWrapper"}],"qualification":{"alternatives":["Successful host display creation remains a runtime question."]}},
+    {"id":"RVA-SYM-0084","name":"AudioManagerCreateAndInit","kind":"function","address":"0x82E43C80","image":"../image.json","claim":"Allocates, publishes, and initializes the 0x4C8-byte audio manager.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/managerCreation"}],"qualification":{"alternatives":["Successful runtime initialization is not claimed."]}},
+    {"id":"RVA-SYM-0085","name":"AudioManagerCtor","kind":"function","address":"0x82D52338","image":"../image.json","claim":"Constructs the audio manager and its low-level audio-system owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/managerCreation"}],"qualification":{"alternatives":["The original class name remains unresolved."]}},
+    {"id":"RVA-SYM-0086","name":"AudioManagerInit","kind":"function","address":"0x82D52AE8","image":"../image.json","claim":"Initializes the published audio manager.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/managerCreation"}],"qualification":{"alternatives":["Runtime success remains unconfirmed."]}},
+    {"id":"RVA-SYM-0087","name":"AudioManagerGlobal","kind":"global","address":"0x8314F084","image":"../image.json","claim":"Stores the published 0x4C8-byte audio manager.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/managerCreation"}],"qualification":{"falsificationCondition":"The create-and-init function does not publish its result here."}},
+    {"id":"RVA-SYM-0088","name":"FAudioSystemMilesInit","kind":"function","address":"0x82D457E0","image":"../image.json","claim":"Initializes low-level driver and stream-array state.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem"}],"qualification":{"alternatives":["Runtime driver success remains unconfirmed."]}},
+    {"id":"RVA-SYM-0089","name":"FAudioSystemMilesSetup","kind":"function","address":"0x82D46380","image":"../image.json","claim":"Dispatches low-level stream setup by stream type.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Only types 2 and 3 are bounded here."]}},
+    {"id":"RVA-SYM-0090","name":"FAudioSystemMilesStreamOpen","kind":"function","address":"0x82D461E8","image":"../image.json","claim":"Opens a stream and stores its handle at slot offset 0x4.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Successful runtime I/O is not claimed."]}},
+    {"id":"RVA-SYM-0091","name":"MilesOpenStream","kind":"function","address":"0x82A34630","image":"../image.json","claim":"Miles open-stream wrapper used by the low-level stream owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Wrapper internals are outside this topic."]}},
+    {"id":"RVA-SYM-0142","name":"Audio2DScriptEntryLookup","kind":"function","address":"0x82D4E5C8","image":"../image.json","claim":"Returns a bounded pointer-table entry for a 2D script ID.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-2d-script-entry-lookup.json#/indexedLookup"}],"qualification":{"alternatives":["The concrete entry type remains unresolved."]}},
+    {"id":"RVA-SYM-0144","name":"Audio2DScriptPointerTablePopulate","kind":"function","address":"0x82D47128","image":"../image.json","claim":"Allocates and fills the audio manager's bounded 2D script pointer table.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-2d-script-table-ownership.json#/collectionProduction"}],"qualification":{"alternatives":["Inserted entry ownership remains unresolved."]}}
+  ]
+}

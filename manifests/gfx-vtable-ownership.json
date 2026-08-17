@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0002",
+  "topic": "gfx-vtable-ownership",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Which version 1.3 vtables dispatch into the recovered coupled-fill path, and which direct construction edges establish the surrounding object containment?",
+  "scope": {
+    "slotOffset": "0x2C",
+    "tableBases": [
+      "0x8213D328",
+      "0x8213D408",
+      "0x8213F088",
+      "0x8213D2B8"
+    ],
+    "wrappers": [
+      "0x821F80D0",
+      "0x821F8600"
+    ],
+    "commonTarget": "0x821FBC38",
+    "ownerConstructor": "0x82214450",
+    "boundary": "This packet covers direct vptr stores, three slot +0x2C dispatch edges, base initialization followed by vptr replacement, and two directly constructed child pointers. It excludes semantic class names, unclassified slots, destruction, exclusive lifetime, runtime dispatch, hooks, and patches."
+  },
+  "dependencies": [
+    {
+      "topic": "gfx-coupled-fill-producer",
+      "use": "current common dispatch target 0x821FBC38 and its current coupled-fill caller role"
+    }
+  ],
+  "currentEvidence": {
+    "method": "current generated-code inspection of exact vptr materialization, table words, slot targets, tail branches, allocation sizes, and parent fields, with foreground read-only Ghidra confirmation",
+    "entries": [
+      {
+        "role": "constant-f2 slot wrapper",
+        "address": "0x821F80D0",
+        "confidence": "strong",
+        "instructionCount": 3
+      },
+      {
+        "role": "object-f2 slot wrapper",
+        "address": "0x821F8600",
+        "confidence": "strong",
+        "instructionCount": 2
+      },
+      {
+        "role": "common dispatch target",
+        "address": "0x821FBC38",
+        "confidence": "strong",
+        "instructionCount": 166
+      },
+      {
+        "role": "base initializer",
+        "address": "0x821F80E0",
+        "confidence": "strong"
+      },
+      {
+        "role": "owner constructor",
+        "address": "0x82214450",
+        "confidence": "strong",
+        "instructionCount": 100
+      },
+      {
+        "role": "first table installer",
+        "address": "0x82256A80",
+        "confidence": "strong",
+        "instructionCount": 429
+      },
+      {
+        "role": "second table installer",
+        "address": "0x82257138",
+        "confidence": "strong",
+        "instructionCount": 356
+      }
+    ],
+    "qualification": "The two tiny wrappers have many shape-identical candidates. Their current identities are accepted from the unique vtable slot entries and their direct terminal branches to the common target."
+  },
+  "vtables": [
+    {
+      "address": "0x8213D328",
+      "installers": [
+        { "function": "0x82256A80", "store": "0x82256B98" },
+        { "function": "0x82257138", "store": "0x82257524" }
+      ],
+      "slot": {
+        "offset": "0x2C",
+        "entry": "0x8213D354",
+        "target": "0x821F80D0"
+      },
+      "confidence": "strong"
+    },
+    {
+      "address": "0x8213D408",
+      "installers": [
+        { "function": "0x821F80E0", "store": "0x821F816C" }
+      ],
+      "slot": {
+        "offset": "0x2C",
+        "entry": "0x8213D434",
+        "target": "0x821F8600"
+      },
+      "confidence": "confirmed"
+    },
+    {
+      "address": "0x8213F088",
+      "installers": [
+        { "function": "0x82214450", "store": "0x82214480" }
+      ],
+      "slot": {
+        "offset": "0x2C",
+        "entry": "0x8213F0B4",
+        "target": "0x821F8600"
+      },
+      "confidence": "strong"
+    },
+    {
+      "address": "0x8213D2B8",
+      "installers": [
+        { "function": "0x82214450", "stores": ["0x8221454C", "0x822145BC"] }
+      ],
+      "confidence": "strong"
+    }
+  ],
+  "dispatch": {
+    "slotOffset": "0x2C",
+    "wrappers": [
+      {
+        "address": "0x821F80D0",
+        "effect": "Loads a static floating-point value into f2 and branches at 0x821F80D8 to 0x821FBC38."
+      },
+      {
+        "address": "0x821F8600",
+        "effect": "Loads f2 from object offset 0x7C and branches at 0x821F8604 to 0x821FBC38."
+      }
+    ],
+    "commonTarget": "0x821FBC38",
+    "result": "The three classified slot +0x2C entries converge through two tail wrappers on the current coupled-fill alternate caller."
+  },
+  "baseReplacement": {
+    "initializer": "0x821F80E0",
+    "baseVtable": "0x8213D408",
+    "baseStore": "0x821F816C",
+    "derivedConstructor": "0x82214450",
+    "initializerCall": "0x82214468",
+    "derivedVtable": "0x8213F088",
+    "derivedStore": "0x82214480",
+    "result": "0x82214450 calls the initializer and then replaces the object vptr with 0x8213F088. This proves an initialization sequence and vptr replacement, not a named inheritance hierarchy."
+  },
+  "ownership": {
+    "ownerConstructor": "0x82214450",
+    "ownerVtable": "0x8213F088",
+    "childAllocationSize": "0x3C",
+    "childVtable": "0x8213D2B8",
+    "childVptrStores": [
+      "0x8221454C",
+      "0x822145BC"
+    ],
+    "fields": [
+      { "offset": "0x90", "store": "0x82214564" },
+      { "offset": "0x94", "store": "0x822145CC" }
+    ],
+    "result": "The constructor directly allocates and initializes two 0x3C child objects, then stores their pointers in the parent at offsets +0x90 and +0x94.",
+    "qualification": "Construction proves direct containment. Destruction, release order, aliasing, and exclusive lifetime remain unresolved, so ownership confidence remains strong."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/DumpFunctions.java"
+    ],
+    "targets": [
+      "0x8213D328", "0x8213D354", "0x8213D408", "0x8213D434", "0x8213F088", "0x8213F0B4", "0x8213D2B8",
+      "0x821F80D0", "0x821F80E0", "0x821F8600", "0x821FBC38", "0x82214450", "0x82256A80", "0x82257138",
+      "0x821F816C", "0x82214468", "0x82214480", "0x8221454C", "0x82214564", "0x822145BC", "0x822145CC", "0x82256B98", "0x82257524"
+    ],
+    "program": "rerevved_image.bin",
+    "qualification": "Ghidra directly resolves the three slot words and wrapper tail branches. Several vtable installers materialize split addresses that the reference query does not recover, so their exact machine words and narrow generated version 1.3 bodies jointly establish the stores."
+  },
+  "guards": [
+    "Do not infer semantic class names from table shape, address proximity, or shared slot targets.",
+    "Do not infer inheritance beyond the observed initializer call and subsequent vptr replacement.",
+    "Do not classify unrecorded slots or copy neighboring slot meanings between the four tables.",
+    "Do not promote destruction, exclusive ownership, release order, runtime dispatch, or visible behavior without separate evidence.",
+    "This packet authorizes no runtime hook, launch, guest-memory write, Recomp patch, or SDK change."
+  ],
+  "conclusion": "Version 1.3 defines four related function-pointer tables. Three slot +0x2C entries dispatch through 0x821F80D0 or 0x821F8600 to 0x821FBC38. The 0x82214450 constructor first receives base table 0x8213D408, replaces it with 0x8213F088, and directly constructs two 0x3C children with table 0x8213D2B8 at parent offsets +0x90 and +0x94."
+}

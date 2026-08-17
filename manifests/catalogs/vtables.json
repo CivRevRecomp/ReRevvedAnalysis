@@ -1,0 +1,450 @@
+{
+  "schemaVersion": 1,
+  "catalog": "vtables",
+  "records": [
+    {
+      "id": "RVA-VTBL-0005",
+      "name": "GfxFileDataResourceVtable",
+      "address": "0x82160E54",
+      "image": "../image.json",
+      "claim": "Version 1.3 File Data resource vtable with exporter, initializer, numeric type-ID, and type-name slots.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/fileDataResource" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82160E54" }
+      ],
+      "qualification": {
+        "alternatives": ["Slots below +0xC remain outside this bounded table interpretation."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0007",
+          "offset": "0xC",
+          "target": "RVA-SYM-0030",
+          "claim": "Exports the retained File Data payload pointer.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/currentEvidence/fileDataExporter" }],
+          "qualification": { "alternatives": ["No runtime cache hit is inferred."] }
+        },
+        {
+          "id": "RVA-SLOT-0004",
+          "offset": "0x10",
+          "target": "RVA-SYM-0023",
+          "claim": "Initializes the retained File Data payload pointer.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/currentEvidence/fileDataInitializer" }],
+          "qualification": { "alternatives": ["The enclosing registry-owner type remains unresolved."] }
+        },
+        {
+          "id": "RVA-SLOT-0005",
+          "offset": "0x14",
+          "target": "RVA-SYM-0024",
+          "claim": "Returns numeric resource type 11.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/currentEvidence/typeId" }],
+          "qualification": { "alternatives": ["The value remains an internal numeric type."] }
+        },
+        {
+          "id": "RVA-SLOT-0006",
+          "offset": "0x18",
+          "target": "RVA-SYM-0025",
+          "claim": "Returns the exact resource type string File Data.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-main-menu-filedata-handoff.json#/currentEvidence/typeName" }],
+          "qualification": { "alternatives": ["No public class identity beyond the string is inferred."] }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0006",
+      "name": "GfxResourceFileOpenerVtable",
+      "address": "0x82162F28",
+      "image": "../image.json",
+      "claim": "Version 1.3 resource-backed GFx opener vtable whose open slot is at offset 0x4.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/installedOpener" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82162F28" },
+        { "kind": "ghidra-static", "locator": "ghidra/FindPointerValues.java:0x82E87B28" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the file-open slot is interpreted in this packet."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0008",
+          "offset": "0x4",
+          "target": "RVA-SYM-0028",
+          "claim": "Opens the supplied filename through the type-11 registry path with ordinary-loader fallback.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-file-opener-handoff.json#/registryLookup" }],
+          "qualification": { "alternatives": ["No runtime cache hit is inferred."] }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0007",
+      "name": "GfxTextureResourceVtable",
+      "address": "0x821610D0",
+      "image": "../image.json",
+      "claim": "Version 1.3 texture-resource vtable with exporter, initializer, numeric type-ID, and type-name slots.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/vtableLayout" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x821610D0" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x821610D0" }
+      ],
+      "qualification": {
+        "alternatives": ["Slots below +0xC remain outside this bounded table interpretation."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0009",
+          "offset": "0xC",
+          "target": "RVA-SYM-0042",
+          "claim": "Exports the retained texture pointer.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/vtableLayout/slots/0" }],
+          "qualification": { "alternatives": ["No logo-specific caller is inferred."] }
+        },
+        {
+          "id": "RVA-SLOT-0010",
+          "offset": "0x10",
+          "target": "RVA-SYM-0041",
+          "claim": "Initializes the retained texture pointer and publishes the mapping.",
+          "confidence": "strong",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/vtableLayout/slots/1" }],
+          "qualification": { "alternatives": ["The concrete registry-owner type remains unresolved."] }
+        },
+        {
+          "id": "RVA-SLOT-0011",
+          "offset": "0x14",
+          "target": "RVA-SYM-0043",
+          "claim": "Returns numeric resource type 7.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/vtableLayout/slots/2" }],
+          "qualification": { "alternatives": ["The value remains an internal numeric type."] }
+        },
+        {
+          "id": "RVA-SLOT-0012",
+          "offset": "0x18",
+          "target": "RVA-SYM-0044",
+          "claim": "Returns the exact resource type string Texture.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-texture-resource-export.json#/vtableLayout/slots/3" }],
+          "qualification": { "alternatives": ["No public class identity beyond the string is inferred."] }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0009",
+      "name": "GfxExternalImageCreatorVtable",
+      "address": "0x8213CF28",
+      "image": "../image.json",
+      "claim": "Version 1.3 state-kind-12 external-image creator vtable whose create slot is at offset 0x4.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/imageCreatorState" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8213CF28" },
+        { "kind": "ghidra-static", "locator": "ghidra/FindPointerValues.java:0x821E2F80" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the create slot needed by this packet is interpreted."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0015",
+          "offset": "0x4",
+          "target": "RVA-SYM-0054",
+          "claim": "Creates an image from the supplied request, including the external-file branch.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/imageCreatorState" }],
+          "qualification": { "alternatives": ["Other request kinds use different branches in the same callback."] }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0010",
+      "name": "GfxRendererVtable",
+      "address": "0x82169E30",
+      "image": "../image.json",
+      "claim": "Version 1.3 Scaleform renderer vtable with the interpreted texture-object factory and indexed-draw slots.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/rendererTextureHandoff" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82169E30" },
+        { "kind": "ghidra-static", "locator": "ghidra/FindPointerValues.java:0x82302DC8" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the texture-object factory and indexed-draw slots needed by current packets are interpreted."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0016",
+          "offset": "0x8",
+          "target": "RVA-SYM-0056",
+          "claim": "Allocates a renderer texture object for the external-image creator.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/rendererTextureHandoff" }],
+          "qualification": { "alternatives": ["The complete renderer table remains minimally interpreted."] }
+        },
+        {
+          "id": "RVA-SLOT-0032",
+          "offset": "0x3C",
+          "target": "RVA-SYM-0172",
+          "claim": "Runs the guarded indexed-triangle draw path.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../gfx-draw-producer.json#/drawSubmission" },
+            { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82169E30" }
+          ],
+          "qualification": { "alternatives": ["No runtime call or visible-pixel result is inferred from vtable placement."] }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0011",
+      "name": "GfxRendererTextureVtable",
+      "address": "0x82169EC4",
+      "image": "../image.json",
+      "claim": "Version 1.3 renderer-texture vtable whose decoded-image upload slot is at offset 0x8.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/rendererTextureHandoff" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82169EC4" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the decoded-image upload slot needed by this packet is interpreted."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0017",
+          "offset": "0x8",
+          "target": "RVA-SYM-0057",
+          "claim": "Consumes decoded image data and dimensions and creates the backend texture.",
+          "confidence": "confirmed",
+          "evidence": [{ "kind": "topic-manifest", "locator": "../gfx-scaleform-image-creation.json#/rendererTextureHandoff" }],
+          "qualification": { "alternatives": ["No runtime asset identity is inferred."] }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0001",
+      "name": "vtable_8213D328",
+      "address": "0x8213D328",
+      "image": "../image.json",
+      "claim": "Function-pointer table installed as an object vptr by 0x82256A80 and 0x82257138.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/vtables/0" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8213D328" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic class identity and unrecorded slot roles remain unresolved."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0001",
+          "offset": "0x2C",
+          "target": "RVA-SYM-0004",
+          "claim": "Contains GfxComplexFillConstantDispatch, which tail-dispatches to GfxCoupledFillAlternateCaller.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/vtables/0/slot" },
+            { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8213D354" }
+          ],
+          "qualification": {
+            "falsificationCondition": "The word at 0x8213D354 is not 0x821F80D0."
+          }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0002",
+      "name": "vtable_8213D408",
+      "address": "0x8213D408",
+      "image": "../image.json",
+      "claim": "Function-pointer table installed as the object vptr by GfxComplexFillBaseInitialize.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/vtables/1" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpReferences.java:0x8213D408" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic base-class identity and unrecorded slot roles remain unresolved."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0002",
+          "offset": "0x2C",
+          "target": "RVA-SYM-0005",
+          "claim": "Contains GfxComplexFillObjectDispatch, which tail-dispatches to GfxCoupledFillAlternateCaller.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/vtables/1/slot" },
+            { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8213D434" }
+          ],
+          "qualification": {
+            "falsificationCondition": "The word at 0x8213D434 is not 0x821F8600."
+          }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0003",
+      "name": "vtable_8213F088",
+      "address": "0x8213F088",
+      "image": "../image.json",
+      "claim": "Function-pointer table installed by GfxComplexFillOwnerConstruct after it calls the 0x8213D408 initializer.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/vtables/2" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82214480" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic derived-class identity and unrecorded slot roles remain unresolved."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0003",
+          "offset": "0x2C",
+          "target": "RVA-SYM-0005",
+          "claim": "Contains GfxComplexFillObjectDispatch, which tail-dispatches to GfxCoupledFillAlternateCaller.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/vtables/2/slot" },
+            { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8213F0B4" }
+          ],
+          "qualification": {
+            "falsificationCondition": "The word at 0x8213F0B4 is not 0x821F8600."
+          }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0004",
+      "name": "vtable_8213D2B8",
+      "address": "0x8213D2B8",
+      "image": "../image.json",
+      "claim": "Function-pointer table installed into both 0x3C child objects directly constructed by GfxComplexFillOwnerConstruct.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gfx-vtable-ownership.json#/vtables/3" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8221454C" }
+      ],
+      "qualification": {
+        "alternatives": ["The semantic child-class identity and all slot roles remain unresolved."]
+      },
+      "slots": []
+    },
+    {
+      "id": "RVA-VTBL-0022",
+      "name": "scene_root_content_vtable_82147EF8",
+      "address": "0x82147EF8",
+      "image": "../image.json",
+      "claim": "Function-pointer table installed in the 0xA8-byte scene-root content pool entry.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/constructionIdentity" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147EF8" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_822D1708" }
+      ],
+      "qualification": {
+        "alternatives": ["Only slots required by the bounded scene-root packets are recorded; other slot semantics remain unresolved."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0029",
+          "offset": "0x0",
+          "target": "RVA-SYM-0134",
+          "claim": "Operation invoked by SceneTreeWalkRecurse with the pool entry and a prepared stack record; the caller tests its low return byte.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../scene-root-content-construction.json#/slot0Consumer" },
+            { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147EF8" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82D51160" }
+          ],
+          "qualification": {
+            "alternatives": ["The semantic method name and anonymous prepared-record scalar meanings remain unresolved."]
+          }
+        },
+        {
+          "id": "RVA-SLOT-0030",
+          "offset": "0x14",
+          "target": "RVA-SYM-0138",
+          "claim": "First downstream node-dispatch boundary invoked by SceneNodeRenderWrap with the scene-root content object and zero argument.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../scene-root-prepared-record-dispatch.json#/nodeDispatchBoundary" },
+            { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147F0C" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82D55808" }
+          ],
+          "qualification": {
+            "alternatives": ["The semantic method name and runtime return remain unresolved."]
+          }
+        },
+        {
+          "id": "RVA-SLOT-0031",
+          "offset": "0x40",
+          "target": "RVA-SYM-0139",
+          "claim": "Node-entry wrapper reached by the slot-0x14 target after its two anonymous byte gates pass.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../scene-node-render-entry.json#/directEntry" },
+            { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82147F38" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82E49B58" }
+          ],
+          "qualification": {
+            "alternatives": ["The semantic slot and wrapper names and successful runtime dispatch remain unresolved."]
+          }
+        }
+      ]
+    },
+    {
+      "id": "RVA-VTBL-0021",
+      "name": "application_owner_vtable_82121100",
+      "address": "0x82121100",
+      "image": "../image.json",
+      "claim": "Function-pointer table installed in the application owner that embeds the published scene-active gate.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../scene-active-gate-publication.json#/vtableBoundary" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82121100" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E294D0" }
+      ],
+      "qualification": {
+        "alternatives": ["Slot roles are outside this packet; this table does not belong to the embedded scene-active gate."]
+      },
+      "slots": []
+    },
+    {
+      "id": "RVA-VTBL-0012", "name": "legal_screen_owner_vtable_82126EF4", "address": "0x82126EF4", "image": "../image.json",
+      "claim": "Final function-pointer table installed by the GFX_LegalScreen.gfx owner constructor.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-preload-owner.json#/legalScreenOwner"}],
+      "qualification": {"alternatives": ["Only the preload-triggering update slot is recorded."]},
+      "slots": [{"id": "RVA-SLOT-0018", "offset": "0x4", "target": "RVA-SYM-0059", "claim": "Triggers main-menu preload once after the legal-screen owner reaches its gate.", "confidence": "confirmed", "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-preload-owner.json#/preloadTrigger"}], "qualification": {"falsificationCondition": "The table word at slot 0x4 does not target 0x82DEE860."}}]
+    },
+    {
+      "id": "RVA-VTBL-0018", "name": "game_start_state_vtable_8211EBD0", "address": "0x8211EBD0", "image": "../image.json",
+      "claim": "Function-pointer table installed in the 8-byte key-2 game-start receiving state.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-gameplay-transition.json#/receivingState"}, {"kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x8211EBD0"}],
+      "qualification": {"alternatives": ["Successful runtime dispatch remains unconfirmed."]},
+      "slots": [{"id": "RVA-SLOT-0026", "offset": "0x4", "target": "RVA-SYM-0109", "claim": "Enters AudioGameStartInit for the key-2 receiving state.", "confidence": "confirmed", "evidence": [{"kind": "topic-manifest", "locator": "../frontend-gameplay-transition.json#/receivingState"}], "qualification": {"falsificationCondition": "The table word at 0x8211EBD4 is not 0x82E60F70."}}]
+    },
+    {
+      "id": "RVA-VTBL-0019", "name": "frame_timing_owner_vtable_82164E14", "address": "0x82164E14", "image": "../image.json",
+      "claim": "Function-pointer table installed in the shared 0x48-byte frame-timing owner.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/ownerPublication"}, {"kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82164E14"}],
+      "qualification": {"alternatives": ["The original concrete class name remains unresolved."]},
+      "slots": [
+        {"id": "RVA-SLOT-0027", "offset": "0x4", "target": "RVA-SYM-0112", "claim": "Resets the timing fields during game-start initialization.", "confidence": "confirmed", "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/gameStartInitialization"}], "qualification": {"falsificationCondition": "The table word at 0x82164E18 is not 0x82C7EBF8."}},
+        {"id": "RVA-SLOT-0028", "offset": "0x8", "target": "RVA-SYM-0113", "claim": "Advances the frame-timing sample and accumulated fields.", "confidence": "confirmed", "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/perFrameUpdate"}], "qualification": {"falsificationCondition": "The table word at 0x82164E1C is not 0x82C7EB68."}}
+      ]
+    },
+    {"id":"RVA-VTBL-0013","name":"CcGameInputProcessor_vtable_82138B4C","address":"0x82138B4C","image":"../image.json","claim":"Function-pointer table whose slot 0x4 dispatches CcGameInputProcessor events.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/frontendDispatch"},{"kind":"ghidra-static","locator":"ghidra/FindPointerValues.java:0x82E555A0"}],"qualification":{"alternatives":["Only the dispatch slot is cataloged."]},"slots":[{"id":"RVA-SLOT-0019","offset":"0x4","target":"RVA-SYM-0067","claim":"Dispatches the accepted input event through CcGameInputProcessor.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/frontendDispatch"}],"qualification":{"falsificationCondition":"The word at 0x82138B50 is not 0x82E555A0."}}]},
+    {"id":"RVA-VTBL-0014","name":"input_poller_vtable_8216A26C","address":"0x8216A26C","image":"../image.json","claim":"Function-pointer table installed by the input-poller constructor.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/controllerEvents"},{"kind":"generated-code","locator":"generated:rerevved/sub_82C15038"}],"qualification":{"alternatives":["Only the poll slot is cataloged."]},"slots":[{"id":"RVA-SLOT-0020","offset":"0x4","target":"RVA-SYM-0064","claim":"Refreshes controller snapshots and enters delta emission.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/controllerEvents"}],"qualification":{"falsificationCondition":"The slot does not target the poller at 0x82C14EE8."}}]},
+    {"id":"RVA-VTBL-0020","name":"hall_of_achievements_environment_vtable_8212FBE8","address":"0x8212FBE8","image":"../image.json","claim":"Function-pointer table installed in the version 1.3 Hall of Achievements resource owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../ingame-screen-hoa-resource-owner.json#/ownerConstruction"},{"kind":"generated-code","locator":"generated:rerevved/sub_82DCE090"}],"qualification":{"alternatives":["Slot roles are outside this bounded packet."]},"slots":[]},
+    {"id":"RVA-VTBL-0017","name":"localization_owner_vtable_82120FC0","address":"0x82120FC0","image":"../image.json","claim":"Function-pointer table installed in the 0x14C-byte localization owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"},{"kind":"ghidra-static","locator":"ghidra/DumpMemoryWords.java:0x82120FC0"}],"qualification":{"alternatives":["Only the locale-selection slot is recorded."]},"slots":[{"id":"RVA-SLOT-0025","offset":"0x14","target":"RVA-SYM-0095","claim":"Resolves, validates, and applies an internal locale ID.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner/localeSlot"}],"qualification":{"falsificationCondition":"The word at 0x82120FD4 is not 0x82E6AD10."}}]},
+    {"id":"RVA-VTBL-0016","name":"faudio_system_miles_vtable_82147C38","address":"0x82147C38","image":"../image.json","claim":"Function-pointer table installed in the 0x6C-byte low-level audio object.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem"},{"kind":"ghidra-static","locator":"ghidra/DumpMemoryWords.java:0x82147C38"}],"qualification":{"alternatives":["Only initialization and stream-setup slots are recorded."]},"slots":[{"id":"RVA-SLOT-0023","offset":"0x0","target":"RVA-SYM-0088","claim":"Initializes driver and stream-array state.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem/initSlot"}],"qualification":{"falsificationCondition":"The word at 0x82147C38 is not 0x82D457E0."}},{"id":"RVA-SLOT-0024","offset":"0x14","target":"RVA-SYM-0089","claim":"Dispatches low-level stream setup.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem/setupSlot"}],"qualification":{"falsificationCondition":"The word at 0x82147C4C is not 0x82D46380."}}]}
+  ]
+}

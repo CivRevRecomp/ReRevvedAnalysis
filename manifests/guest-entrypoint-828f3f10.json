@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0043",
+  "topic": "guest-entrypoint-828f3f10",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What current evidence supports the float-copy leaf at 0x828F3F10?",
+  "currentEvidence": {
+    "address": "0x828F3F10",
+    "method": "Exact five-instruction body plus bounded runtime reachability.",
+    "confidence": "confirmed"
+  },
+  "staticResult": {
+    "result": "Entry 0x828F3F10 loads floats from r3+0x30 and r3+0x34, stores them through r4 and r5, and returns. Padding begins at 0x828F3F24 and the next function begins at 0x828F3F28, fixing the leaf size at 0x14.",
+    "boundary": "The exact leaf identity and indirect-entry reachability are confirmed; no higher-level callback semantics are inferred."
+  },
+  "runtimeEvidence": {
+    "status": "confirmed",
+    "session": "city worker reassignment parity",
+    "date": "2026-08-15",
+    "observedTarget": "0x828F3F10",
+    "result": "ReXGlue reached the target through an indirect call while exercising the city worker path.",
+    "qualification": "The observation confirms entrypoint reachability, not the callback's semantic role."
+  },
+  "generatedCoverage": {
+    "result": "The maintained generated function map registers 0x828F3F10."
+  },
+  "guards": ["Do not select a nearby float accessor by address delta alone."],
+  "conclusion": "The five-instruction float-copy leaf at 0x828F3F10 is an exact current-image entrypoint reached by the runtime."
+}

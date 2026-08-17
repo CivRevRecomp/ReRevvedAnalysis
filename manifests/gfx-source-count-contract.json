@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0035",
+  "topic": "gfx-source-count-contract",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "What is the version 1.3 source-entry count contract and what do mesh descriptor selector values mean?",
+  "scope": {
+    "sourceViewBuilder": "0x821F3F48",
+    "sourceFinalize": "0x821F4948",
+    "boundedSelectorCheck": "0x821F4B48",
+    "resourceResolver": "0x8225BC48",
+    "resourceSubmit": "0x82266358",
+    "batchDispatcher": "0x822683B0",
+    "boundary": "This packet covers pointer-backed source views, their authoritative counts, 0x28-byte entry indexing, and the mesh submit handoff. It does not claim runtime counts, asset identities, renderer-slot conclusions, shader variants, or guest writes."
+  },
+  "currentEvidence": {
+    "sourceViewBuilder": {
+      "address": "0x821F3F48",
+      "method": "matching stack-view construction, source-provider flag gate, slot 0x50 output call, and primary/secondary base-count field addresses",
+      "result": "The current builder stores the four pointer/count outputs at view offsets 0x4, 0x8, 0x48, and 0x4C."
+    },
+    "sourceFinalize": {
+      "address": "0x821F4948",
+      "method": "exact body size and direct-call count plus matching source-provider flag, slot 0x44 base/count call, bounded-selector call, and 0x28-byte entry addressing",
+      "result": "The current finalizer receives the primary base as the slot return value and the authoritative count through its output pointer."
+    },
+    "boundedSelectorCheck": {
+      "address": "0x821F4B48",
+      "method": "matching current producer call structure plus slot 0x44 query, candidate/count comparison, 0x28-byte multiplication, and raw entry-byte filter",
+      "result": "The current validator rejects candidate >= count before reading base + candidate * 0x28."
+    },
+    "resourceResolver": {
+      "address": "0x8225BC48",
+      "method": "matching 0x28-byte entry field reads, resolver branches, six-float transform copy, call count, and near-identical body size",
+      "result": "The current resolver keeps the raw entry layout and resource-resolution branches."
+    },
+    "resourceSubmit": {
+      "address": "0x82266358",
+      "method": "exact instruction count, body size, and direct-call count plus matching descriptor loop, selector sentinel, 0x28-byte source addressing, and resolver call",
+      "result": "The current submit treats each non-0xFFFFFFFF descriptor selector as an entry ordinal and calls the resolver with base + selector * 0x28."
+    },
+    "batchDispatcher": {
+      "address": "0x822683B0",
+      "method": "exact instruction count, body size, and direct-call count plus matching descriptor loop and source base/count forwarding",
+      "result": "The current dispatcher loads source base from context +0x4 and authoritative count from context +0x48 before calling 0x82266358."
+    }
+  },
+  "sourceContainer": {
+    "temporaryView": {
+      "builder": "0x821F3F48",
+      "stackBase": "r1+0x90",
+      "primaryBaseField": "0x4",
+      "secondaryBaseField": "0x8",
+      "primaryCountField": "0x48",
+      "secondaryCountField": "0x4C",
+      "providerFlag": "source-provider byte +0x34 bit 0x40",
+      "providerSlot": "0x50",
+      "providerCall": "0x821F40D4",
+      "result": "The view itself is inline stack storage, while both entry arrays are pointer-backed."
+    },
+    "directView": {
+      "producer": "0x821F4948",
+      "providerFlag": "source-provider byte +0x34 bit 0x40",
+      "providerSlot": "0x44",
+      "baseResult": "callback return value",
+      "countResult": "callback output word",
+      "result": "The primary source base and count remain a paired provider result."
+    }
+  },
+  "sourceEntryLayout": {
+    "size": "0x28",
+    "fields": [
+      {
+        "offset": "0x0",
+        "size": "1 byte",
+        "role": "raw selector/type byte tested by the resource resolver"
+      },
+      {
+        "offset": "0x4",
+        "size": "4 bytes",
+        "role": "raw resource lookup input for the bit-0x10 path"
+      },
+      {
+        "offset": "0x8",
+        "size": "8 bytes",
+        "role": "two-word lookup/cache record"
+      },
+      {
+        "offset": "0x10",
+        "size": "0x18 bytes",
+        "role": "six raw transform floats copied into resolved resource state"
+      }
+    ],
+    "result": "The current resolver consumes the same four bounded regions without assigning a public source-entry type."
+  },
+  "mappingSemantics": {
+    "descriptorLayout": {
+      "count": "0x0",
+      "selectors": ["0x4", "0x8", "0xC"],
+      "fillSubtype": "0x10",
+      "selectorCapacity": 3
+    },
+    "selectorMeaning": "Each non-0xFFFFFFFF selector is a zero-based ordinal into the pointer-backed 0x28-byte primary source array. It is not a style ID, resource ID, renderer slot, or hardware fetch index.",
+    "boundedCheck": "0x821F4B48 obtains base/count through provider slot 0x44, rejects candidate >= count, and only then reads base + candidate * 0x28.",
+    "submitTrust": "0x82266358 receives r5 source base and r6 source count, but its descriptor loop does not independently compare each selector with r6. Producer validation remains required.",
+    "result": "The authoritative count bounds readable entries; the descriptor count only bounds the number of selector words consumed."
+  },
+  "submitHandoff": {
+    "dispatcher": "0x822683B0",
+    "submit": "0x82266358",
+    "callSite": "0x82268620",
+    "sourceBase": "context +0x4 -> r5",
+    "sourceCount": "context +0x48 -> r6",
+    "entryAddress": "r5 + selector * 0x28",
+    "result": "The current dispatcher keeps the base/count pair through the submit boundary."
+  },
+  "staticObservationContract": {
+    "purpose": "Optional read-only provenance confirmation only; no hook is added or authorized by this packet.",
+    "viewProviderCall": {
+      "preCall": "0x821F40D4",
+      "postCall": "0x821F40D8",
+      "allowed": "Record provider identity, output pointer addresses, and the four resulting base/count words only."
+    },
+    "submitCall": {
+      "preCall": "0x82268620",
+      "allowed": "Record descriptor pointer, source base, source count, and the bounded descriptor header through +0x10 only."
+    },
+    "enumeration": "If separately authorized, cap count at 64, require aligned non-null base and checked count * 0x28, validate the full guest range, and read only offsets 0x0, 0x4, 0x8, 0xC, and 0x10 through 0x24 for indices below count."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/DumpFunctions.java",
+      "ghidra/FindFieldRefs.java"
+    ],
+    "program": "rerevved_image.bin",
+    "qualification": "The Xenon-heavy functions truncate at their save-register thunks in Ghidra. The current field and control-flow claims are corroborated by bounded generated-code windows and body metrics."
+  },
+  "guards": [
+    "Do not claim source count, selector membership, resource-bearing entry, renderer-slot, shader-variant, crash, or visual conclusions.",
+    "Do not read an entry whose selector has not been proven below the authoritative source count.",
+    "Do not interpret selector values as semantic style or resource identifiers.",
+    "Do not treat the submit routine's descriptor loop bound as a substitute for source-array membership validation."
+  ],
+  "conclusion": "Version 1.3 establishes the pointer-backed source-table contract: paired base/count production, 0x28-byte entries, zero-based selectors, producer-side bounds validation, and base/count forwarding into mesh resource submission."
+}

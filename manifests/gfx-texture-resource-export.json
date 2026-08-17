@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0056",
+  "topic": "gfx-texture-resource-export",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Where did the version 1.3 texture-resource factory, vtable, initializer, type methods, exporter, and registration path move?",
+  "scope": {
+    "factory": "0x82C91E38",
+    "registration": "0x82C92C38",
+    "constructor": "0x82C8D700",
+    "vtable": "0x821610D0",
+    "exporter": "0x82C8D540",
+    "initializer": "0x82C8DA08",
+    "typeId": "0x822EBA40",
+    "typeName": "0x822EBA48",
+    "boundary": "This packet establishes the generic numeric type-7 resource path and its texture-resource object contract. It does not identify a logo-specific caller or prove runtime execution."
+  },
+  "currentEvidence": {
+    "exporter": {
+      "address": "0x82C8D540",
+      "method": "generated-code and Ghidra fingerprint matching followed by foreground read-only decompilation",
+      "result": "The current exporter conditionally copies the retained pointer at owner offset 0x18 into a non-null output and returns 1."
+    },
+    "initializer": {
+      "address": "0x82C8DA08",
+      "method": "unique 19-instruction mnemonic fingerprint plus the current vtable slot and generated-code data flow",
+      "mnemonicHash": "95D48255D29B93768D9300A552F6914FC96070B4C6A4A6DA642E22848B56D8AA",
+      "result": "The current slot assigns the supplied retained pointer to owner offset 0x18 and publishes the key/value pair through the current registry owner."
+    },
+    "registration": {
+      "address": "0x82C92C38",
+      "method": "unique 81-instruction mnemonic fingerprint followed by current generated-code control-flow validation",
+      "mnemonicHash": "E3CA8968931FEF43AF40190974D3194A68432117FB6ED1401BD39BD02B41105C",
+      "result": "The current path calls the numeric resource factory, stores the normalized key at offset 0x4, dispatches vtable slot 0x10, inserts the object, and dispatches slot 0x18."
+    },
+    "factory": {
+      "address": "0x82C91E38",
+      "method": "direct validation of the current numeric switch and its type-7 allocation case",
+      "result": "The current type-7 case allocates 0x1C bytes, installs vtable 0x821610D0, clears offsets 0x4 and 0x18, and applies the same type-7 flag behavior."
+    },
+    "vtableAndTypeMethods": {
+      "vtable": "0x821610D0",
+      "method": "pointer scan, foreground read-only memory dump, reference query, and direct function decompilation",
+      "result": "The current table contains the exporter at +0xC, initializer at +0x10, type-ID method at +0x14, and type-name method at +0x18. The type methods return 7 and the exact string Texture."
+    }
+  },
+  "objectLayout": {
+    "size": "0x1C",
+    "vtable": "0x821610D0",
+    "fields": [
+      {
+        "offset": "0x4",
+        "name": "resource_key",
+        "result": "The registration path stores the normalized resource key here before initialization."
+      },
+      {
+        "offset": "0x18",
+        "name": "texture_object",
+        "result": "The factory clears this retained pointer, the initializer assigns it, and the exporter reads it."
+      }
+    ],
+    "constructorCorroboration": "The independent constructor at 0x82C8D700 installs the same vtable and clears offsets 0x4 and 0x18."
+  },
+  "vtableLayout": {
+    "address": "0x821610D0",
+    "slots": [
+      { "offset": "0xC", "target": "0x82C8D540", "role": "export retained texture pointer" },
+      { "offset": "0x10", "target": "0x82C8DA08", "role": "initialize retained texture pointer and publish mapping" },
+      { "offset": "0x14", "target": "0x822EBA40", "role": "return numeric type 7" },
+      { "offset": "0x18", "target": "0x822EBA48", "role": "return the exact string Texture" }
+    ]
+  },
+  "factoryBehavior": {
+    "address": "0x82C91E38",
+    "type": 7,
+    "allocationSize": "0x1C",
+    "result": "The type-7 branch allocates the texture-resource object, installs the current vtable, initializes its base fields, and honors the common flag path."
+  },
+  "registrationBehavior": {
+    "address": "0x82C92C38",
+    "result": "The path normalizes the resource key, obtains the destination container, creates the requested numeric resource, stores the key, dispatches the initializer through slot 0x10, and inserts the object before its later slot-0x18 dispatch."
+  },
+  "exportBehavior": {
+    "address": "0x82C8D540",
+    "textureField": "0x18",
+    "result": "When the output pointer is non-null, the helper passes the output and owner field at offset 0x18 to a retained-pointer assignment helper, then returns 1."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/FindPointerValues.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/DumpFunctions.java"
+    ],
+    "program": "rerevved_image.bin"
+  },
+  "guards": [
+    "Do not infer a logo-specific path or runtime execution from this generic resource closure.",
+    "Do not infer a type-11-to-type-7 bridge from the numeric type-7 factory case."
+  ],
+  "conclusion": "Version 1.3 defines the complete generic texture-resource object contract: numeric type 7, a 0x1C-byte object, key at +0x4, retained texture at +0x18, vtable 0x821610D0, and current factory, registration, initializer, exporter, and type methods."
+}

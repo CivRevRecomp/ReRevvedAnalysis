@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0025",
+  "topic": "scene-root-prepared-record-producers",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which bounded version 1.3 writes produce prepared-record word 0x0 and byte 0x1C before scene-root content slot 0 consumes them?",
+  "scope": {
+    "functions": ["0x82D51160", "0x82D4F678"],
+    "preparedRecordFields": ["0x0", "0x1C"],
+    "sourceObjectField": "0x6",
+    "boundary": "This packet proves two exact record producers and one dependent constant selection. It does not define either complete type, semantic field names, runtime values, or runtime success."
+  },
+  "dependencies": [
+    { "topic": "scene-root-content-construction", "use": "current recursive caller, prepared-record slot-0 consumer, and stack-record boundary" }
+  ],
+  "currentEvidence": {
+    "method": "identified prepared-record producer 0x82D4F678 called by 0x82D51160 by source-halfword, sign-extension, record-write, byte-gate, generated-code, and foreground read-only Ghidra corroboration",
+    "entries": [
+      {
+        "role": "prepared-record populate",
+        "address": "0x82D4F678",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The function uses the r4 record argument, r5 source argument, source offset 0x6, destination offset 0x0, caller-zeroed byte 0x1C, and -1/-2 selection for word 0x18."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpInstructions.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82D51160",
+      "generated:rerevved/sub_82D4F678"
+    ]
+  },
+  "callerInitialization": {
+    "function": "0x82D51160",
+    "recordAddressInstruction": "0x82D51350",
+    "recordStackOffset": "0x60",
+    "byteWriteInstruction": "0x82D51334",
+    "byteRecordOffset": "0x1C",
+    "callInstruction": "0x82D5135C",
+    "callee": "0x82D4F678",
+    "result": "SceneTreeWalkRecurse passes stack address r1+0x60 as the prepared record in r4 and writes zero at r1+0x7C immediately before the call, initializing prepared-record byte 0x1C to zero before the population function runs.",
+    "boundary": "This is exact stack initialization, not a complete prepared-record type or runtime-success claim."
+  },
+  "wordProducer": {
+    "function": "0x82D4F678",
+    "recordRegister": "r31",
+    "recordArgument": "r4",
+    "sourceRegister": "r29",
+    "sourceArgument": "r5",
+    "sourceReadInstruction": "0x82D4F698",
+    "sourceOffset": "0x6",
+    "sourceWidth": "u16",
+    "signExtendInstruction": "0x82D4F6A4",
+    "destinationWriteInstruction": "0x82D4F6B0",
+    "destinationOffset": "0x0",
+    "destinationWidth": "u32",
+    "result": "The population function reads a halfword from its r5 input at offset 0x6, sign-extends it, and stores the resulting word at prepared-record offset 0x0.",
+    "boundary": "The concrete type of the r5 source object and the meaning of its halfword remain unresolved."
+  },
+  "byteRoleConstraint": {
+    "function": "0x82D4F678",
+    "readInstruction": "0x82D4F72C",
+    "recordOffset": "0x1C",
+    "dependentWriteInstruction": "0x82D4F740",
+    "dependentRecordOffset": "0x18",
+    "result": "The population function reads prepared-record byte 0x1C. Zero selects constant -2 for record word 0x18; a nonzero byte preserves the preceding constant -1 for that word.",
+    "boundary": "The original meanings of byte 0x1C and the -1/-2 values remain unresolved."
+  },
+  "guards": [
+    "Do not assign semantic names to the prepared-record fields, source-object halfword, or -1/-2 values.",
+    "Do not define a complete prepared-record or source-object type from this bounded slice.",
+    "Do not enter child collections or later scene-root content polymorphic dispatch.",
+    "Do not infer successful runtime record construction or rendering."
+  ],
+  "conclusion": "Version 1.3 SceneTreeWalkRecurse initializes prepared-record byte 0x1C to zero immediately before calling 0x82D4F678. That function produces word 0x0 by sign-extending source halfword 0x6, then reads byte 0x1C to select -2 rather than -1 for word 0x18."
+}

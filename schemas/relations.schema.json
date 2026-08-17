@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rerevved.local/schemas/relations.schema.json",
+  "title": "ReRevved explicit relation catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "catalog", "records"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "catalog": { "const": "relations" },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/record" }
+    }
+  },
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "from",
+        "to",
+        "image",
+        "claim",
+        "confidence",
+        "evidence",
+        "qualification"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^RVA-REL-[0-9]{4}$" },
+        "kind": {
+          "enum": [
+            "calls",
+            "reads-field",
+            "writes-field",
+            "owns",
+            "contains",
+            "dispatches-to",
+            "installs-vtable",
+            "produces",
+            "consumes"
+          ]
+        },
+        "from": { "type": "string", "pattern": "^RVA-(?:SYM|STR|FLD|VTBL|SLOT)-[0-9]{4}$" },
+        "to": { "type": "string", "pattern": "^RVA-(?:SYM|STR|FLD|VTBL|SLOT)-[0-9]{4}$" },
+        "image": { "$ref": "common.schema.json#/$defs/image" },
+        "claim": { "type": "string", "minLength": 1 },
+        "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+        "evidence": { "$ref": "common.schema.json#/$defs/evidence" },
+        "qualification": { "$ref": "common.schema.json#/$defs/qualification" }
+      }
+    }
+  }
+}

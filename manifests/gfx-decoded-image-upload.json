@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0029",
+  "topic": "gfx-decoded-image-upload",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "How does the version 1.3 renderer texture upload select, convert, and submit bytes from a decoded-image record?",
+  "scope": {
+    "upload": "0x82304CF0",
+    "temporaryRecordConstructor": "0x821E0720",
+    "temporaryRecordAllocator": "0x821E08D8",
+    "resampler": "0x82304B38",
+    "formatExtent": "0x821E04A8",
+    "mipSelector": "0x821E0568",
+    "backendUpload": "0x82578E00",
+    "boundary": "This packet establishes static record consumption, conversion and mip-source selection, and the backend call boundary. It does not claim runtime execution, texture contents, public format names, pixel channels, or visual output."
+  },
+  "dependencies": [
+    {
+      "topic": "gfx-scaleform-image-creation"
+    }
+  ],
+  "currentEvidence": {
+    "upload": {
+      "address": "0x82304CF0",
+      "method": "current renderer-texture vtable slot plus matching format switch, dimension selection, temporary conversion, mip loop, backend calls, cleanup, and return structure",
+      "result": "The current upload consumes the seven-word record and uses the complete selection and submission control flow."
+    },
+    "temporaryRecordConstructor": {
+      "address": "0x821E0720",
+      "method": "matching call position after the 0x38-byte allocation and matching format, width, and height inputs",
+      "result": "The current upload uses this constructor for temporary decoded-image storage."
+    },
+    "temporaryRecordAllocator": {
+      "address": "0x821E08D8",
+      "method": "matching fallback allocation path for power-of-two temporary storage",
+      "result": "The current upload uses the separate temporary allocation path before a direct source copy."
+    },
+    "resampler": {
+      "address": "0x82304B38",
+      "method": "matching upload-local call position, source dimensions and pitch inputs, destination record fields, and selected-format argument",
+      "result": "The current upload uses the non-power-of-two conversion helper."
+    },
+    "backendUpload": {
+      "address": "0x82578E00",
+      "method": "matching two upload call sites and argument construction for direct and mip paths",
+      "result": "The current base and mip paths converge on the same backend boundary."
+    }
+  },
+  "decodedImageRecord": {
+    "size": "0x1C",
+    "entryRegister": "r4",
+    "fields": [
+      { "offset": "0x0", "role": "numeric format selector" },
+      { "offset": "0x4", "role": "decoded width" },
+      { "offset": "0x8", "role": "decoded height" },
+      { "offset": "0xC", "role": "row pitch or row stride" },
+      { "offset": "0x10", "role": "base data pointer" },
+      { "offset": "0x14", "role": "data-region byte extent" },
+      { "offset": "0x18", "role": "level count or level bound" }
+    ],
+    "result": "The upload reads the vptr-less seven-word layout established by the version 1.3 mip selector."
+  },
+  "dimensionFlow": {
+    "width": "A nonzero r5 overrides decoded width +0x4 for renderer-texture field +0x20; zero selects the decoded width.",
+    "height": "A nonzero r6 overrides decoded height +0x8 for renderer-texture field +0x24; zero selects the decoded height.",
+    "allocation": "Decoded width and height are independently rounded up to powers of two for backend allocation and conversion decisions.",
+    "result": "Logical texture dimensions and backend allocation dimensions remain separate decisions."
+  },
+  "sourceSelection": {
+    "directPath": "A supported single-level uncompressed record whose dimensions require no conversion supplies its source from active record +0x10.",
+    "temporaryPath": "Numeric formats 1 and 2 allocate a 0x38-byte temporary object with the decoded-image record embedded at +0x10. Format 2 expands three source bytes to four and writes 0xFF as the fourth byte; format 1 is copied. The selected format-1 words are byte-swapped in place before submission.",
+    "resamplePath": "A supported non-power-of-two uncompressed record can pass through 0x82304B38 into temporary power-of-two storage.",
+    "mipPath": "Numeric formats 10 through 12, or records with multiple levels, call 0x821E0568 for a bounded level pointer and use 0x821E04A8 for the selected extent or pitch rule.",
+    "result": "The current upload chooses either the original record or a temporary record, then submits an exact selected pointer without establishing a guest-side tiling step."
+  },
+  "staticObservationContract": {
+    "entry": {
+      "address": "0x82304CF0",
+      "registers": "r3 renderer texture; r4 decoded-image record; r5 width override; r6 height override",
+      "allowed": "Read only the seven metadata words at r4 +0x0 through +0x18."
+    },
+    "directPreUpload": {
+      "address": "0x82305240",
+      "registers": "r3 backend level or surface; r6 selected source; r7 selected upload format; r8 pitch; r10 rectangle pointer",
+      "allowed": "Record register values and the four rectangle words only."
+    },
+    "mipPreUpload": {
+      "address": "0x823053E0",
+      "registers": "r3 backend level or surface; r6 selected level source; r7 selected upload format; r8 computed pitch; r10 rectangle pointer",
+      "allowed": "Record metadata and pointer identity only."
+    },
+    "return": {
+      "address": "0x82305138",
+      "registers": "r3 success status",
+      "allowed": "Record status and renderer-texture backend pointer identity without reading texture bytes."
+    },
+    "authorization": "Static placement only. No runtime hook is added or authorized by this packet."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/DumpFunctions.java"
+    ],
+    "program": "rerevved_image.bin",
+    "qualification": "Several Xenon-heavy functions truncate after their save-register thunks in Ghidra. Their full current control flow is corroborated by narrow generated-code windows and the existing renderer-vtable binding."
+  },
+  "guards": [
+    "Do not claim runtime upload observations, dimensions, hashes, or visual verdicts.",
+    "Do not assign public texture-format names, channel order, or alpha meaning to numeric selectors or byte lanes.",
+    "Do not infer a specific asset or movie from this generic upload path.",
+    "Do not extend the static backend boundary into platform API semantics."
+  ],
+  "conclusion": "Version 1.3 establishes the complete static decoded-image upload contract: seven-word input, optional temporary conversion, bounded mip selection, renderer dimension updates, and backend submission through 0x82578E00."
+}

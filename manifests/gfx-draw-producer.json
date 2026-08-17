@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0033",
+  "topic": "gfx-draw-producer",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Which version 1.3 guest functions produce and submit the bounded GFx indexed-draw state?",
+  "scope": {
+    "draw": "0x82303C38",
+    "rendererVtable": "0x82169E30",
+    "drawSlot": "0x3C",
+    "boundary": "This packet covers the static renderer gates, fill and transform setup, indexed issue call, and current geometry producers. It does not claim runtime draw counts, buffer contents, asset identity, pixel visibility, render-target state, or presentation conclusions."
+  },
+  "currentEvidence": {
+    "method": "current normalized fingerprints and bounded generated-code inspection followed by foreground read-only Ghidra queries",
+    "entries": [
+      {
+        "role": "affine composer",
+        "address": "0x82259C80",
+        "confidence": "strong"
+      },
+      {
+        "role": "index producer",
+        "address": "0x822C9F78",
+        "confidence": "strong"
+      },
+      {
+        "role": "vertex producer",
+        "address": "0x822CA118",
+        "confidence": "strong"
+      },
+      {
+        "role": "texture bind",
+        "address": "0x82302758",
+        "confidence": "strong"
+      },
+      {
+        "role": "color transform",
+        "address": "0x823029B8",
+        "confidence": "strong"
+      },
+      {
+        "role": "active fill",
+        "address": "0x82302A50",
+        "confidence": "strong"
+      },
+      {
+        "role": "viewport setup",
+        "address": "0x82302F60",
+        "confidence": "strong"
+      },
+      {
+        "role": "matrix setter",
+        "address": "0x82303650",
+        "confidence": "exact"
+      },
+      {
+        "role": "blend setup",
+        "address": "0x823036D0",
+        "confidence": "strong"
+      },
+      {
+        "role": "composed transform",
+        "address": "0x823038D8",
+        "confidence": "strong"
+      },
+      {
+        "role": "indexed draw",
+        "address": "0x82303C38",
+        "confidence": "strong"
+      }
+    ],
+    "qualification": "Exact confidence is limited to the matrix setter. The other identities are supported by current control flow, field accesses, call relationships, and renderer-vtable placement; body metrics alone are not treated as identity proof."
+  },
+  "drawSubmission": {
+    "vtableEntry": "0x82169E6C",
+    "vtableSlot": "0x3C",
+    "gates": [
+      "The draw returns when renderer byte +0x10 is zero.",
+      "The draw returns when renderer vertex buffer +0x164 or index buffer +0x168 is null.",
+      "The draw returns when renderer index format +0x170 is -1.",
+      "The final remainder path submits only when its count argument is positive."
+    ],
+    "setupCalls": [
+      "0x82303DA8 calls active-fill producer 0x82302A50.",
+      "0x82303DB4 calls composed-transform producer 0x823038D8 with renderer matrix state at +0xFC."
+    ],
+    "issue": "0x82303E3C and 0x82303E8C call 0x826A3568 with primitive value 4. Large draws are split into bounded chunks; the remainder path multiplies the incoming triangle count by three for the submitted index count.",
+    "result": "The version 1.3 renderer has a guarded, indexed triangle submission path at vtable slot +0x3C."
+  },
+  "geometry": {
+    "rendererFields": [
+      { "offset": "0x164", "role": "vertex-buffer pointer", "producer": "0x82303BF0" },
+      { "offset": "0x168", "role": "index-buffer pointer", "producer": "0x82303C00" },
+      { "offset": "0x16C", "role": "vertex format", "producer": "0x82303BF0" },
+      { "offset": "0x170", "role": "normalized index format", "producer": "0x82303C00" }
+    ],
+    "vertexProducer": {
+      "function": "0x822CA118",
+      "sourceLayout": "Loads the source count from +0x0 and walks 12-byte source vertices rooted at +0xC. The first two floats are scaled before virtual output writes, and the tagged word at source vertex +0x8 selects the packed attribute path.",
+      "handoff": "After producing the vertex stream, the function calls index producer 0x822C9F78.",
+      "qualification": "No concrete version 1.3 vertex count, output address, or packed attribute value is asserted."
+    },
+    "indexProducer": {
+      "function": "0x822C9F78",
+      "result": "The current function keeps the format-3 and format-4 branches, triangle-record traversal, and the format-3 index-times-eight output addressing pattern.",
+      "qualification": "Numeric format values are retained without assigning public hardware format names or runtime buffer contents."
+    }
+  },
+  "fillAndTransform": {
+    "activeFill": {
+      "function": "0x82302A50",
+      "colorTransform": "0x823029B8",
+      "textureBind": "0x82302758",
+      "result": "Dispatches the active fill type, publishes its color transform, and binds non-null texture records through the renderer slot selected by the fill branch."
+    },
+    "textureBind": {
+      "function": "0x82302758",
+      "backendField": "texture object +0x28",
+      "lazyTarget": "0x82305FD8",
+      "result": "Returns for a null texture record, lazily initializes a missing backend, then forwards the backend to the renderer binding helper."
+    },
+    "colorTransform": {
+      "function": "0x823029B8",
+      "result": "Loads four multiplier and four additive channels, scales the additive channels, and publishes two graphics constants starting at register 2."
+    },
+    "composedTransform": {
+      "function": "0x823038D8",
+      "affineComposer": "0x82259C80",
+      "projectionOffsets": ["0xE4", "0xE8", "0xEC", "0xF0", "0xF4", "0xF8"],
+      "matrixOffsets": ["0xFC", "0x100", "0x104", "0x108", "0x10C", "0x110"],
+      "result": "Copies the renderer projection matrix, composes it with the supplied six-float GFx matrix, and writes the resulting vertex constants into graphics state."
+    }
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpMemoryWords.java"],
+    "targets": [
+      "0x82303C38", "0x82302A50", "0x823029B8", "0x82302758", "0x82302F60",
+      "0x823038D8", "0x82259C80", "0x822C9F78", "0x822CA118", "0x82169E30"
+    ],
+    "program": "rerevved_image.bin",
+    "qualification": "Several Xenon-heavy functions truncate at save-register thunks in Ghidra. Their bounded field and call claims are corroborated by the generated version 1.3 bodies; the renderer vtable resolves as initialized memory and the affine composer decompiles directly."
+  },
+  "guards": [
+    "Do not claim count-30 observations, traced buffers, reconstructed vertices or indices, shader constants, or asset identity.",
+    "Do not infer that this path executed at runtime or produced visible pixels in version 1.3.",
+    "Do not assign inherited depth, stencil, cull, color-mask, render-target, resolve, or presentation ownership to the draw routine.",
+    "Do not infer that a texture bound by this generic path is GFX_MainMenu_logo.dds.",
+    "This packet authorizes no runtime hook or guest-memory write."
+  ],
+  "conclusion": "Version 1.3 establishes the bounded GFx indexed-draw architecture: renderer state setters feed guarded slot +0x3C draw submission, active fill and composed transform are applied before the indexed issue call, and the current vertex and index producers use their static layout contracts."
+}

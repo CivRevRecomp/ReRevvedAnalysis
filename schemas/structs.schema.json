@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rerevved.local/schemas/structs.schema.json",
+  "title": "ReRevved struct catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "catalog", "records"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "catalog": { "const": "structs" },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/record" }
+    }
+  },
+  "$defs": {
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "offset",
+        "claim",
+        "confidence",
+        "evidence",
+        "qualification"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^RVA-FLD-[0-9]{4}$" },
+        "name": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "offset": { "$ref": "common.schema.json#/$defs/offset" },
+        "claim": { "type": "string", "minLength": 1 },
+        "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+        "evidence": { "$ref": "common.schema.json#/$defs/evidence" },
+        "qualification": { "$ref": "common.schema.json#/$defs/qualification" }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "image",
+        "claim",
+        "confidence",
+        "evidence",
+        "qualification",
+        "fields"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^RVA-STR-[0-9]{4}$" },
+        "name": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "image": { "$ref": "common.schema.json#/$defs/image" },
+        "claim": { "type": "string", "minLength": 1 },
+        "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+        "evidence": { "$ref": "common.schema.json#/$defs/evidence" },
+        "qualification": { "$ref": "common.schema.json#/$defs/qualification" },
+        "size": { "$ref": "common.schema.json#/$defs/offset" },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/field" }
+        }
+      }
+    }
+  }
+}

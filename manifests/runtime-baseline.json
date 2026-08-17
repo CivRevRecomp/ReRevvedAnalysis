@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0052",
+  "topic": "runtime-baseline",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Is the version 1.3 patched image identified, queryable, and aligned with the current runtime hook and generated-function surface?",
+  "scope": {
+    "activeHooks": [
+      "0x8269CAE0",
+      "0x8269CAE4"
+    ],
+    "configuredRoot": "0x82D77A44",
+    "acceptanceTarget": "0x821B15C0",
+    "boundary": "This packet validates image identity, bootstrap coverage, the two configured ring sites, and one generated root. It assigns no graphics, MovieClip, gameplay, class, ownership, or behavioral identity beyond the configured ring boundary."
+  },
+  "imageIdentity": {
+    "contract": "image.json",
+    "sourceVersion": "0.0.0.2",
+    "targetVersion": "0.0.3.2",
+    "imageBase": "0x82000000",
+    "imageSize": 18939904,
+    "flatImageSha256": "5C7A8C3AD9B6A9D39CC9BBF3DA5AB23015A568C65C723D298F846086324C4680",
+    "result": "ReXGlue applied the sibling title-update patch before exporting the mapped entrypoint image. The exported size and SHA-256 match the separately imported Ghidra program contract."
+  },
+  "bootstrap": {
+    "mode": "completed disposable-project mutation followed by foreground read-only validation",
+    "scripts": [
+      "ghidra/FixXenonThunks.java",
+      "ghidra/RebuildTruncatedFunctions.java",
+      "ghidra/SeedGeneratedFunctions.java",
+      "ghidra/RecoverSplitConstRefs.java",
+      "ghidra/DumpFunctionNeighborhoodBatch.java"
+    ],
+    "generatedEntryCount": 40227,
+    "undecodedEntryCount": 485,
+    "explicitCodeSeedCount": 9,
+    "recoveredConstReferenceCount": 8489,
+    "acceptanceTargetReferenceCount": 159,
+    "qualification": "The PowerPC loader does not decode every Xenon entry or flow path. Undecoded generated entries remain explicit bootstrap coverage gaps and require narrow code seeding when an investigation reaches them."
+  },
+  "activeRingBoundary": {
+    "begin": {
+      "address": "0x8269CAE0",
+      "instruction": "bl 0x82E923E4",
+      "hook": "ReRevvedCompatRingInitializeBegin"
+    },
+    "end": {
+      "address": "0x8269CAE4",
+      "instruction": "rlwinm r11,r25,0x17,0x9,0x1F",
+      "hook": "ReRevvedCompatRingInitializeEnd"
+    },
+    "generatedCorroboration": [
+      "generated:rerevved/ReRevvedCompatRingInitializeBegin-0x8269CAE0",
+      "generated:rerevved/ReRevvedCompatRingInitializeEnd-0x8269CAE4"
+    ],
+    "result": "The current configuration and generated code place the begin hook immediately before VdInitializeRingBuffer and the end hook at the next guest instruction. Both guest sites decode from the version 1.3 image."
+  },
+  "configuredRoot": {
+    "address": "0x82D77A44",
+    "generated": true,
+    "ghidraFunction": true,
+    "firstInstruction": "lwz r3,-0xD38(r22)",
+    "result": "The first configured root is present in the generated mapping and recovered as a function in the Ghidra program."
+  },
+  "guards": [
+    "Do not assign an exact hook boundary from structural similarity alone; require a version 1.3 image query and a default-off runtime probe.",
+    "Do not treat generated mapping presence alone as decoded Ghidra coverage for an interior hook site."
+  ],
+  "conclusion": "The version 1.3 mapped image has a complete identity contract, a separately repaired Ghidra program, decoded active ring-hook sites, and recovered root 0x82D77A44."
+}

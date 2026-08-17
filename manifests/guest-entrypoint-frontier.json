@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0046",
+  "topic": "guest-entrypoint-frontier",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Which current-image guest entrypoints in the bounded 0x8223, 0x828F, and 0x829B frontiers have supported identities?",
+  "entries": [
+    {"address": "0x8223CB18", "confidence": "confirmed", "result": "Exact byte-flag update leaf."},
+    {"address": "0x822451E0", "confidence": "strong", "result": "Exact fingerprint anchor; no semantic name is assigned."},
+    {"address": "0x8225CEF0", "confidence": "strong", "result": "Exact fingerprint anchor; no semantic name is assigned."},
+    {"address": "0x828F3EF8", "confidence": "strong", "result": "Exact fingerprint anchor; no semantic name is assigned."},
+    {"address": "0x828F3F10", "confidence": "confirmed", "result": "Exact five-instruction float-copy leaf reached by the runtime."},
+    {"address": "0x828F4508", "confidence": "strong", "result": "Strong fingerprint anchor; no semantic name is assigned."},
+    {"address": "0x828F4950", "confidence": "confirmed", "result": "Exact bitfield-result leaf reached by the runtime."},
+    {"address": "0x828F5760", "confidence": "strong", "result": "Strong fingerprint anchor; no semantic name is assigned."},
+    {"address": "0x829BC0A8", "confidence": "strong", "result": "Exact fingerprint anchor; no semantic name is assigned."},
+    {"address": "0x829BC180", "confidence": "rejected", "result": "No independent identity edge supports this adjacent entry."},
+    {"address": "0x829BC188", "confidence": "confirmed", "result": "Exact load-at-0x38 tail thunk."},
+    {"address": "0x829BC190", "confidence": "confirmed", "result": "Distinct exact load-at-0x38 tail thunk."}
+  ],
+  "guards": [
+    "Do not identify pointer-table neighbors by address delta.",
+    "Do not treat a changed bit mask as the same leaf.",
+    "Do not manufacture semantic names for fingerprint-only anchors.",
+    "Do not promote an ambiguous candidate without a current-image endpoint."
+  ],
+  "conclusion": "The current frontier contains five fingerprint-only anchors, three exact semantic leaves, two exact tail thunks, and one rejected adjacent entry."
+}

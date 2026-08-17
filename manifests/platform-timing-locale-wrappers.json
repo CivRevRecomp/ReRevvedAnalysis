@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0013",
+  "topic": "platform-timing-locale-wrappers",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which version 1.3 initialization boundaries establish localization, timing, and video-mode platform access?",
+  "scope": {
+    "functions": ["0x82E2E3B8", "0x82E69F38", "0x82E6AD10", "0x82E6AAA8", "0x8281A258", "0x82D2D2F8", "0x8280F0C8", "0x8280F100", "0x82E2CEE8", "0x82E2A4B8"],
+    "globals": ["0x8314F2C8", "0x8314F160"],
+    "tables": ["0x82120FC0"]
+  },
+  "currentEvidence": {
+    "method": "identified at 0x82E2E3B8, 0x82E69F38, 0x82E6AD10, 0x82E6AAA8, 0x8281A258, 0x82D2D2F8, 0x8280F0C8, 0x8280F100, 0x82E2CEE8, and 0x82E2A4B8 by vtable slot contents, import-backed wrapper bodies, field writes, and bounded video-output behavior",
+    "entries": [
+      {
+        "role": "application resource builder",
+        "address": "0x82E2E3B8",
+        "confidence": "strong"
+      },
+      {
+        "role": "localization constructor",
+        "address": "0x82E69F38",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "locale selection slot",
+        "address": "0x82E6AD10",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "locale apply",
+        "address": "0x82E6AAA8",
+        "confidence": "strong"
+      },
+      {
+        "role": "locale config resolver",
+        "address": "0x8281A258",
+        "confidence": "strong"
+      },
+      {
+        "role": "elapsed-seconds converter",
+        "address": "0x82D2D2F8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "frequency wrapper",
+        "address": "0x8280F0C8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "timebase wrapper",
+        "address": "0x8280F100",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "application settings init",
+        "address": "0x82E2CEE8",
+        "confidence": "strong"
+      },
+      {
+        "role": "video-mode resolver",
+        "address": "0x82E2A4B8",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "staticQuery": {"scripts":["ghidra/DumpMemoryWords.java"],"mode":"foreground-read-only","generatedCorroboration":["generated:rerevved/sub_82E69F38","generated:rerevved/sub_82E6AD10","generated:rerevved/sub_82D2D2F8","generated:rerevved/sub_82E2A4B8"]},
+  "localizationOwner": {
+    "allocationSite":"0x82E2E3B8","global":"0x8314F2C8","size":"0x14C","constructor":"0x82E69F38","vtable":"0x82120FC0",
+    "localeSlot":{"offset":"0x14","target":"0x82E6AD10"},"selectedLocaleField":"0x7C","resolver":"0x8281A258","apply":"0x82E6AAA8",
+    "result":"The resource builder allocates 0x14C bytes and publishes the constructed localization owner. Vtable slot 0x14 resolves a bounded locale selector, validates an internal locale ID with fallback ID 7, and applies it at owner offset 0x7C.",
+    "boundary":"Numeric locale IDs are not assigned language names, and runtime text availability is not claimed."
+  },
+  "timingState": {
+    "function":"0x82D2D2F8","state":"0x8314F160","size":"0x18","fields":{"baselineTimebase":"0x0","performanceFrequency":"0x8","secondsPerTick":"0x10"},"frequencyWrapper":"0x8280F0C8","timebaseWrapper":"0x8280F100",
+    "result":"The first call stores a timebase baseline and performance frequency, derives seconds per tick, and returns a scaled delta from a supplied or stored baseline.",
+    "boundary":"Runtime precision, scheduling, and caller-specific frame semantics remain unconfirmed."
+  },
+  "videoModeWrapper": {
+    "applicationInit":"0x82E2E3B8","settingsInit":"0x82E2CEE8","resolver":"0x82E2A4B8","outputOffsets":{"width":"0x28","height":"0x2C","wideFlag":"0x30"},
+    "result":"Settings initialization passes application-state offsets 0x28, 0x2C, and 0x30 to the resolver, which calls XGetVideoMode and writes bounded width, height, and wide-mode outputs.",
+    "boundary":"Successful display creation and host resolution behavior are not claimed."
+  },
+  "guards":["Do not infer language names from locale numbers.","Do not merge localization, timing, and video state into one manager.","Do not claim runtime timer precision, language availability, or display setup."],
+  "conclusion":"Version 1.3 has distinct localization, elapsed-time, and video-mode platform boundaries with explicit publication, state-write, and platform-call edges."
+}

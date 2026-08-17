@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0051",
+  "topic": "gfx-ui-moviecliploader-request-boundary",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "What exact AVM1 requests do the current leader-portrait and technology-image movies construct, and where does MovieClipLoader.loadClip cross into version 1.3 native code?",
+  "scope": {
+    "packages": ["Pregame.FPK", "Common0.FPK", "pedia.FPK"],
+    "movies": ["GFX_ChooseCiv.gfx", "GFX_TechTree.gfx", "GFX_TechTreeBox.gfx", "UnitMC.gfx"],
+    "loadClipHandler": "0x82295018",
+    "requestBuilders": ["0x82229AA0", "0x82229608"],
+    "requestAttach": "0x82229C00",
+    "downstreamHandler": "0x82229518",
+    "boundary": "This packet closes the current static path from exact AVM1 request construction through loadClip registration, native argument handling, request-object creation, and the first owner attachment decision. It does not identify a runtime provider, SWF-to-GFX resolver, package selection, content result, or external-image convergence."
+  },
+  "retailPayloads": [
+    {"package": "Pregame.FPK", "entry": "gfx_chooseciv.gfx", "offset": 18268496, "size": 59646, "sha256": "A8EDDCE79CDCA74E2EF30F1175714D70A6217D8B133C0E4D0E188DDD2078864F"},
+    {"package": "Common0.FPK", "entry": "gfx_techtree.gfx", "offset": 44368140, "size": 47682, "sha256": "AF6CF091217E6CB02B0F5EBF1F7F5D10F5E8235BF3871C259AE746323B3B5E1F"},
+    {"package": "Common0.FPK", "entry": "gfx_techtreebox.gfx", "offset": 44415824, "size": 8559, "sha256": "A3ECFC5E37B078FFC5C4E041F9B9D8EEA62EF014C6C79A2E25E1136A9118B8A0"},
+    {"package": "pedia.FPK", "entry": "unitmc.gfx", "offset": 1006796, "size": 21776, "sha256": "7E49A8CC8602AF1D4DB3A95F43E621ED57A705288BE20C19F2D8D0252C24CB1E"}
+  ],
+  "leaderPortraits": {
+    "owner": "GFX_ChooseCiv.gfx",
+    "primaryBlock": {"tag": "DoAction", "offset": "0x2810", "path": "DefineSprite 96/tag 0"},
+    "primaryRequest": {
+      "function": "SetPortraitImage",
+      "parameters": ["nationName", "largeSize"],
+      "nameSource": "GetImageName lowercases nationName and returns a canonical nation basename or default",
+      "normal": "../ObjectIcons/LDR_ + canonical nation + .dds",
+      "testing": "LDR_ + canonical nation + .dds",
+      "receiver": "myMCL MovieClipLoader",
+      "destination": "thePanel.diploDisplay.portraitImage movie clip",
+      "argumentOrder": ["constructed request string", "destination movie clip"],
+      "qualification": "largeSize is declared but not consumed by this function body."
+    },
+    "secondaryRequest": {
+      "block": {"tag": "DoAction", "offset": "0x87AC", "path": "DefineSprite 132/tag 0"},
+      "function": "SetPortrait",
+      "request": "LDR_ + canonical nation + optional largeSize + .dds",
+      "receiver": "local myMCL MovieClipLoader",
+      "destination": "portImageLarge movie clip"
+    },
+    "result": "The current payload hash is identical to the independently decoded source payload, so the exact canonicalization and two request forms are established without asserting native addresses or runtime behavior."
+  },
+  "technologyImages": {
+    "techTreeBoxImport": {
+      "owner": "GFX_TechTree.gfx",
+      "blockOffset": "0x5607",
+      "function": "LoadBox",
+      "request": "GFX_TechTreeBox.swf",
+      "receiver": "myMCLBox MovieClipLoader",
+      "destination": "new MC_box + column + row movie clip",
+      "argumentOrder": ["GFX_TechTreeBox.swf", "destination movie clip"]
+    },
+    "techTreeBackground": {
+      "owner": "GFX_TechTree.gfx",
+      "blockOffset": "0x735E",
+      "function": "LoadImage",
+      "request": "Tech_Tree_BG.dds",
+      "receiver": "myMCL MovieClipLoader",
+      "destination": "imageTarget movie clip"
+    },
+    "unitMovieImport": {
+      "owner": "GFX_TechTreeBox.gfx",
+      "blockOffset": "0xD7C",
+      "function": "CreateIcon",
+      "request": "UnitMC.swf",
+      "receiver": "myMCLUnit MovieClipLoader",
+      "destination": "new icon + theNum movie clip",
+      "onLoadInit": "Calls destination.SetPortrait with the selected technology identifier."
+    },
+    "unitPortrait": {
+      "owner": "UnitMC.gfx",
+      "blockOffset": "0x7A5",
+      "function": "SetPortrait(theString)",
+      "normal": "ObjectIcons/ + theString + .png",
+      "testing": "ObjectIcons\\ + theString + .dds",
+      "caseTransformation": "none",
+      "receiver": "myMCL MovieClipLoader",
+      "destination": "imageTarget named target"
+    },
+    "unitResourceImages": {
+      "owner": "UnitMC.gfx",
+      "function": "LoadResourceImage",
+      "normal": "ObjectIcons/ + theResourceIcon + .png",
+      "testing": "ObjectIcons\\ + theResourceIcon + .dds",
+      "receiver": "myMCL2 MovieClipLoader",
+      "destination": "new iconTarget + i movie clip"
+    },
+    "importResolution": "The exact .swf requests and matching .gfx package names are present, but no bounded current native edge proves extension rewriting or binds either request to a package entry."
+  },
+  "nativeRegistration": {
+    "className": {"value": "MovieClipLoader", "address": "0x821432E0", "dataEntry": "0x82F789A8"},
+    "methodName": {"value": "loadClip", "address": "0x821446F4", "nameEntry": "0x8211DB70"},
+    "handlerEntry": "0x8211DB74",
+    "handler": "0x82295018",
+    "currentEvidence": {
+      "address": "0x82295018",
+      "method": "exact loadClip name/handler table entry plus matching two-argument gate, packet-field reads, argument extraction, request handoffs, and cleanup",
+      "confidence": "strong"
+    },
+    "result": "The version 1.3 loadClip name table points directly to 0x82295018."
+  },
+  "handlerPacket": {
+    "handler": "0x82295018",
+    "incomingPacket": "Incoming r3 is retained in r31.",
+    "fields": {
+      "+0x4": "state object initialized at entry and finalized at exit",
+      "+0x8": "receiver used for the first request-dependent virtual dispatch",
+      "+0x18": "argument context passed to extraction helpers",
+      "+0x1C": "argument-count gate"
+    },
+    "gate": "Packet +0x1C must be at least 2.",
+    "firstNativeDispatch": {
+      "callSite": "0x82295060",
+      "chain": "packet +0x8 -> receiver[0] vtable -> vtable +0x8 -> bctrl",
+      "postReturn": "0x82295064 compares the return value with 0x17",
+      "qualification": "The receiver type, vtable identity, and slot target are unresolved for version 1.3."
+    },
+    "argumentExtraction": "0x8228C618 extracts argument indices 0 and 1. The first argument is retained as an owned request string before either request-builder branch."
+  },
+  "requestConstruction": {
+    "directDestinationBranch": {
+      "callSite": "0x82295190",
+      "builder": "0x82229AA0",
+      "requestRegister": "r5",
+      "result": "The handler passes the retained first argument as r5 and the resolved destination as r4. The builder copies the request through 0x821EADA0, allocates a 0x38-byte request object, initializes it through 0x82226878 or 0x82226928, and forwards non-null results to 0x82229C00."
+    },
+    "alternateDestinationBranch": {
+      "callSite": "0x8229529C",
+      "builder": "0x82229608",
+      "result": "The alternate handler branch performs the same request-string copy and 0x38-byte request-object construction before forwarding non-null results to 0x82229C00."
+    },
+    "qualification": "The two current builders select between internal constructors according to destination state. Static structure does not identify a provider, package, mount, or content result."
+  },
+  "attachmentBoundary": {
+    "function": "0x82229C00",
+    "requestStringField": "+0xC",
+    "ownerInterface": "owner +0x10",
+    "lookupKey": "0x16",
+    "lookupSlot": "+0xC",
+    "lookupCallSite": "0x82229D84",
+    "successHandoff": {"callSite": "0x82229DD8", "target": "0x82229518"},
+    "fallbackList": "owner +0x220",
+    "result": "After bounded request-string classification, the attach function calls owner +0x10 vtable slot +0xC with key 0x16. A non-null lookup result can route the request to 0x82229518; otherwise the request is appended to the owner +0x220 list."
+  },
+  "downstreamBoundary": {
+    "handler": "0x82229518",
+    "firstBranch": "Object +0x4 bit 0x4 selects an indirect allocation key 0x1C and a call to 0x82227EF0 at 0x8222956C.",
+    "secondBranch": "The other route uses indirect allocation key 0x34 and calls 0x822270F8.",
+    "publication": "A non-null result is appended to owner +0x224.",
+    "qualification": "This is a conditional static path after successful owner-interface lookup. No version 1.3 runtime observation establishes that a named UI request reached it."
+  },
+  "externalKind2Comparison": {
+    "externalChain": ["0x822189A8", "0x821E2F80"],
+    "result": "no supported convergence",
+    "reason": "Neither 0x82295018 nor its bounded direct request-builder and attachment chain calls the external request-kind-2 resource creator or state-kind-12 image creator. The two-argument gate, DDS/PNG suffixes, and eventual renderer use are not convergence evidence."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": ["ghidra/DumpReferences.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpFunctions.java", "ghidra/DumpInstructions.java"],
+    "program": "rerevved_image.bin",
+    "generatedCorroboration": ["0x82295018", "0x82229AA0", "0x82229608", "0x82229C00", "0x82229518", "0x82227EF0"],
+    "qualification": "Ghidra establishes the current strings, data table, function starts, references, and bounded machine words. Save-register thunks and Xenon instructions truncate several decompilations, so narrow generated version 1.3 bodies establish the complete bounded dataflow."
+  },
+  "runtimeEvidence": {
+    "status": "bounded",
+    "session": "title/menu",
+    "date": "2026-08-15",
+    "hookSites": ["0x82229AA0", "0x82229608"],
+    "exactFilter": "ObjectIcons\\",
+    "filterMode": "exact-prefix",
+    "recordCount": 30,
+    "invocationRange": [24, 54],
+    "observed": [
+      {"builder": "0x82229AA0", "path": "ObjectIcons\\UNIT_settler.dds"},
+      {"builder": "0x82229AA0", "path": "ObjectIcons\\UNIT_warrior.dds"}
+    ],
+    "vfsCorrelation": {
+      "path": "ObjectIcons\\",
+      "outcome": "no-device",
+      "status": "0xc000000f",
+      "result": "Sampled builder records were followed by the SDK NtCreateFile path ObjectIcons\\ and ResolvePath no-device failures on the same runtime thread."
+    },
+    "openContext": {
+      "callsite": "0x8281B66C",
+      "recordCount": 22,
+      "invocationRange": [119, 140],
+      "rootDirectory": "0xFFFFFFFD",
+      "name": "ObjectIcons\\",
+      "nameLength": 12,
+      "result": "The current image reached the NtOpenFile callsite with an object-attributes root-directory value of 0xFFFFFFFD and the exact ObjectIcons\\ name before the SDK reported no device."
+    },
+    "presentationObserved": false,
+    "qualification": "The bounded probe observed the request string at the current builder boundary, the NtOpenFile object-attributes context, and the subsequent VFS failure. Runtime pointer values are session addresses. It assigns no provider, mount, filesystem fallback, request-object type, or presentation ownership, and it performed no guest-memory write."
+  },
+  "guards": [
+    "Do not infer convergence from DDS or PNG suffixes, argument count 2, or eventual renderer use.",
+    "Do not assign the external request-kind-2 descriptor, opener, creator, provider, mapping, or renderer path to MovieClipLoader.",
+    "Do not claim runtime receiver, vtable, slot target, request-object, interface, route, frame, packet, or log identities.",
+    "Do not infer a package, mount, filesystem fallback, SWF-to-GFX rewrite, runtime request success, or visible content result.",
+    "The bounded request probe observes strings only and assigns no provider or request-object type.",
+    "This packet authorizes no guest-memory write, Recomp behavior change, or SDK change."
+  ],
+  "conclusion": "Version 1.3 defines the exact leader-portrait and technology-image AVM1 requests. MovieClipLoader.loadClip is registered at 0x8211DB70/0x8211DB74 to handler 0x82295018, which enforces two arguments, dispatches through packet +0x8 vtable slot +0x8, extracts both arguments, and builds request objects through 0x82229AA0 or 0x82229608. Function 0x82229C00 then performs the first owner-interface lookup and either hands the request to 0x82229518 or appends it to owner +0x220. No bounded current edge converges on the tag-1001 external-image chain or identifies the runtime provider."
+}

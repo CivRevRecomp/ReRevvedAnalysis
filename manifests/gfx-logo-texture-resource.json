@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0006",
+  "topic": "gfx-logo-texture-resource",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Does version 1.3 load the exact GFX_MainMenu_logo.dds preload, and does that preload form a type-11-to-type-7 texture-resource bridge?",
+  "scope": {
+    "preloadFunction": "0x82E7EA60",
+    "namedFileHelper": "0x82E7E410",
+    "filenameAddress": "0x82130908",
+    "filenameReference": "0x82E7ED28",
+    "helperCall": "0x82E7ED2C",
+    "completionConsumer": "0x82E7F4F0",
+    "registration": "0x82C92C38",
+    "factory": "0x82C91E38",
+    "boundary": "This packet establishes the exact logo preload and its type-11 completion registration. A bounded title observation confirms the exact logo filename used the type-11 cache; the engine type-7 registry remains separate."
+  },
+  "currentEvidence": {
+    "preloadFunction": {
+      "address": "0x82E7EA60",
+      "method": "exact CcMainMenuGameState::PreloadDataStart identity string, matching named-file list structure, and direct generated-code validation",
+      "result": "The current routine builds the main-menu named-file preload list and calls 0x82E7E410 once per listed path."
+    },
+    "namedFileHelper": {
+      "address": "0x82E7E410",
+      "method": "direct call from each current preload-list entry and bounded generated-code data-flow validation",
+      "result": "The current helper forwards its supplied path into the active named-file preload context."
+    },
+    "logoFilename": {
+      "address": "0x82130908",
+      "reference": "0x82E7ED28",
+      "method": "exact defined string, unique current reference, instruction decode, and generated-code corroboration",
+      "result": "The current executable contains one defined GFX_MainMenu_logo.dds string. Its sole reference materializes the path immediately before the call to 0x82E7E410."
+    }
+  },
+  "logoPreload": {
+    "preloadFunction": "0x82E7EA60",
+    "identityString": {
+      "address": "0x82130650",
+      "value": "CcMainMenuGameState::PreloadDataStart starting"
+    },
+    "filename": "GFX_MainMenu_logo.dds",
+    "filenameAddress": "0x82130908",
+    "filenameReference": "0x82E7ED28",
+    "helperCall": "0x82E7ED2C",
+    "namedFileHelper": "0x82E7E410",
+    "result": "The current preload function passes the exact logo filename to the current named-file helper."
+  },
+  "type11Completion": {
+    "consumer": "0x82E7F4F0",
+    "registerCall": "0x82C92C38",
+    "registerCallsite": "0x82E7F768",
+    "resourceType": 11,
+    "factory": "0x82C91E38",
+    "result": "The current completion loop passes numeric type 11 to named-resource registration, which forwards that selector into the generic factory."
+  },
+  "bridgeAssessment": {
+    "assessment": "No current static edge connects the main-menu File Data context to the type-7 texture decoder.",
+    "currentType7Case": {
+      "factory": "0x82C91E38",
+      "resourceType": 7,
+      "vtable": "0x821610D0"
+    },
+    "result": "The current logo reference is passed to the named-file helper, and the current completion path selects factory case 11. No current static edge selects the independent type-7 case for this logo preload."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/FindStrings.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpInstructions.java",
+      "ghidra/DumpFunctions.java"
+    ],
+    "program": "rerevved_image.bin"
+  },
+  "runtimeEvidence": {
+    "status": "bounded",
+    "session": "title/menu",
+    "date": "2026-08-15",
+    "exactName": "GFX_MainMenu_logo.dds",
+    "resourceType": 11,
+    "branch": "type-11-cache",
+    "payload": "0x525d0034",
+    "size": 1048704,
+    "resourceCreated": true,
+    "filesystemFallbackObserved": false,
+    "qualification": "The observation is limited to the exact filtered logo request. It does not establish a type-7 bridge, external-image creator, renderer backend, or visible result."
+  },
+  "guards": [
+    "Do not generalize the exact-name type-11 cache observation to another request or infer a type-7 bridge.",
+    "Do not route the logo preload through the engine type-7 registry without a direct current edge.",
+    "Do not equate the File Data wrapper, decoded image, renderer texture object, and backend texture."
+  ],
+  "conclusion": "Version 1.3 loads the exact GFX_MainMenu_logo.dds named-file preload and registers completed preload entries as type-11 File Data. No current static edge establishes a type-11-to-type-7 engine-resource bridge."
+}

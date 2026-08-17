@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0024",
+  "topic": "scene-root-content-field-roles",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which bounded version 1.3 producer supplies scene-root content word 0x1C and byte 0x38, and what exact roles constrain their first consumption?",
+  "scope": {
+    "functions": ["0x82D548B8", "0x82D55C68"],
+    "sceneRootContentFields": ["0x1C", "0x38"],
+    "preparedRecordFields": ["0x0", "0x1C"],
+    "excludedCallee": "0x82D50820",
+    "boundary": "This packet proves two direct copies and their first bounded consumer gate. It does not name the anonymous fields, enter the excluded callee, classify a collection, or assert runtime values or success."
+  },
+  "dependencies": [
+    { "topic": "scene-root-content-construction", "use": "current content object, slot-0 body, and vtable identity" },
+    { "topic": "scene-root-prepared-record-producers", "use": "current upstream producers for prepared-record word 0x0 and byte 0x1C" }
+  ],
+  "currentEvidence": {
+    "method": "identified body 0x82D548B8 and consumer 0x82D55C68 with excluded lookup 0x82D50820 by exact field-copy, first-consumer branch structure, generated-code, and foreground read-only Ghidra corroboration",
+    "entries": [
+      {
+        "role": "scene-node render visit",
+        "address": "0x82D55C68",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "excluded scalar lookup",
+        "address": "0x82D50820",
+        "confidence": "strong"
+      }
+    ],
+    "qualification": "The function implements the slot-0 copies, null-r4 test, byte-0x38 gate, word-0x1C load, zero r5 argument, and direct excluded-callee edge."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/FindFieldAccesses.java", "ghidra/DumpFunctions.java", "ghidra/DumpMemoryWords.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82D548B8",
+      "generated:rerevved/sub_82D55C68"
+    ],
+    "decodeBoundary": "The bounded Ghidra field-access query found no decoded accesses in these VMX-truncated functions. Current generated instruction text supplies the exact field sites; no Ghidra decompilation claim is made for them."
+  },
+  "boundedProducer": {
+    "function": "0x82D548B8",
+    "copyGate": "Scene-root content byte 0x14 must be zero before the prepared-record copy executes.",
+    "source": "The caller-supplied prepared record arrives in r4 and is preserved in r11; the scene-root content object arrives in r3 and is preserved in r31.",
+    "mapping": [
+      {
+        "sourceOffset": "0x0",
+        "width": "u32",
+        "destinationOffset": "0x1C",
+        "sourceReadInstruction": "0x82D548F4",
+        "destinationWriteInstruction": "0x82D54904"
+      },
+      {
+        "sourceOffset": "0x1C",
+        "width": "u8",
+        "destinationOffset": "0x38",
+        "sourceReadInstruction": "0x82D54940",
+        "destinationWriteInstruction": "0x82D54944"
+      }
+    ],
+    "result": "SceneRootContentSlot0Body directly produces scene-root content word 0x1C and byte 0x38 along this path, copying both values without transformation from the caller-supplied prepared record.",
+    "boundary": "The values remain anonymous. This packet does not define a complete prepared-record type."
+  },
+  "firstConsumerRoles": {
+    "function": "0x82D55C68",
+    "incomingValueTestInstruction": "0x82D55D04",
+    "byteReadInstruction": "0x82D55D0C",
+    "byteOffset": "0x38",
+    "wordReadInstruction": "0x82D55D1C",
+    "wordOffset": "0x1C",
+    "boundaryCallInstruction": "0x82D55D24",
+    "boundaryTarget": "0x82D50820",
+    "result": "When incoming r4 is null, SceneNodeRenderVisit tests byte 0x38. A nonzero byte skips the bounded lookup path; zero loads word 0x1C as r4, passes zero in r5, and calls 0x82D50820. When incoming r4 is non-null, byte 0x38 is tested again and zero permits the alternate local-copy path.",
+    "boundary": "The original field names, returned data, later consumers, and runtime values remain unresolved. The callee body is not entered."
+  },
+  "rejectedLeads": {
+    "ghidraFieldDecode": {
+      "result": "The read-only field-access query emitted no decoded accesses for these VMX-truncated functions; no negative semantic inference is drawn from that coverage gap."
+    },
+    "collectionRole": {
+      "result": "Neither scalar is classified as a collection handle, and scene-root content offset 0x44 remains outside this packet."
+    }
+  },
+  "guards": [
+    "Do not assign semantic names to scene-root content word 0x1C, byte 0x38, or their prepared-record sources.",
+    "Do not enter 0x82D50820 or infer the meaning of its result.",
+    "Do not classify either scalar or offset 0x44 as a collection handle.",
+    "Do not infer successful runtime rendering."
+  ],
+  "conclusion": "Version 1.3 SceneRootContentSlot0Body copies prepared-record word 0x0 to content word 0x1C and prepared-record byte 0x1C to content byte 0x38. SceneNodeRenderVisit uses byte 0x38 as a bounded local-value gate and passes word 0x1C only to excluded callee 0x82D50820 on the null-r4 zero-byte path."
+}

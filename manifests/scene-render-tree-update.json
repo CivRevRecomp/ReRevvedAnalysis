@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0019",
+  "topic": "scene-render-tree-update",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What direct update edge does the version 1.3 render-manager update apply to the published scene render tree?",
+  "scope": {
+    "functions": ["0x82D526A0", "0x82D4C4B8"],
+    "global": "0x8314F08C",
+    "fields": ["0x2", "0x10"],
+    "boundary": "This packet proves a static state-reapplication edge. It does not prove a changed value, successful runtime traversal, or the concrete type of the root-content pointer."
+  },
+  "dependencies": [
+    { "topic": "scene-render-tree-publication", "use": "current scene render tree global, layout, and critical-section contract" }
+  ],
+  "currentEvidence": {
+    "method": "identified consumers 0x82D526A0 and 0x82D4C4B8 of the current tree global by manager-field, direct-call, tree-field, generated-code, and foreground read-only Ghidra corroboration",
+    "entries": [
+      {
+        "role": "render-manager update",
+        "address": "0x82D526A0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "root walk",
+        "address": "0x82D4C4B8",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The two functions implement the manager byte-0x4C2 gate, published-tree load, tree byte-0x2 read, direct call, critical-section entry, and byte-0x2 store."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpInstructions.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82D526A0",
+      "generated:rerevved/sub_82D4C4B8"
+    ]
+  },
+  "updateEdge": {
+    "producer": "0x82D526A0",
+    "target": "0x82D4C4B8",
+    "callInstruction": "0x82D52710",
+    "global": "0x8314F08C",
+    "managerGateOffset": "0x4C2",
+    "fieldOffset": "0x2",
+    "fieldWriteInstruction": "0x82D4C4DC",
+    "result": "When render-manager byte 0x4C2 is set, the update clears that manager byte, loads the tree from 0x8314F08C, reads tree byte 0x2, and passes the tree plus that byte to 0x82D4C4B8. The callee enters the tree critical section at offset 0x10 and stores the byte argument back at offset 0x2 before bounded conditional work.",
+    "boundary": "The caller passes the field's existing value, so this proves an update or state-reapplication edge but not a state-value transition."
+  },
+  "downstreamBoundary": {
+    "result": "The root walk conditionally reads tree offset 0x4 and either invokes an indirect manager method or follows a local alternate branch.",
+    "guard": "The tree offset-0x4 object's producer, concrete type, and downstream dispatch remain outside this packet."
+  },
+  "rejectedLeads": {
+    "stateTransition": {
+      "result": "The update reads tree byte 0x2 and passes the same value to the callee; no changed value is established."
+    },
+    "rootIdentity": {
+      "result": "The pointer at tree offset 0x4 participates in conditional work, but its owner and concrete type are not identified here."
+    },
+    "runtimeTraversal": {
+      "result": "Static evidence does not establish that the conditional root work executes successfully at runtime."
+    }
+  },
+  "guards": [
+    "Describe the edge as state reapplication, not a state-value transition.",
+    "Do not name the object at tree offset 0x4 from proximity or downstream use.",
+    "Do not broaden through the indirect call or alternate branch.",
+    "Do not claim successful runtime scene traversal."
+  ],
+  "conclusion": "Version 1.3 render-manager update 0x82D526A0 directly reapplies scene render tree byte 0x2 by passing the published tree and its current byte value to 0x82D4C4B8. The callee locks the tree and stores that value at offset 0x2 before bounded conditional root work."
+}

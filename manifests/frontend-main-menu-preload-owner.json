@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0008",
+  "topic": "frontend-main-menu-preload-owner",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which version 1.3 movie owner explicitly triggers the main-menu preload?",
+  "scope": {
+    "functions": ["0x82DEE860", "0x82DEE920", "0x82C7C3D0", "0x82E7EA60"],
+    "tables": ["0x82126EF4"],
+    "strings": ["0x82126C6C"],
+    "fields": ["0x4", "0x11", "0x42C", "0x430", "0x434"]
+  },
+  "currentEvidence": {
+    "method": "identified at 0x82DEE860, 0x82DEE920, 0x82126EF4, and 0x82E7EA60 by the legal-screen literal, constructor vtable store, update gate, direct preload call, and one-shot flag write",
+    "entries": [
+      {
+        "role": "legal-screen owner update",
+        "address": "0x82DEE860",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "legal-screen owner constructor",
+        "address": "0x82DEE920",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "legal-screen owner vtable",
+        "address": "0x82126EF4",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "main-menu preload",
+        "address": "0x82E7EA60",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The one-shot flag remains at offset 0x434; adjacent timing fields occupy 0x42C and 0x430 in version 1.3."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/FindStrings.java", "ghidra/DumpReferences.java", "ghidra/DumpMemoryWords.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": ["generated:rerevved/sub_82DEE860", "generated:rerevved/sub_82DEE920"]
+  },
+  "legalScreenOwner": {
+    "constructor": "0x82DEE920",
+    "vtable": "0x82126EF4",
+    "moviePathAddress": "0x82126C6C",
+    "moviePath": "GFX_LegalScreen.gfx",
+    "movieRegistration": "0x82C7C3D0",
+    "movieAdvanceField": "0x4",
+    "result": "The constructor passes GFX_LegalScreen.gfx to the movie-registration path and installs final vtable 0x82126EF4.",
+    "boundary": "The maintained Ghidra string has no recovered reference; generated instruction text supplies the literal materialization and call."
+  },
+  "preloadTrigger": {
+    "updateMethod": "0x82DEE860",
+    "vtableSlot": "0x4",
+    "updateGateField": "0x11",
+    "preloadFunction": "0x82E7EA60",
+    "preloadCallInstruction": "0x82DEE8DC",
+    "startedFlag": "0x434",
+    "result": "When owner byte 0x11 is set and byte 0x434 is clear, the slot-0x4 method calls the main-menu preload and sets byte 0x434."
+  },
+  "rejectedFactoryKey": {
+    "result": "No version 1.3 factory-map entry or constructed-state edge connects a numeric key to the preload helper.",
+    "falsificationCondition": "A version 1.3 factory entry explicitly constructs a state object whose method path owns 0x82E7EA60."
+  },
+  "guards": [
+    "Do not assign a numeric frontend-state key to the preload helper.",
+    "Do not rename the legal-screen owner beyond its observed movie path and vtable identity.",
+    "Do not equate background preload with active main-menu presentation."
+  ],
+  "conclusion": "Version 1.3 legal-screen owner update 0x82DEE860 explicitly triggers the main-menu preload once and records completion at owner byte 0x434."
+}

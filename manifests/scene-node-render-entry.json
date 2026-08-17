@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0023",
+  "topic": "scene-node-render-entry",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Where does the version 1.3 slot-0x14 node-dispatch target enter directly, and which scene-root content field does the resulting entry path consume first?",
+  "scope": {
+    "functions": ["0x82E49B58", "0x82E4A098", "0x82D55C68"],
+    "vtable": "0x82147EF8",
+    "slot": "0x40",
+    "sceneRootContentFields": ["0x17", "0x38", "0x1C"],
+    "boundary": "This packet proves two anonymous byte gates, the slot-0x40 target, its direct branch, and the first entry-body field reads. It does not classify collections, enter the scalar lookup, or assert runtime dispatch or rendering success."
+  },
+  "dependencies": [
+    { "topic": "scene-root-prepared-record-dispatch", "use": "current slot-0x14 target, content vtable, and wrapper dispatch boundary" },
+    { "topic": "scene-root-content-field-roles", "use": "current SceneNodeRenderVisit and first byte-0x38/word-0x1C consumption" }
+  ],
+  "currentEvidence": {
+    "method": "identified slot-0x40 wrapper 0x82E4A098 and its slot-0x14 target by anonymous byte gates, vtable word, direct wrapper branch, field accesses, generated-code, and foreground read-only Ghidra corroboration",
+    "entries": [
+      {
+        "role": "slot-0x40 wrapper",
+        "address": "0x82E4A098",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The function uses global byte offset 0x54, content byte 0x17, slot offset 0x40, a zero r5 argument, a direct SceneNodeRenderVisit branch, and the byte-0x38 then word-0x1C path."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpInstructions.java", "ghidra/DumpMemoryWords.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82E49B58",
+      "generated:rerevved/sub_82E4A098",
+      "generated:rerevved/sub_82D55C68"
+    ]
+  },
+  "nodeDispatchGate": {
+    "function": "0x82E49B58",
+    "globalPointer": "0x8314F084",
+    "globalByteOffset": "0x54",
+    "contentReadInstruction": "0x82E49B74",
+    "contentByteOffset": "0x17",
+    "dispatchInstruction": "0x82E49B8C",
+    "result": "A zero byte at the object reached through global pointer 0x8314F084 plus 0x54 returns zero. When that byte is nonzero, a nonzero scene-root content byte 0x17 returns one; zero continues to scene-root content vtable slot 0x40.",
+    "boundary": "The two bytes are exact anonymous gates. Their original semantic names and runtime values remain unresolved."
+  },
+  "directEntry": {
+    "vtable": "0x82147EF8",
+    "slotOffset": "0x40",
+    "slotWord": "0x82147F38",
+    "slotTarget": "0x82E4A098",
+    "directBranchInstruction": "0x82E4A09C",
+    "entryTarget": "0x82D55C68",
+    "entryName": "SceneNodeRenderVisit",
+    "arguments": "The slot target preserves r3 and r4, writes zero to r5, and branches directly to SceneNodeRenderVisit.",
+    "result": "Scene-root content vtable slot 0x40 resolves to the two-instruction wrapper at 0x82E4A098, whose direct branch enters SceneNodeRenderVisit at 0x82D55C68.",
+    "boundary": "The static chain does not establish that either indirect dispatch or the entry body succeeds at runtime."
+  },
+  "firstContentConsumption": {
+    "entry": "0x82D55C68",
+    "preserveInstruction": "0x82D55C9C",
+    "firstFieldReadInstruction": "0x82D55D0C",
+    "firstFieldOffset": "0x38",
+    "conditionalWordReadInstruction": "0x82D55D1C",
+    "conditionalWordOffset": "0x1C",
+    "result": "SceneNodeRenderVisit preserves the incoming scene-root content object in r31. After its preceding gate and only when incoming r4 is null, its first content-field read is byte 0x38. When that byte is zero, it then loads word 0x1C for the call at 0x82D55D24.",
+    "boundary": "Offsets 0x38 and 0x1C remain anonymous. This packet does not classify either as a collection handle or enter callee 0x82D50820."
+  },
+  "guards": [
+    "Do not assign semantic names to scene-root content bytes 0x17 or 0x38 or word 0x1C.",
+    "Do not classify scene-root content offset 0x44 as a child collection.",
+    "Do not infer complete ownership, child traversal, or successful runtime rendering.",
+    "Do not enter the call at 0x82D55D24 or iterate any child collection."
+  ],
+  "conclusion": "Version 1.3 slot-0x14 target 0x82E49B58 first consumes anonymous content byte 0x17 before dispatching vtable slot 0x40. That slot targets wrapper 0x82E4A098, which branches directly to SceneNodeRenderVisit at 0x82D55C68 with r5 zero. The entry body first reads byte 0x38, then conditionally reads word 0x1C."
+}

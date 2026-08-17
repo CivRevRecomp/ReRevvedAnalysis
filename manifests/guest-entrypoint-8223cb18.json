@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0047",
+  "topic": "guest-entrypoint-8223cb18",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What is the exact current-image function at 0x8223CB18?",
+  "currentEvidence": {
+    "address": "0x8223CB18",
+    "method": "Exact nine-instruction byte-flag update shape between independently identified neighborhood anchors.",
+    "confidence": "confirmed"
+  },
+  "guestFunction": {
+    "entry": "0x8223CB18",
+    "size": "0x24",
+    "endExclusive": "0x8223CB3C",
+    "field": "0x138",
+    "result": "Conditionally sets or clears bit 1 of byte field 0x138 and returns."
+  },
+  "generatedCoverage": {
+    "result": "The maintained generated function map registers 0x8223CB18."
+  },
+  "guards": ["Do not infer the containing type or flag name."],
+  "conclusion": "The current image contains the exact byte-flag update leaf at 0x8223CB18."
+}

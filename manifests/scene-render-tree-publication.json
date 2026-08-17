@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0018",
+  "topic": "scene-render-tree-publication",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What object does the version 1.3 scene-tree global reference, who publishes it, and what is one bounded render edge?",
+  "scope": {
+    "functions": [
+      "0x82D52AE8",
+      "0x82D4BF58",
+      "0x82D4C348",
+      "0x82E43830"
+    ],
+    "global": "0x8314F08C",
+    "fields": ["0x8", "0xC", "0x10"],
+    "boundary": "This packet proves the version 1.3 allocation, construction, publication, and one direct render edge. It does not establish successful runtime rendering, identify the rendered collection, or assign a vtable to the tree."
+  },
+  "currentEvidence": {
+    "method": "identified initializer 0x82D52AE8, constructor 0x82D4BF58, renderer 0x82D4C348, gate 0x82E43830, and global 0x8314F08C by direct-call, allocation-size, field-layout, global-reference, generated-code, and foreground read-only Ghidra corroboration",
+    "entries": [
+      {
+        "role": "publisher-containing initializer",
+        "address": "0x82D52AE8",
+        "confidence": "strong"
+      },
+      {
+        "role": "tree constructor",
+        "address": "0x82D4BF58",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "tree render",
+        "address": "0x82D4C348",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "render gate",
+        "address": "0x82E43830",
+        "confidence": "strong"
+      },
+      {
+        "role": "tree global",
+        "address": "0x8314F08C",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "Publisher behavior resides inside wider initializer 0x82D52AE8; bounded publication sites remain explicit below."
+  },
+  "staticQuery": {
+    "scripts": [
+      "ghidra/DumpFunctions.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/DumpInstructions.java"
+    ],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82D52AE8",
+      "generated:rerevved/sub_82D4BF58",
+      "generated:rerevved/sub_82D4C348",
+      "generated:rerevved/sub_82E43830"
+    ]
+  },
+  "publication": {
+    "publisherContainingFunction": "0x82D52AE8",
+    "allocationCallsite": "0x82D52DB0",
+    "constructorCallsite": "0x82D52DBC",
+    "constructor": "0x82D4BF58",
+    "allocationSize": "0x2C",
+    "storeInstruction": "0x82D52DC8",
+    "global": "0x8314F08C",
+    "result": "The bounded block in 0x82D52AE8 allocates 0x2C bytes, invokes 0x82D4BF58 when allocation succeeds, and stores the returned pointer at 0x8314F08C. The same block stores null when allocation fails.",
+    "boundary": "0x82D52AE8 performs wider initialization. Only its allocation-through-publication block is assigned the publisher role."
+  },
+  "layout": {
+    "constructor": "0x82D4BF58",
+    "result": "The allocated scene render tree is vptr-less. The constructor initializes a critical section at offset 0x10, clears pointer offset 0x4 and byte state, and initializes render word 0x8 before returning the object.",
+    "guard": "Do not infer a vtable or name the remaining byte and pointer fields from this packet."
+  },
+  "renderEdge": {
+    "producer": "0x82E43830",
+    "target": "0x82D4C348",
+    "callInstruction": "0x82E438BC",
+    "global": "0x8314F08C",
+    "floatWriteInstruction": "0x82D4C3A8",
+    "argumentWriteInstruction": "0x82D4C3AC",
+    "result": "The render gate checks the published tree and its surrounding anonymous gates, reloads the tree into r3, and calls the tree renderer. The renderer enters the critical section at offset 0x10 and stores its incoming f1 and r4 values at offsets 0x8 and 0xC before bounded downstream work.",
+    "boundary": "Static evidence proves the call and field writes. It does not establish successful runtime rendering or identify the rendered collection."
+  },
+  "teardownBoundary": {
+    "function": "0x82D51EC0",
+    "clearInstruction": "0x82D51F20",
+    "result": "The bounded teardown path processes an existing tree and clears 0x8314F08C.",
+    "guard": "The wider shutdown path and helper semantics remain outside this packet."
+  },
+  "rejectedLeads": {
+    "standalonePublisher": {
+      "result": "No standalone publisher entry is supported; the exact allocation and store sequence resides inside 0x82D52AE8."
+    },
+    "treeVtable": {
+      "result": "The constructor performs no vptr store, so no scene-tree vtable is supported."
+    },
+    "runtimeRendering": {
+      "result": "No version 1.3 runtime probe establishes that the static render edge completes or produces visible content."
+    }
+  },
+  "guards": [
+    "Keep the scene render tree distinct from the separately published scene-active gate.",
+    "Do not assign a vtable to the vptr-less scene render tree.",
+    "Do not claim runtime rendering success from the static render call.",
+    "Do not broaden into the rendered collection or other global consumers in this packet."
+  ],
+  "conclusion": "Version 1.3 global 0x8314F08C stores a heap-published 0x2C-byte vptr-less scene render tree. A bounded block in initializer 0x82D52AE8 constructs and publishes it, while 0x82E43830 provides a direct render edge into 0x82D4C348, which locks the tree and records its incoming render parameters."
+}

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0022",
+  "topic": "scene-root-prepared-record-dispatch",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which prepared-record fields does the version 1.3 scene-root content slot-0 body consume, and what is the first explicit downstream node-dispatch boundary?",
+  "scope": {
+    "functions": ["0x82D548B8", "0x821B2440", "0x82D51160", "0x82D55808", "0x82E49B58"],
+    "vtable": "0x82147EF8",
+    "slot": "0x14",
+    "preparedRecordFields": ["0x0", "0x4", "0x8", "0xC", "0xD", "0x10", "0x14", "0x18", "0x1C", "0x20", "0x24", "0x28"],
+    "sceneRootContentFields": ["0x8", "0x14", "0x1C", "0x20", "0x24", "0x28", "0x29", "0x2C", "0x30", "0x34", "0x38", "0x3C", "0x40", "0x44"],
+    "boundary": "This packet preserves the exact anonymous record mapping, refcount assignment, and first slot-0x14 dispatch. It does not name scalar meanings, classify the pointer as a collection, enter the target, or assert runtime success."
+  },
+  "dependencies": [
+    { "topic": "scene-root-content-construction", "use": "current content object, vtable, slot-0 body, and recursive caller" },
+    { "topic": "scene-root-content-field-roles", "use": "current word-0x1C and byte-0x38 copy identities" }
+  ],
+  "currentEvidence": {
+    "method": "identified assignment 0x821B2440, wrapper 0x82D55808, and slot-0x14 target 0x82E49B58 by exact copy layout, refcount helper behavior, recursive success path, vtable word, generated-code, and foreground read-only Ghidra corroboration",
+    "entries": [
+      {
+        "role": "refcounted pointer assignment",
+        "address": "0x821B2440",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "scene-node render wrapper",
+        "address": "0x82D55808",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "slot-0x14 target",
+        "address": "0x82E49B58",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The function implements all recorded scalar offsets, the 0x28-to-0x44 assignment, completion writes, successful-slot-0 wrapper edge, zero argument, and slot-0x14 target."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpMemoryWords.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82D548B8",
+      "generated:rerevved/sub_821B2440",
+      "generated:rerevved/sub_82D51160",
+      "generated:rerevved/sub_82D55808",
+      "generated:rerevved/sub_82E49B58"
+    ]
+  },
+  "recordConsumption": {
+    "gate": "SceneRootContentSlot0Body enters the copy path only when scene-root content byte 0x14 is zero; a nonzero byte returns zero without copying.",
+    "mapping": [
+      { "sourceOffset": "0x0", "width": "u32", "destinationOffset": "0x1C" },
+      { "sourceOffset": "0x4", "width": "u32", "destinationOffset": "0x20" },
+      { "sourceOffset": "0x8", "width": "u32", "destinationOffset": "0x24" },
+      { "sourceOffset": "0xC", "width": "u8", "destinationOffset": "0x28" },
+      { "sourceOffset": "0xD", "width": "u8", "destinationOffset": "0x29" },
+      { "sourceOffset": "0x10", "width": "f32", "destinationOffset": "0x2C" },
+      { "sourceOffset": "0x14", "width": "f32", "destinationOffset": "0x30" },
+      { "sourceOffset": "0x18", "width": "u32", "destinationOffset": "0x34" },
+      { "sourceOffset": "0x1C", "width": "u8", "destinationOffset": "0x38" },
+      { "sourceOffset": "0x20", "width": "u32", "destinationOffset": "0x3C" },
+      { "sourceOffset": "0x24", "width": "u32", "destinationOffset": "0x40" },
+      { "sourceOffset": "0x28", "width": "refcounted-pointer", "destinationOffset": "0x44", "assignment": "0x821B2440" }
+    ],
+    "assignmentCallInstruction": "0x82D54958",
+    "completion": "After the scalar copies and pointer assignment, the body writes one to byte 0x14 and constant 4 to word 0x8.",
+    "boundary": "The anonymous scalar fields are preserved as an exact mapping without semantic names or a speculative full record type."
+  },
+  "refcountedAssignment": {
+    "function": "0x821B2440",
+    "source": "prepared-record offset 0x28",
+    "destination": "scene-root content offset 0x44",
+    "result": "When the pointers differ, the helper decrements the replaced pointer's count at offset 0x4 and invokes vtable slot 0x4 if the count reaches zero, stores the incoming pointer, and increments the incoming pointer's count at offset 0x4 when non-null.",
+    "boundary": "This is static reference-management evidence, not child traversal or a complete ownership policy; the pointed-to type and final-release method remain unresolved."
+  },
+  "nodeDispatchBoundary": {
+    "caller": "0x82D51160",
+    "wrapper": "0x82D55808",
+    "wrapperCallInstruction": "0x82D51388",
+    "dispatchInstruction": "0x82D55830",
+    "dispatchContinuation": "0x82D55834",
+    "vtable": "0x82147EF8",
+    "slotOffset": "0x14",
+    "slotWord": "0x82147F0C",
+    "target": "0x82E49B58",
+    "arguments": "SceneNodeRenderWrap passes the scene-root content object in r3 and zero in r4.",
+    "result": "After slot 0 returns a nonzero low byte, SceneTreeWalkRecurse calls SceneNodeRenderWrap. Its first indirect call loads vtable slot 0x14, whose table word resolves to 0x82E49B58.",
+    "boundary": "The target body, later wrapper slots 0xC and 0x8, child collections, and runtime dispatch success remain outside this packet."
+  },
+  "guards": [
+    "Do not assign semantic names to the anonymous prepared-record scalar fields.",
+    "Do not interpret the refcounted pointer as a child collection or infer complete ownership.",
+    "Do not enter target 0x82E49B58 or later SceneNodeRenderWrap slots.",
+    "Do not traverse child nodes or claim successful runtime rendering."
+  ],
+  "conclusion": "Version 1.3 SceneRootContentSlot0Body copies the prepared record's bounded 0x0-through-0x28 view into content offsets 0x1C through 0x44, using 0x821B2440 for the refcounted pointer. After success, SceneTreeWalkRecurse reaches wrapper 0x82D55808, whose first node-dispatch boundary is vtable slot 0x14 targeting 0x82E49B58."
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion":1,"id":"RVA-F-0012","topic":"audio-initialization-stream-ownership","status":"closed","confidence":"confirmed","image":"image.json",
+  "question":"Where is the version 1.3 audio manager initialized, and where is the first explicit stream-handle ownership edge?",
+  "scope":{"functions":["0x82E43C80","0x82D52338","0x82D52AE8","0x82D457E0","0x82D46380","0x82D461E8","0x82A34630"],"globals":["0x8314F084"],"tables":["0x82147C38"]},
+  "currentEvidence":{
+    "method": "identified at 0x82E43C80, 0x82D52338, 0x82D52AE8, 0x82D457E0, 0x82D46380, 0x82D461E8, and 0x82A34630 by 0x4C8 and 0x6C allocations, owner field 0x1C, vtable words, stream-array fields, 0x38-byte slot stride, and handle write",
+    "entries": [
+      {
+        "role": "manager create and init",
+        "address": "0x82E43C80",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "manager constructor",
+        "address": "0x82D52338",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "manager initializer",
+        "address": "0x82D52AE8",
+        "confidence": "strong"
+      },
+      {
+        "role": "low-level init",
+        "address": "0x82D457E0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "stream setup dispatch",
+        "address": "0x82D46380",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "stream open",
+        "address": "0x82D461E8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "Miles open wrapper",
+        "address": "0x82A34630",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "staticQuery":{"scripts":["ghidra/DumpMemoryWords.java","ghidra/DumpReferences.java"],"mode":"foreground-read-only","generatedCorroboration":["generated:rerevved/sub_82E43C80","generated:rerevved/sub_82D52338","generated:rerevved/sub_82D461E8"]},
+  "managerCreation":{"entry":"0x82E43C80","global":"0x8314F084","size":"0x4C8","constructor":"0x82D52338","initializer":"0x82D52AE8","result":"The entry allocates, constructs, publishes, and initializes the 0x4C8-byte audio manager.","boundary":"Successful runtime audio remains unconfirmed."},
+  "lowLevelAudioSystem":{"ownerField":"0x1C","size":"0x6C","vtable":"0x82147C38","initSlot":{"offset":"0x0","target":"0x82D457E0"},"setupSlot":{"offset":"0x14","target":"0x82D46380"},"fields":{"milesDriver":"0x30","type2StreamSlots":"0x54","type3StreamSlots":"0x58"},"result":"The manager owns a 0x6C-byte low-level object through field 0x1C; its vtable exposes initialization and stream setup boundaries.","boundary":"Unrecorded slots and fields remain unnamed."},
+  "streamOpen":{"dispatch":"0x82D46380","function":"0x82D461E8","milesOpenWrapper":"0x82A34630","slotSize":"0x38","handleOffset":"0x4","result":"Types 2 and 3 select arrays at low-level offsets 0x54 and 0x58; the open function stores the Miles wrapper result at stream-slot offset 0x4.","boundary":"No successful runtime stream open is claimed."},
+  "guards":["Do not assign roles to unrecorded vtable slots.","Do not rename type-2 and type-3 arrays as 2D and 3D without a direct edge.","Do not claim runtime playback or stream I/O."],
+  "conclusion":"Version 1.3 publishes a 0x4C8-byte audio manager at 0x8314F084, which owns a 0x6C-byte low-level Miles object and 0x38-byte stream slots whose handle field is offset 0x4."
+}

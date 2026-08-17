@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0042",
+  "topic": "guest-entrypoint-821b1cb8",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What is the exact current-image function at 0x821B1CB8?",
+  "currentEvidence": {
+    "address": "0x821B1CB8",
+    "method": "Exact three-instruction fixed-address accessor plus bounded neighborhood confirmation.",
+    "confidence": "confirmed"
+  },
+  "guestFunction": {
+    "entry": "0x821B1CB8",
+    "size": "0xC",
+    "endExclusive": "0x821B1CC4",
+    "instructions": ["lis r11,-0x7CEB", "subi r3,r11,0xC70", "blr"],
+    "result": "Returns fixed address 0x8314F390."
+  },
+  "generatedCoverage": {
+    "result": "The maintained generated declarations, initialization, registration, and body cover 0x821B1CB8."
+  },
+  "guards": ["Do not include following alignment padding in the body."],
+  "conclusion": "The current image contains the exact 0xC-byte fixed-address accessor at 0x821B1CB8."
+}

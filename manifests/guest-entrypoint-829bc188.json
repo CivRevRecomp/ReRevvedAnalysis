@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0040",
+  "topic": "guest-entrypoint-829bc188",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What is the exact current-image thunk at 0x829BC188?",
+  "currentEvidence": {
+    "address": "0x829BC188",
+    "method": "Exact load-at-0x38 tail-thunk shape and stable local sequence.",
+    "confidence": "confirmed"
+  },
+  "guestFunction": {
+    "entry": "0x829BC188",
+    "size": "0x8",
+    "endExclusive": "0x829BC190",
+    "tailTarget": "0x829C8C38",
+    "result": "Loads r3 from r3+0x38 and tail-dispatches."
+  },
+  "generatedCoverage": {
+    "result": "The maintained generated function map registers 0x829BC188."
+  },
+  "guards": ["Do not merge the adjacent thunk at 0x829BC190."],
+  "conclusion": "The current image contains the exact 0x8-byte tail thunk at 0x829BC188."
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rerevved.local/schemas/common.schema.json",
+  "title": "ReRevved shared catalog definitions",
+  "$defs": {
+    "address": {
+      "type": "string",
+      "pattern": "^0x[0-9A-F]{8}$"
+    },
+    "offset": {
+      "type": "string",
+      "pattern": "^0x(?:0|[1-9A-F][0-9A-F]*)$"
+    },
+    "confidence": {
+      "enum": ["confirmed", "strong", "candidate", "rejected"]
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "locator"],
+        "properties": {
+          "kind": {
+            "enum": [
+              "topic-manifest",
+              "ghidra-static",
+              "generated-code",
+              "runtime-probe",
+              "external-reference"
+            ]
+          },
+          "locator": {
+            "type": "string",
+            "pattern": "^(\\.\\./[^#]+\\.json#[^ ]+|ghidra/[^ ]+\\.java(?::[^ ]+)?|generated:[^ ]+|runtime:[^ ]+|https://[^ ]+)$"
+          }
+        }
+      }
+    },
+    "qualification": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "alternatives": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "falsificationCondition": { "type": "string", "minLength": 1 }
+      }
+    },
+    "image": {
+      "const": "../image.json"
+    }
+  }
+}

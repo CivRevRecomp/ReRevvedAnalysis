@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0010",
+  "topic": "controller-input-glyph-selection",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Where does version 1.3 polled controller state become queued input, and does static evidence still select a controller-glyph resource family?",
+  "scope": {
+    "functions": ["0x82C14A30", "0x82C14AD8", "0x82C14EE8", "0x82E555A0", "0x821D8498"],
+    "tables": ["0x82138B4C"],
+    "strings": ["0x82126B10", "0x82126B24", "0x82127E24"]
+  },
+  "currentEvidence": {
+    "method": "identified the controller chain at 0x82C14A30, 0x82C14AD8, 0x82C14EE8, and 0x82E555A0 by adjacent exact-size functions, exact delta-emitter fingerprint, event-record writes, processor fingerprint, class-name function, and vtable words",
+    "entries": [
+      {
+        "role": "controller event builder",
+        "address": "0x82C14A30",
+        "confidence": "strong"
+      },
+      {
+        "role": "controller delta emitter",
+        "address": "0x82C14AD8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "controller poller",
+        "address": "0x82C14EE8",
+        "confidence": "strong"
+      },
+      {
+        "role": "game input processor dispatch",
+        "address": "0x82E555A0",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/FindStrings.java", "ghidra/DumpReferences.java", "ghidra/FindPointerValues.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": ["generated:rerevved/sub_82C14A30", "generated:rerevved/sub_82C14AD8", "generated:rerevved/sub_82C14EE8", "generated:rerevved/sub_82E555A0"]
+  },
+  "controllerEvents": {
+    "poller": "0x82C14EE8",
+    "deltaEmitter": "0x82C14AD8",
+    "eventBuilder": "0x82C14A30",
+    "eventQueueField": "0x10",
+    "eventRecordSize": "0x18",
+    "result": "The adjacent version 1.3 functions implement the bounded poll, delta comparison, and 0x18-byte queued-event construction chain."
+  },
+  "frontendDispatch": {
+    "processor": "CcGameInputProcessor",
+    "vtable": "0x82138B4C",
+    "dispatchSlot": "0x4",
+    "dispatchFunction": "0x82E555A0",
+    "classNameSlot": "0x8",
+    "classNameFunction": "0x821D8498",
+    "className": "CcGameInputProcessor",
+    "result": "The processor table places dispatch 0x82E555A0 at slot 0x4 and the function returning CcGameInputProcessor at slot 0x8.",
+    "boundary": "The complete queue fan-out and semantic names of downstream state slots remain unresolved."
+  },
+  "glyphSelection": {
+    "retainedResources": [
+      {"pathAddress": "0x82126B10", "path": "HoA_GPDirectory.gfx", "referenceCount": 0},
+      {"pathAddress": "0x82126B24", "path": "buttonLegend.gfx", "referenceCount": 0}
+    ],
+    "result": "The glyph literals have no version 1.3 references, and no current glyph-owner selection edge is promoted.",
+    "boundary": "Version 1.3 may obtain glyph assets from data or constructed paths; static executable literals do not identify the selected family."
+  },
+  "guards": [
+    "Do not infer queue fan-out from matching event layouts.",
+    "Do not infer a glyph-owner constructor or selector branch without a current literal or data-flow edge.",
+    "Do not claim that a resource rendered in a specific frame."
+  ],
+  "conclusion": "Version 1.3 implements the controller poll-to-queue chain and CcGameInputProcessor dispatch boundary; no explicit glyph-family selection edge is present in the executable."
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion":1,"id":"RVA-F-0026","topic":"audio-2d-script-entry-lookup","status":"closed","confidence":"confirmed","image":"image.json",
+  "question":"What bounded source object supplies the prepared-record entry, and where does its collection boundary begin?",
+  "scope":{"functions":["0x82D51160","0x82D4E5C8","0x82D4F678"],"ownerFields":["0x350","0x358"],"entryField":"0x6"},
+  "currentEvidence":{
+    "method": "identified at 0x82D51160, 0x82D4E5C8, and 0x82D4F678 by the illegal-2D-scriptId diagnostic, identical owner offsets and bounds logic, caller flow, and entry-halfword consumption",
+    "entries": [
+      {
+        "role": "scene tree walker",
+        "address": "0x82D51160",
+        "confidence": "strong"
+      },
+      {
+        "role": "2D script entry lookup",
+        "address": "0x82D4E5C8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "prepared-record populate",
+        "address": "0x82D4F678",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "staticQuery":{"scripts":["ghidra/FindStrings.java","ghidra/DumpReferences.java"],"mode":"foreground-read-only","generatedCorroboration":["generated:rerevved/sub_82D51160","generated:rerevved/sub_82D4E5C8","generated:rerevved/sub_82D4F678"]},
+  "indexedLookup":{"function":"0x82D4E5C8","boundOffset":"0x358","tableOffset":"0x350","stride":"0x4","failureDiagnostic":"Asked for illegal 2D scriptId: '%d'","result":"An unsigned index below owner word 0x358 returns the pointer at owner table 0x350 plus index times four; an out-of-range index reports the diagnostic and returns null.","boundary":"Entry type and lifetime are not established by the lookup."},
+  "entryDataFlow":{"caller":"0x82D51160","consumer":"0x82D4F678","entryOffset":"0x6","result":"The walker preserves a non-null lookup result and passes it as r5 to the consumer, which sign-extends entry halfword 0x6 into prepared-record word 0x0.","boundary":"The halfword's original meaning remains unresolved."},
+  "runtimeEvidence":{"status":"bounded","session":"gameplay/audio","date":"2026-08-15","owner":"0x51339ac0","table":"0x5108ebb0","indexRange":[0,63],"recordCount":64,"firstWordCandidate":"0x8214892c","constructorSite":"0x82d46d28","constructorOrdinalsMatchInsertionIndices":true,"entryOffset6":{"classification":"unclassified","result":"The raw halfword values varied across the 64 inserted objects; no concrete type or semantic name was assigned."},"qualification":"The runtime trace confirms the insertion boundary and constructor correlation, not playback or prepared-record success."},
+  "guards":["Do not assign a concrete entry type.","Do not name entry halfword 0x6.","Do not infer playback or runtime rendering."],
+  "conclusion":"Version 1.3 implements the bounded 2D script-entry lookup at owner offsets 0x350/0x358 and the entry-halfword-to-prepared-record data flow. Runtime observation confirms the table insertion boundary and constructor correlation while leaving entry offset +0x6 unclassified."
+}

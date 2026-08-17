@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0031",
+  "topic": "gfx-backend-fetch-descriptor",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "How does version 1.3 create a backend texture and merge its six-dword template into the selected guest fetch shadow entry?",
+  "scope": {
+    "rendererUpload": "0x82304CF0",
+    "rendererBind": "0x82302758",
+    "backendUpload": "0x82578E00",
+    "templateInitializer": "0x8269A378",
+    "backendCreator": "0x8269AB90",
+    "fetchSelector": "0x8269AF10",
+    "boundary": "This packet covers the persistent backend object, its six template dwords, renderer upload and bind ownership, slot-local descriptor merging, and the dirty-state boundary. It excludes runtime texture identities, captured descriptor values, command-packet emission, host execution, SDK cache keys, runtime hooks, and patches."
+  },
+  "dependencies": [
+    { "topic": "gfx-decoded-image-upload", "use": "current renderer upload and backend upload boundary" },
+    { "topic": "gfx-draw-producer", "use": "current renderer texture-bind boundary" },
+    { "topic": "gfx-variant8-tf1-semantics", "use": "static renderer slot selection and null-record guard" }
+  ],
+  "currentEvidence": {
+    "method": "current generated-code inspection of exact object fields, call order, selector index, bit merge, and dirty state, with foreground read-only Ghidra confirmation of function starts and bounded machine words",
+    "entries": [
+      {
+        "role": "renderer bind",
+        "address": "0x82302758",
+        "confidence": "strong"
+      },
+      {
+        "role": "renderer upload",
+        "address": "0x82304CF0",
+        "confidence": "strong"
+      },
+      {
+        "role": "backend upload",
+        "address": "0x82578E00",
+        "confidence": "strong"
+      },
+      {
+        "role": "template initializer",
+        "address": "0x8269A378",
+        "confidence": "strong",
+        "instructionCount": 198,
+        "directCallCount": 3
+      },
+      {
+        "role": "backend creator",
+        "address": "0x8269AB90",
+        "confidence": "strong",
+        "instructionCount": 72,
+        "directCallCount": 7
+      },
+      {
+        "role": "fetch selector",
+        "address": "0x8269AF10",
+        "confidence": "strong",
+        "instructionCount": 95,
+        "directCallCount": 2
+      }
+    ],
+    "qualification": "The automated matcher did not promote these functions by normalized hash alone. The three backend functions are accepted from their unique caller placement, complete field layout, instruction metrics, merge formulas, and terminal state updates."
+  },
+  "objectPath": {
+    "rendererTexture": {
+      "object": "RVA-STR-0008",
+      "backendField": "+0x28",
+      "upload": "0x823050FC calls 0x8269AB90 and 0x82305100 stores the returned backend at renderer texture +0x28.",
+      "bind": "0x82302798 loads the persistent backend from renderer texture +0x28."
+    },
+    "rendererGraphicsState": {
+      "owner": "0x82302758",
+      "field": "+0xB8",
+      "bind": "0x823027A4 loads the graphics-state pointer before the call at 0x823027B8 to 0x8269AF10."
+    },
+    "backendUploadBoundary": "0x82304CF0 forwards selected base and mip sources through 0x82578E00, but those source pointers do not replace the persistent backend object stored at renderer texture +0x28.",
+    "result": "The renderer upload owns backend creation and storage; the later bind consumes that same field to select guest fetch state."
+  },
+  "backendTexture": {
+    "size": "0x34",
+    "creator": "0x8269AB90",
+    "templateInitializer": "0x8269A378",
+    "templateFields": [
+      { "offset": "0x1C", "descriptorDword": 0 },
+      { "offset": "0x20", "descriptorDword": 1 },
+      { "offset": "0x24", "descriptorDword": 2 },
+      { "offset": "0x28", "descriptorDword": 3 },
+      { "offset": "0x2C", "descriptorDword": 4 },
+      { "offset": "0x30", "descriptorDword": 5 }
+    ],
+    "construction": "0x8269AB90 allocates 0x34 bytes and calls 0x8269A378 at 0x8269AC1C. The initializer constructs all six template words. The creator then merges allocation-derived address portions into dword 1 at +0x20 and dword 5 at +0x30.",
+    "completion": "The final creator patch is the +0x30 store at 0x8269ACA4; the persistent backend template is complete after that instruction.",
+    "qualification": "Fields before +0x1C participate in allocation and backend ownership but are not assigned original class or platform API names here."
+  },
+  "fetchSelection": {
+    "function": "0x8269AF10",
+    "entry": {
+      "r3": "graphics state",
+      "r4": "renderer texture slot",
+      "r5": "backend texture or null",
+      "r6": "64-bit dirty-mask bit"
+    },
+    "shadowIndex": "renderer slot + 0x30",
+    "shadowAddress": "graphics state + (renderer slot + 0x30) * 0x18",
+    "backendTableIndex": "renderer slot + 0xC40",
+    "backendTableAddress": "graphics state + (renderer slot + 0xC40) * 4",
+    "slotLocalBytes": [
+      { "offset": "renderer slot + 0x2EAE", "role": "lower bound merged into dword 4 bits 2 through 5" },
+      { "offset": "renderer slot + 0x2EC8", "role": "upper bound merged into dword 4 bits 6 through 9" }
+    ],
+    "qualification": "The renderer slot, guest shadow index, and later hardware fetch ordinal are distinct values. This packet stops before normalization or packet emission."
+  },
+  "descriptorMerge": {
+    "wordOrder": "Six guest big-endian 32-bit dwords in increasing address order.",
+    "notation": "B0 through B5 are backend fields +0x1C through +0x30. O0 through O5 are the previous selected shadow words. A and C are the two slot-local bytes.",
+    "dwords": [
+      { "index": 0, "formula": "(B0 & 0xFFC003FF) | (O0 & 0x003FFC00)" },
+      { "index": 1, "formula": "Let T1 = (B1 & 0x1FFFFFFF) + ((((B1 >> 20) & 0xFFF) + 0x200) & 0x1000); result is (T1 & ~0x800) | (O1 & 0x800)." },
+      { "index": 2, "formula": "B2" },
+      { "index": 3, "formula": "(B3 & 0x8007FFFF) | (O3 & 0x7FF80000)" },
+      { "index": 4, "formula": "Start with (B4 & 0x000003FC) | (O4 & 0xFFFFFC03); replace bits 2 through 5 with max(A, (B4 >> 2) & 0xF), and replace bits 6 through 9 with min(C, (B4 >> 6) & 0xF)." },
+      { "index": 5, "formula": "Let T5 = (B5 & 0x1FFFFE00) + ((((B5 >> 20) & 0xFFF) + 0x200) & 0x1000); result is (T5 & ~0x1FF) | (O5 & 0x1FF)." }
+    ],
+    "completion": "Dword 2 is stored first. Dwords 0, 1, 3, and 5 follow. The dword-4 store at 0x8269B00C completes the selected six-word shadow descriptor.",
+    "dirtyState": "0x8269B010 ORs the supplied 64-bit mask into graphics state +0x18. The store at 0x8269B014 then records the selected backend pointer in the slot +0xC40 table.",
+    "nullBackend": "When r5 is zero, the merge and dirty update are skipped, but the selected backend table is still updated with the null pointer before prior-backend cleanup.",
+    "result": "The selected shadow entry keeps bounded slot-local state rather than copying the backend template byte-for-byte."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": ["ghidra/ExportFunctionFingerprints.java", "ghidra/DumpFunctions.java", "ghidra/DumpMemoryWords.java"],
+    "targets": [
+      "0x82304CF0", "0x82302758", "0x82578E00", "0x8269A378", "0x8269AB90", "0x8269AF10",
+      "0x823027B8", "0x823050FC", "0x8269AC1C", "0x8269ACA4", "0x8269B00C", "0x8269B010", "0x8269B014"
+    ],
+    "program": "rerevved_image.bin",
+    "qualification": "The PowerPC decompiler truncates these Xenon-heavy bodies at save-register thunks, so Ghidra confirms the maintained starts and exact machine words while narrow generated version 1.3 bodies corroborate the full field and bitflow claims."
+  },
+  "guards": [
+    "Do not claim runtime texture or backend pointers, captured descriptor values, resource numbers, dimensions, hashes, or logo identity.",
+    "Do not equate renderer slot, guest shadow selector index, and hardware texture-fetch ordinal.",
+    "Do not assign original class names or platform API names to the backend or graphics-state objects.",
+    "Do not infer runtime execution, command-packet emission, host binding, SDK TextureKey contents, or visible output from this static guest boundary.",
+    "This packet authorizes no runtime hook, launch, guest-memory write, Recomp patch, or SDK change."
+  ],
+  "conclusion": "Version 1.3 establishes the static backend-to-fetch chain. Renderer upload creates and stores a 0x34-byte backend whose +0x1C through +0x30 words form a six-dword template. Renderer bind passes that backend and its graphics state to 0x8269AF10, which merges the template with the selected slot + 0x30 shadow entry, marks the supplied dirty bit at graphics state +0x18, and records the selected backend in the slot +0xC40 table."
+}

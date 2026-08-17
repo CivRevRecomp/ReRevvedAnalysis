@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0038",
+  "topic": "guest-entrypoint-8289e9e0",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What current evidence supports the adjusted-pointer thunk at 0x8289E9E0?",
+  "currentEvidence": {
+    "address": "0x8289E9E0",
+    "method": "Exact two-instruction body, identified tail target, and bounded runtime reachability.",
+    "confidence": "confirmed"
+  },
+  "staticResult": {
+    "result": "Entry 0x8289E9E0 contains addi r3,r3,0x14 followed by a tail branch to lookup 0x828680B8. The next function begins at 0x8289E9E8, fixing the thunk size at 0x8. Neighboring thunks 0x8289E9D0 and 0x8289E9D8 target different functions and remain rejected.",
+    "boundary": "The exact thunk identity and indirect-entry reachability are confirmed; its higher-level callback semantics remain unclassified."
+  },
+  "runtimeEvidence": {
+    "status": "confirmed",
+    "session": "city worker reassignment parity",
+    "date": "2026-08-15",
+    "observedTarget": "0x8289E9E0",
+    "result": "ReXGlue reached the target through an indirect call while exercising the city worker path.",
+    "qualification": "The observation confirms entrypoint reachability, not the callback's semantic role."
+  },
+  "generatedCoverage": {
+    "result": "The maintained generated function map registers 0x8289E9E0."
+  },
+  "guards": [
+    "Do not select a local thunk by address delta alone.",
+    "Keep the neighboring non-matching thunks rejected."
+  ],
+  "conclusion": "The adjusted-pointer thunk at 0x8289E9E0 is an exact current-image entrypoint reached by the runtime."
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0021",
+  "topic": "scene-root-content-construction",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "What explicit construction identity belongs to the version 1.3 scene-root content object, and which slot-0 operation consumes its prepared record?",
+  "scope": {
+    "functions": ["0x822D1708", "0x82D503D0", "0x82D51160", "0x82E49CE0", "0x82D548B8"],
+    "globals": ["0x8314FA54"],
+    "vtable": "0x82147EF8",
+    "fields": ["0x0"],
+    "boundary": "This packet proves the retained pool-entry construction identity and slot-0 thunk edge. It does not assign an original class or method name, complete pool lifetime, prepared-record type, or runtime success."
+  },
+  "dependencies": [
+    { "topic": "scene-render-root-content", "use": "current recursive producer that acquires and returns the content object" }
+  ],
+  "currentEvidence": {
+    "method": "identified producer 0x822D1708, acquire 0x82D503D0, thunk 0x82E49CE0, body 0x82D548B8, vtable 0x82147EF8, and pool 0x8314FA54 by pool-global, allocation-size, vtable-store, table-word, direct-thunk, generated-code, and foreground read-only Ghidra corroboration",
+    "entries": [
+      {
+        "role": "pool grow",
+        "address": "0x822D1708",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "content acquire",
+        "address": "0x82D503D0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "slot-0 thunk",
+        "address": "0x82E49CE0",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "slot-0 body",
+        "address": "0x82D548B8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "content vtable",
+        "address": "0x82147EF8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "content pool",
+        "address": "0x8314FA54",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The version 1.3 entry is 0xA8 bytes and implements pool retention, vptr-at-zero, the slot-0 thunk, the prepared-record argument, and the low-byte return test."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpReferences.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpInstructions.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_822D1708",
+      "generated:rerevved/sub_82D503D0",
+      "generated:rerevved/sub_82D51160",
+      "generated:rerevved/sub_82E49CE0",
+      "generated:rerevved/sub_82D548B8"
+    ]
+  },
+  "constructionIdentity": {
+    "poolGrow": "0x822D1708",
+    "allocationCallsite": "0x822D1790",
+    "acquire": "0x82D503D0",
+    "pool": "0x8314FA54",
+    "size": "0xA8",
+    "vtable": "0x82147EF8",
+    "vptrStoreInstruction": "0x822D17A4",
+    "vptrOffset": "0x0",
+    "result": "SceneRootContentPoolGrow allocates 0xA8-byte entries, installs vtable 0x82147EF8 at offset 0x0, and retains each pointer in pool 0x8314FA54. SceneRootContentAcquire returns one retained entry.",
+    "boundary": "The address-derived scene-root content role does not establish an original concrete class name, complete lifetime policy, or meanings for fields outside the vptr."
+  },
+  "slot0Consumer": {
+    "caller": "0x82D51160",
+    "callsite": "0x82D51374",
+    "vtable": "0x82147EF8",
+    "slotOffset": "0x0",
+    "entry": "0x82E49CE0",
+    "body": "0x82D548B8",
+    "result": "After 0x82D4F678 prepares a stack record at frame offset 0x60, SceneTreeWalkRecurse loads the acquired object's vptr and slot 0, then calls it with r3 as the object and r4 as that record. Vtable word 0x82147EF8 resolves the slot to 0x82E49CE0, which branches directly to 0x82D548B8. The caller tests the low byte of the return before its existing success path.",
+    "boundary": "The record's concrete type, semantic method name, and body beyond the explicit thunk edge remain unresolved in this packet."
+  },
+  "guards": [
+    "Use an address-derived scene-root content role; do not assign an original class name.",
+    "Do not promote offset 0xA0, the prepared record's type, or adjacent vtable slots from this packet.",
+    "Do not traverse child nodes, entity collections, or the wider scene graph.",
+    "Do not claim successful runtime construction, slot execution, or rendering."
+  ],
+  "conclusion": "The object returned by version 1.3 function 0x82D503D0 is a retained 0xA8-byte pool entry constructed by 0x822D1708 with vtable 0x82147EF8. SceneTreeWalkRecurse consumes its slot 0; the table entry is thunk 0x82E49CE0, which branches to 0x82D548B8."
+}

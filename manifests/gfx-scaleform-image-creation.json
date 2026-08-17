@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0007",
+  "topic": "gfx-scaleform-image-creation",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "Where does version 1.3 parse a DefineExternalImage tag, build its deferred descriptor, create the image-file request, and carry it through the state-kind-12 renderer upload path?",
+  "scope": {
+    "tagLoader": "0x821E9390",
+    "descriptorBuilder": "0x821E9178",
+    "stateSnapshotBuilder": "0x82216D18",
+    "resourceCreator": "0x822189A8",
+    "stateInstaller": "0x821EF610",
+    "stateVtable": "0x8213CF28",
+    "imageCreator": "0x821E2F80",
+    "opener": "0x82E87B28",
+    "rendererConstructor": "0x82301D00",
+    "rendererVtable": "0x82169E30",
+    "textureFactory": "0x82302DC8",
+    "textureVtable": "0x82169EC4",
+    "uploadTarget": "0x82304CF0",
+    "boundary": "This packet establishes the generic external-image creation path. It does not prove that GFX_MainMenu_logo.dds used this path at runtime or that the engine type-7 texture registry participates."
+  },
+  "currentEvidence": {
+    "tagLoader": {
+      "address": "0x821E9390",
+      "method": "exact diagnostic-string materialization plus matching tag-field reads and direct descriptor-builder call",
+      "result": "The current tag loader reads the tag id, format, image name, export name, width, and height, formats the DefineExternalImage diagnostic, and calls the descriptor builder."
+    },
+    "descriptorBuilder": {
+      "address": "0x821E9178",
+      "method": "matching 0x28-byte descriptor construction, field-copy sequence, and movie-definition registration flow",
+      "result": "The current builder stores the parsed external-image fields in a 0x28-byte deferred descriptor and registers that descriptor with the movie definition."
+    },
+    "stateSnapshotBuilder": {
+      "address": "0x82216D18",
+      "method": "matching ten-entry state-kind table, output-field sequence, and retained-state replacement structure",
+      "result": "The current snapshot builder requests state kinds 10, 11, 12, 15, 21, 16, 19, 18, 20, and 25; its state-kind-10 and state-kind-12 outputs occupy offsets 0x10 and 0x18."
+    },
+    "resourceCreator": {
+      "address": "0x822189A8",
+      "method": "matching 40-byte resource allocation, request-kind construction, snapshotted-state selection, and virtual creator dispatch",
+      "result": "The current image-file resource creator builds the request and, on the external-image branch, dispatches the snapshotted state-kind-12 object through slot 0x4."
+    },
+    "stateInstaller": {
+      "address": "0x821EF610",
+      "method": "matching state-object allocation and state-bag publication structure followed by direct validation of numeric state kind 12 and the current vtable store",
+      "result": "The current loader path allocates a 0x18-byte state object, installs vtable 0x8213CF28, records state kind 12, and publishes it through the loader state bag."
+    },
+    "imageCreator": {
+      "address": "0x821E2F80",
+      "method": "matching request-kind switch, external-file opener branch, decoder selection, renderer dispatch, and current state-vtable slot",
+      "result": "For request kind 2, the current callback opens the descriptor filename, selects a decoder from the descriptor format, allocates a renderer texture through renderer slot 0x8, and dispatches the returned texture's slot 0x8 with decoded data and dimensions."
+    },
+    "rendererConstructor": {
+      "address": "0x82301D00",
+      "method": "current vtable materialization and bounded constructor-field validation",
+      "result": "The current renderer constructor installs vtable 0x82169E30."
+    },
+    "textureFactory": {
+      "address": "0x82302DC8",
+      "method": "matching 0x30-byte allocation, renderer-owner field, zeroed dimensions/backend fields, current texture-vtable store, and renderer-vtable slot",
+      "result": "The current factory allocates a 0x30-byte renderer texture, installs vtable 0x82169EC4, stores the renderer at +0x1C, and clears +0x20, +0x24, and +0x28."
+    },
+    "uploadTarget": {
+      "address": "0x82304CF0",
+      "method": "current texture-vtable slot plus matching decoded-image selection, dimension writes, backend allocation, upload, and backend-field store",
+      "result": "The current upload method consumes decoded-image data and dimensions, records width and height at +0x20/+0x24, and stores the created backend texture at +0x28."
+    }
+  },
+  "externalImageTag": {
+    "tagLoader": "0x821E9390",
+    "descriptorBuilder": "0x821E9178",
+    "descriptorSize": "0x28",
+    "identity": "DefineExternalImage: tagInfo.TagType = %d, id = 0x%X, fmt = %d, name = '%s', exp = '%s', w = %d, h = %d",
+    "identityAddress": "0x8213C888",
+    "result": "The version 1.3 tag path keeps the parsed external-image identity and dimensions in a deferred descriptor before movie-definition registration."
+  },
+  "imageCreatorState": {
+    "snapshotBuilder": "0x82216D18",
+    "stateKinds": [10, 11, 12, 15, 21, 16, 19, 18, 20, 25],
+    "openerSnapshotField": "0x10",
+    "creatorSnapshotField": "0x18",
+    "stateKind": 12,
+    "installer": "0x821EF610",
+    "objectSize": "0x18",
+    "vtable": "0x8213CF28",
+    "createSlot": "0x4",
+    "createTarget": "0x821E2F80",
+    "result": "The version 1.3 loader publishes a state-kind-12 object whose create slot resolves directly to the external-image callback."
+  },
+  "fileDecodeHandoff": {
+    "resourceCreator": "0x822189A8",
+    "imageCreator": "0x821E2F80",
+    "externalRequestKind": 2,
+    "openerStateKind": 10,
+    "openerSlot": "0x4",
+    "installedOpener": "0x82E87B28",
+    "result": "The resource creator dispatches the external-image request through snapshotted state-kind-12 slot 0x4. The resulting external-file branch passes the descriptor filename through the snapshotted state-kind-10 opener before format-specific decoding."
+  },
+  "rendererTextureHandoff": {
+    "rendererConstructor": "0x82301D00",
+    "rendererVtable": "0x82169E30",
+    "textureFactorySlot": "0x8",
+    "textureFactory": "0x82302DC8",
+    "textureObjectSize": "0x30",
+    "textureVtable": "0x82169EC4",
+    "uploadSlot": "0x8",
+    "uploadTarget": "0x82304CF0",
+    "rendererField": "0x1C",
+    "dimensionsFields": ["0x20", "0x24"],
+    "backendField": "0x28",
+    "result": "The current renderer table binds slot 0x8 to the 0x30-byte texture factory. The produced texture table binds slot 0x8 to the upload method, closing the static decoded-image-to-backend-texture path."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": [
+      "ghidra/FindStrings.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/FindPointerValues.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpFunctions.java"
+    ],
+    "program": "rerevved_image.bin"
+  },
+  "guards": [
+    "Do not infer that a specific movie or asset supplied a parsed DefineExternalImage tag without runtime evidence.",
+    "Do not infer an exact logo creation event from this generic external-image path.",
+    "Do not claim whether the type-11 cache or filesystem fallback served a runtime request without a probe.",
+    "Do not route this path through the engine type-7 texture registry; no explicit current edge does so.",
+    "Do not equate the decoded-image record, renderer texture object, and backend texture."
+  ],
+  "conclusion": "Version 1.3 defines the full static external-image chain from DefineExternalImage parsing and deferred descriptor registration through request creation, state-kind-12 dispatch, filename-specific open, format decode, renderer texture allocation, and backend upload. The path remains separate from the engine type-7 texture registry."
+}
