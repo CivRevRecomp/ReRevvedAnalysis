@@ -78,6 +78,18 @@
     "result": "No direct call from 0x82227EF0, 0x822270F8, or their bounded named helpers reaches 0x82C7D930. Their remaining calls are virtual interface dispatches whose runtime targets are unresolved.",
     "qualification": "This excludes direct static convergence only. It does not prove that a resolved virtual target, later queue consumer, or callback cannot reach a stream loader."
   },
+  "rosettaEvidence": {
+    "source": {
+      "repository": "https://github.com/sigmaco/scaleform-gfx-v2.1.57",
+      "revision": "dba6440c192839a63612e347fb229960b16c5d63",
+      "stateHeader": "Include/GFxLoader.h",
+      "queueImplementation": "Src/GFxPlayer/GFxPlayerImpl.cpp"
+    },
+    "stateIdentity": "GFx 2.1.57 StateType value 22 is State_TaskManager. Neighboring numeric anchors align with the title loader constructor: 4 Log, 12 ImageCreator, 17 FontCacheManager, 23 TextClipboard, and 24 TextKeyMap.",
+    "functionIdentity": "The source AddMovieLoadQueueEntry decision tree matches title function 0x82229C00: reject a null entry, detect img:// and imgps:// URLs case-insensitively, query state 22 only for non-image URLs, and choose the multithreaded queue only when a task manager exists.",
+    "nullBehavior": "A null state-22 result intentionally selects AddLoadQueueEntry, the synchronous fallback. It is not a failed prerequisite and does not authorize installing a synthetic task manager.",
+    "qualification": "The mapping is a structural version-family correlation against independently maintained source, not proof that the title binary was built from this exact public mirror commit."
+  },
   "staticQuery": {
     "mode": "foreground-read-only",
     "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpReferences.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpInstructions.java", "ghidra/FindPointerValues.java"],
@@ -86,17 +98,39 @@
     "qualification": "Ghidra establishes the current function starts, table words, references, and bounded instructions. The known unrepaired second save-register thunk block truncates these decompilations, so narrow generated version 1.3 bodies establish the bounded data flow."
   },
   "runtimeEvidence": {
-    "status": "diagnostic-only",
+    "status": "bounded",
     "date": "2026-08-17",
-    "observed": "A bounded title/menu run reached the concrete state setter 12 times and observed no non-null state object whose +0x10 key was 22. MovieClipLoader attachment continued to take the missing-state route.",
-    "qualification": "This is negative evidence for the sampled session only. It does not identify the owner provider object, prove that every provider uses 0x821EE910, or establish where key 22 should be installed."
+    "hookSites": ["0x821EEA38", "0x821EEACC"],
+    "exactFilter": "The concrete getter entry recovered the forwarding interface's saved caller from guest stack +0x58; its return recovered the same caller from getter stack +0xD8. Only caller 0x82229D88 with key 22 was accepted.",
+    "recordCount": 64,
+    "observed": {
+      "caller": "0x82229D88",
+      "key": 22,
+      "bagVtable": "0x8213CF60",
+      "distinctBags": 5,
+      "distinctParents": 5,
+      "allParentsNonNull": true,
+      "nonNullResults": 0,
+      "result": "All 64 exact loadClip attachment lookups reached concrete state bags with readable non-null parent fields and returned null after local lookup plus parent fallback."
+    },
+    "setterCorrelation": {
+      "date": "2026-08-17",
+      "hookSites": ["0x821EE910", "0x821EEACC"],
+      "method": "The concrete setter observed key 22 using state object offset +0x10 for non-null installs and r4 only for null-state erases. The getter return retained the exact caller 0x82229D88 and key-22 filters.",
+      "getterRecordCount": 64,
+      "effectiveKey22SetterRecordCount": 0,
+      "result": "The sampled run produced 64 exact null getter results and no concrete setter event whose effective key was 22. It therefore found no same-run key-22 install or erase through 0x821EE910 to correlate with the observed bag chains.",
+      "qualification": "The absence is bounded to this run and concrete setter. It does not rule out constructor-time container initialization, another provider implementation, or a producer path not exercised by the sampled navigation."
+    },
+    "qualification": "This proves the null key-22 result for the five sampled concrete bag/parent chains. Rosetta correlation identifies that result as the supported synchronous-loading fallback, not a missing state producer."
   },
   "guards": [
     "Do not equate the owner +0x10 interface table at 0x8213CF34 with the concrete state-bag table at 0x8213CF60.",
     "Do not treat the concrete setter's r4 argument as the installed key when the state object is non-null; the installed key comes from state object offset +0x10.",
     "Do not infer a missing global setter, a unique provider implementation, or a required synthetic key-22 write from one runtime session.",
+    "Do not treat a null key-22 TaskManager lookup as a fault; 0x82229C00 deliberately selects the synchronous queue when it is null.",
     "Do not infer stream-load convergence through unresolved virtual calls.",
     "This packet authorizes no guest-memory write, behavior change, or SDK change."
   ],
-  "conclusion": "Version 1.3 resolves MovieClipLoader state key 22 through an owner-side forwarding interface before dispatching to a backing provider. The known concrete bag implements set and get at 0x821EE910 and 0x821EEA38, including parent fallback on lookup miss. Both fulfilled-request constructors repeat the key-22 lookup and attach their route-specific object through the returned state, but no bounded direct static edge reaches the title stream loader."
+  "conclusion": "Version 1.3 resolves GFx State_TaskManager key 22 through an owner-side forwarding interface. The known concrete bag implements set and get at 0x821EE910 and 0x821EEA38, including parent fallback. Function 0x82229C00 intentionally uses a non-null task manager for the multithreaded movie-load queue and otherwise selects the synchronous queue, so the observed null results are valid fallback behavior rather than the missing-icon cause."
 }
