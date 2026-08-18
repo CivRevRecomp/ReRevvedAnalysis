@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0057",
+  "topic": "gfx-ui-loadclip-state-provider",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "dependsOn": ["gfx-ui-moviecliploader-request-boundary"],
+  "question": "How does the version 1.3 MovieClipLoader owner resolve state key 22, and what do the two fulfilled-request constructors do with the result?",
+  "scope": {
+    "ownerConstructor": "0x821EF610",
+    "ownerStateInterfaceTable": "0x8213CF34",
+    "stateSetterForwarder": "0x821E2B30",
+    "stateGetterForwarder": "0x821E2B98",
+    "concreteStateBagTable": "0x8213CF60",
+    "concreteStateSetter": "0x821EE910",
+    "concreteStateGetter": "0x821EEA38",
+    "fulfilledHandler": "0x82229518",
+    "fulfilledConstructors": ["0x82227EF0", "0x822270F8"],
+    "streamLoader": "0x82C7D930",
+    "boundary": "This packet establishes the owner-to-provider state interface and the immediate fulfilled-request construction path. It does not identify which runtime object supplies key 22, prove that the concrete bag is the only provider implementation, resolve indirect virtual targets, or establish convergence on a title stream loader."
+  },
+  "ownerStateInterface": {
+    "constructor": "0x821EF610",
+    "subobjectOffset": "+0x10",
+    "table": "0x8213CF34",
+    "slots": [
+      {
+        "offset": "+0x8",
+        "target": "0x821E2B30",
+        "role": "resolve the backing provider through slot +0x0, then forward a state-set operation through provider slot +0x8"
+      },
+      {
+        "offset": "+0xC",
+        "target": "0x821E2B98",
+        "role": "resolve the backing provider through slot +0x0, then forward a keyed state lookup through provider slot +0xC"
+      }
+    ],
+    "result": "MovieClipLoader attachment does not call a concrete state bag directly. The owner +0x10 interface first resolves a backing provider and forwards the operation through that provider's vtable."
+  },
+  "concreteStateBag": {
+    "table": "0x8213CF60",
+    "slots": [
+      {
+        "offset": "+0x8",
+        "target": "0x821EE910",
+        "role": "set or erase state"
+      },
+      {
+        "offset": "+0xC",
+        "target": "0x821EEA38",
+        "role": "get state by key"
+      }
+    ],
+    "setterBehavior": "A non-null state object supplies its lookup key from object offset +0x10. A null state object erases the key passed separately. The bag updates a synchronized keyed container rooted at bag offset +0x10.",
+    "getterBehavior": "The getter searches the synchronized keyed container rooted at bag offset +0x10. On a local miss it forwards the same key to the parent bag held at bag offset +0xC; without a parent it returns null.",
+    "qualification": "The concrete table is one valid provider implementation reached through the forwarder contract. Static structure does not prove that every owner resolves this implementation at runtime."
+  },
+  "fulfilledPath": {
+    "handler": "0x82229518",
+    "selection": "Request-object field +0x4 bit 0x4 selects a 0x1C-byte allocation followed by 0x82227EF0; the other route selects a 0x34-byte allocation followed by 0x822270F8.",
+    "constructors": [
+      {
+        "address": "0x82227EF0",
+        "result": "Builds and retains its route-specific listener/request state, repeats key-22 lookup through owner +0x10 slot +0xC, and attaches the new object through the returned state's virtual interface."
+      },
+      {
+        "address": "0x822270F8",
+        "result": "Builds and retains its route-specific listener/request state, repeats key-22 lookup through owner +0x10 slot +0xC, and attaches the new object through the returned state's virtual interface."
+      }
+    ],
+    "publication": "A non-null constructed object is appended to owner +0x224 by 0x82229518.",
+    "failure": "An allocation failure routes the original request object to 0x82227028."
+  },
+  "streamLoadComparison": {
+    "streamLoader": "0x82C7D930",
+    "directCallers": ["0x82E41898", "0x82E419A8"],
+    "result": "No direct call from 0x82227EF0, 0x822270F8, or their bounded named helpers reaches 0x82C7D930. Their remaining calls are virtual interface dispatches whose runtime targets are unresolved.",
+    "qualification": "This excludes direct static convergence only. It does not prove that a resolved virtual target, later queue consumer, or callback cannot reach a stream loader."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": ["ghidra/DumpFunctions.java", "ghidra/DumpReferences.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpInstructions.java", "ghidra/FindPointerValues.java"],
+    "program": "rerevved_image.bin",
+    "generatedCorroboration": ["0x821E2B30", "0x821E2B98", "0x821EE910", "0x821EEA38", "0x821EF610", "0x822270F8", "0x82227EF0", "0x82229518", "0x82229C00", "0x82C7D930", "0x82E41898", "0x82E419A8"],
+    "qualification": "Ghidra establishes the current function starts, table words, references, and bounded instructions. The known unrepaired second save-register thunk block truncates these decompilations, so narrow generated version 1.3 bodies establish the bounded data flow."
+  },
+  "runtimeEvidence": {
+    "status": "diagnostic-only",
+    "date": "2026-08-17",
+    "observed": "A bounded title/menu run reached the concrete state setter 12 times and observed no non-null state object whose +0x10 key was 22. MovieClipLoader attachment continued to take the missing-state route.",
+    "qualification": "This is negative evidence for the sampled session only. It does not identify the owner provider object, prove that every provider uses 0x821EE910, or establish where key 22 should be installed."
+  },
+  "guards": [
+    "Do not equate the owner +0x10 interface table at 0x8213CF34 with the concrete state-bag table at 0x8213CF60.",
+    "Do not treat the concrete setter's r4 argument as the installed key when the state object is non-null; the installed key comes from state object offset +0x10.",
+    "Do not infer a missing global setter, a unique provider implementation, or a required synthetic key-22 write from one runtime session.",
+    "Do not infer stream-load convergence through unresolved virtual calls.",
+    "This packet authorizes no guest-memory write, behavior change, or SDK change."
+  ],
+  "conclusion": "Version 1.3 resolves MovieClipLoader state key 22 through an owner-side forwarding interface before dispatching to a backing provider. The known concrete bag implements set and get at 0x821EE910 and 0x821EEA38, including parent fallback on lookup miss. Both fulfilled-request constructors repeat the key-22 lookup and attach their route-specific object through the returned state, but no bounded direct static edge reaches the title stream loader."
+}
