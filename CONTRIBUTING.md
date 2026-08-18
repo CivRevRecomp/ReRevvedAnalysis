@@ -9,8 +9,10 @@ AI-assisted changes also follow the portable policy in
 ## Findings
 
 Keep the claim narrow and identify the image, guest locator, evidence source,
-confidence, and remaining uncertainty. Put the durable fact in one canonical
-manifest, catalog, or structure note. Link to it from other documentation.
+confidence, and remaining uncertainty. Follow the [topic manifest
+contract](docs/topic-manifests.md) when recording a bounded finding. Put the
+durable fact in one canonical manifest, catalog, or structure note. Link to it
+from other documentation.
 Preserve source and external provenance, and do not promote raw
 decompiler output as evidence.
 

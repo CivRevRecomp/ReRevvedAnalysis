@@ -134,8 +134,9 @@ reports, and headless logs remain ignored scratch and are deleted after the
 supported facts enter a topic manifest.
 
 When a promoted packet depends on another current packet, list that topic under
-`dependencies`. The topic resolves in the current checkout. Each dependent
-packet still carries the current-image locators required to support its claim.
+`dependencies`. The [topic manifest contract](topic-manifests.md) defines the
+resolving topic and current-evidence rules. Each dependent packet still carries
+the current-image locators required to support its claim.
 
 Promote only compact findings into `manifests/`. Keep query output and
 headless logs in a dedicated ignored scratch directory outside the shared

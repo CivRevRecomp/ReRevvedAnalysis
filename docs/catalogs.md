@@ -5,6 +5,9 @@ symbols, structs and fields, vtables and slots, and explicit relations. Topic
 manifests remain investigation records and are not generated from catalogs or
 rewritten when a fact is promoted.
 
+See the [topic manifest contract](topic-manifests.md) for topic-record fields,
+current evidence, dependencies, and promotion boundaries.
+
 ## Identity and formats
 
 IDs are unique within the current catalogs. Allocate the next four-digit value
