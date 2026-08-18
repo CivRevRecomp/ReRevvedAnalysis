@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0058",
+  "topic": "gfx-image-movie-shape-display",
+  "status": "closed",
+  "confidence": "strong",
+  "image": "image.json",
+  "question": "How does an image-file movie carry its decoded image from the synthetic character definition into the GFx renderer?",
+  "scope": {
+    "imageMovieInitializer": "0x82235830",
+    "shapeConstructor": "0x821F80E0",
+    "shapeImageInitializer": "0x821F82D8",
+    "shapeVtable": "0x8213D408",
+    "shapeDisplay": "0x821F3F48",
+    "fillTextureResolver": "0x8225BC48",
+    "coupledFillBuild": "0x822688C0",
+    "resourceSubmit": "0x82266358",
+    "fillDispatch": "0x8226649C",
+    "indexedDraw": "0x82303C38",
+    "boundary": "This packet closes the image-movie shape display boundary. The decoded image reaches the synthetic shape intact. Before the render-config repair, sampled shapes dispatched an untextured subtype-0 fill; after refresh from the renderer's first successful capability result, sampled shapes resolved and drew the expected textured subtype-2 fill."
+  },
+  "dependencies": [
+    {
+      "topic": "gfx-scaleform-image-creation",
+      "use": "renderer texture object and backend upload contract"
+    },
+    {
+      "topic": "gfx-draw-producer",
+      "use": "texture-bind and indexed-draw renderer boundaries"
+    },
+    {
+      "topic": "gfx-coupled-fill-producer",
+      "use": "renderer vertex-format gate and simple-versus-complex descriptor writer"
+    }
+  ],
+  "currentEvidence": {
+    "method": "foreground read-only Ghidra vtable and function queries, bounded generated-code corroboration, and a default-off exact-shape runtime probe",
+    "entries": [
+      {
+        "role": "image-file movie definition initializer",
+        "address": "0x82235830",
+        "result": "Allocates a 0x90-byte shape definition, calls 0x821F80E0, passes the decoded image and bilinear flag to 0x821F82D8, installs the shape as character id 1, and creates the one-frame PlaceObject tag."
+      },
+      {
+        "role": "image shape constructor",
+        "address": "0x821F80E0",
+        "result": "Installs vtable 0x8213D408 and initializes the shape bounds, flags, fill-style array, and path storage."
+      },
+      {
+        "role": "shape image initializer",
+        "address": "0x821F82D8",
+        "result": "Reads image dimensions, resizes the fill-style array to one 0x28-byte entry, calls fill initializer 0x8225C3F0 with the decoded image, marks a textured fill, establishes image-sized bounds, and emits the rectangular path."
+      },
+      {
+        "role": "shape display",
+        "address": "0x821F3F48",
+        "result": "Vtable 0x8213D408 resolves its display slot to this function. It builds display parameters, applies bounds and style gates, and calls the mesh display body at 0x821F4100."
+      },
+      {
+        "role": "fill texture resolver",
+        "address": "0x8225BC48",
+        "result": "Resolves an image fill's direct resource pointer through the display context, obtains the renderer texture, and returns success with that texture at FillTexture +0x0. All exits converge at 0x8225C03C with the result in r3 and the output pointer retained in r26."
+      },
+      {
+        "role": "mesh resource submit",
+        "address": "0x82266358",
+        "result": "Consumes mesh descriptor selectors, resolves each non-sentinel source entry through 0x8225BC48, and dispatches the fill through renderer vtable slot +0x58. This is the resource path used by 0x822683B0 for the sampled image shapes."
+      },
+      {
+        "role": "fill dispatch callsite",
+        "address": "0x8226649C",
+        "result": "Dispatches the descriptor subtype in r4 and up to two resolved resource records in r5 and r6. Before repair the sampled image shapes reached target 0x82303BE0 with subtype 0 and both records null; after render-config refresh they reached the same target with subtype 2 and a resolved primary record."
+      }
+    ]
+  },
+  "shapeLayout": {
+    "vtable": "0x8213D408",
+    "flags": "+0x34",
+    "fillStyleArray": {
+      "data": "+0x64",
+      "count": "+0x68",
+      "capacity": "+0x6C",
+      "entrySize": "0x28"
+    },
+    "imageFill": {
+      "type": "+0x0",
+      "flags": "+0x1",
+      "resourceHandleKind": "+0x8",
+      "resourcePointer": "+0xC"
+    },
+    "result": "The synthetic image shape owns one direct image fill. The resource handle kind is zero and the decoded GFx image resource pointer is stored in the fill entry at +0xC."
+  },
+  "rendererHandoff": {
+    "shapeDisplayBody": "0x821F4100",
+    "batchDispatcher": "0x822683B0",
+    "resourceSubmit": "0x82266358",
+    "fillTextureResolver": "0x8225BC48",
+    "resourceResultCallsite": "0x82266454",
+    "fillDispatchCallsite": "0x8226649C",
+    "fillDispatchTarget": "0x82303BE0",
+    "textureBackend": "The renderer texture object's backend field is +0x28.",
+    "indexedDraw": "0x82303C38",
+    "result": "Before repair, sampled exact image shapes drew without a resource selector. After the renderer's successful capabilities refreshed the stale config, 27 sampled coupled builds each resolved one texture, dispatched subtype 2 with a primary resource record, and drew 12 vertices and 10 triangles."
+  },
+  "producerDecision": {
+    "function": "0x822688C0",
+    "source": "All 22 drawn exact shapes carried source count 1 and source type 0x41.",
+    "renderConfig": "RenderFlags +0x1C was 0x10, RendererCapBits +0x24 was 0x701CFB80, and RendererVtxFmts +0x28 was zero.",
+    "writer": "All 22 called simple writer 0x822CA118 once and complex writer 0x822CA718 zero times.",
+    "result": "The failed initial capability snapshot selected format 3 and the simple writer. Refreshing that same config with the renderer's later successful 0x1B VertexFormats result selected the complex writer and preserved the image resource mapping."
+  },
+  "rosettaEvidence": {
+    "source": {
+      "repository": "https://github.com/sigmaco/scaleform-gfx-v2.1.57",
+      "revision": "dba6440c192839a63612e347fb229960b16c5d63",
+      "initializer": "Src/GFxPlayer/GFxMovieDef.cpp",
+      "shape": "Src/GFxPlayer/GFxShape.cpp",
+      "styles": "Src/GFxPlayer/GFxStyles.cpp",
+      "mesh": "Src/GFxPlayer/GFxMesh.cpp"
+    },
+    "result": "GFx 2.1.57 constructs an image-sized textured rectangle with one direct GFxImageResource fill and expects mesh generation to preserve that resource mapping for drawing.",
+    "qualification": "This is a structural version-family correlation against independently maintained source, not proof that the title binary was built from this exact public mirror revision."
+  },
+  "staticQuery": {
+    "mode": "foreground-read-only",
+    "scripts": ["ghidra/DumpMemoryWords.java", "ghidra/DumpFunctions.java"],
+    "targets": ["0x8213D408", "0x821F3F48", "0x821F82D8", "0x8225BC48", "0x82266358", "0x822683B0", "0x82269CD8"],
+    "program": "rerevved_image.bin"
+  },
+  "runtimeProbe": {
+    "status": "accepted",
+    "method": "Registered exact shape/image pairs at 0x821F82D8, accepted each shape once at 0x821F3F48, observed resource results at 0x82266454, fill dispatch at 0x8226649C, and indexed draws at 0x82303C38.",
+    "result": "The final producer run recorded 63 exact shapes before exit; 22 reached draw. All 22 retained vtable 0x8213D408, one type-0x41 source, and the exact registered image pointer; all 22 selected the simple writer, made zero resource-result calls, dispatched subtype 0 with null primary and secondary records, then drew 12 vertices and 10 triangles.",
+    "qualification": "The 22 drawn records are a bounded exact-shape sample, not an inventory of every missing image."
+  },
+  "repairValidation": {
+    "date": "2026-08-18",
+    "method": "The compatibility repair remembered only the GFxRenderConfig whose own GetRenderCaps call failed, then copied CapBits and VertexFormats from the first successful query by the same renderer.",
+    "sample": 27,
+    "uniformResult": "All 27 sampled coupled image-shape builds used RendererCapBits 0x330C and RendererVtxFmts 0x1B, called the complex writer once and the simple writer zero times, resolved one texture, dispatched subtype 2, and drew 12 vertices and 10 triangles.",
+    "visualResult": "The owner reported that all graphics inspected during the validation launch were working."
+  },
+  "guards": [
+    "Do not classify an arbitrary textured GFx shape as an image-file movie shape; require registration at 0x821F82D8.",
+    "Do not generalize the three drawn records into a count of all missing images.",
+    "Do not equate the GFx image resource, renderer texture object, and backend texture.",
+    "Do not patch the fill dispatcher or install a synthetic texture; the lost resource mapping must be traced to its mesh descriptor producer.",
+    "Do not return to TaskManager state, ObjectIcons path failures, or asynchronous file I/O from this packet."
+  ],
+  "conclusion": "The title constructs and displays the image-backed shape correctly. ReXGlue's initialization order let GFxRenderConfig retain a failed pre-video-mode capability snapshot, which forced the simple untextured writer. Refreshing that exact config from the same renderer's first successful capability query restored the complex textured path and the inspected graphics."
+}

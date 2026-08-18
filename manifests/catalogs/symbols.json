@@ -1075,7 +1075,6 @@
       "claim": "Copies six consecutive movie-view transform floats supplied by the caller into context offsets +0x24 through +0x38.",
       "confidence": "strong",
       "evidence": [
-        { "kind": "topic-manifest", "locator": "../gfx-complex-fill.json#/producer" },
         { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82298A64" },
         { "kind": "generated-code", "locator": "generated:rerevved/sub_82298898" }
       ],

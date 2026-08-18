@@ -5,7 +5,7 @@
   "status": "closed",
   "confidence": "strong",
   "image": "image.json",
-  "question": "Where does version 1.3 couple bounded source references, vertex format, descriptor mapping, and fill subtype?",
+  "question": "Where does the title couple bounded source references, vertex format, descriptor mapping, and fill subtype?",
   "scope": {
     "primaryCaller": "0x821F4948",
     "alternateCaller": "0x821FBC38",
@@ -84,9 +84,9 @@
       "+0x40": "vertex sink pointer whose first word is the active numeric format"
     },
     "configFields": {
-      "+0x1C": "eligibility flags",
-      "+0x24": "eligibility flags",
-      "+0x28": "second movie-view transform word whose raw bit 0x10 participates in format selection"
+      "+0x1C": "GFxRenderConfig RenderFlags",
+      "+0x24": "GFxRenderConfig RendererCapBits",
+      "+0x28": "GFxRenderConfig RendererVtxFmts"
     },
     "result": "The function appends bounded mesh descriptors, selects the vertex writer from the source-bearing and numeric-format state, updates descriptor and vertex counts, and records completion or overflow state."
   },
@@ -103,10 +103,10 @@
       "+0x8C": "resource-bearing source-reference flag"
     },
     "behavior": "Each derived source ordinal is compared with the authoritative count. A bounded 0x28-byte entry whose raw +0x0 byte is nonzero is tagged with 0x40000000 and sets temporary byte +0x8C to 1.",
-    "qualification": "No version 1.3 source count, resource ordinal, or asset identity is asserted."
+    "qualification": "No source count, resource ordinal, or asset identity is asserted."
   },
   "formatAndWriterSelection": {
-    "formatGate": "When the existing sink format is zero, format 3 is the default. Format 4 is selected only when config +0x28 raw bit 0x10 is set and mesh-state +0x17 is already set or at least one bounded source entry has a nonzero raw +0x0 byte. Independent config +0x1C and +0x24 bits gate eligibility before this decision.",
+    "formatGate": "When the existing sink format is zero, format 3 is the default. Format 4 is selected only when RendererVtxFmts +0x28 reports bit 0x10, the Vertex_XY16iCF32 format, and mesh-state +0x17 is already set or at least one bounded source entry has a nonzero raw +0x0 byte. RenderFlags +0x1C and RendererCapBits +0x24 independently gate EdgeAA eligibility.",
     "formatCommit": "The format-4 branch stores 1 to mesh-state +0x17 before configuring the temporary sink.",
     "writerBranch": "After source-reference encoding, temporary +0x8C equal to zero or selected format equal to 3 selects simple writer 0x822CA118. Temporary +0x8C nonzero with selected format not equal to 3 selects complex writer 0x822CA718.",
     "result": "Source recognition alone does not select the complex writer; the source-bearing flag and numeric format must agree."
@@ -129,19 +129,53 @@
     },
     "result": "The complex writer publishes mapping cardinality and fill subtype as one descriptor result rather than independent fields."
   },
+  "runtimeEvidence": {
+    "status": "accepted",
+    "date": "2026-08-18",
+    "method": "A default-off probe registered exact synthetic image shapes at 0x821F82D8, scoped coupled-build and writer observations to each shape display, and correlated the produced fill with mesh submission and indexed draw.",
+    "drawnSample": 22,
+    "uniformInputs": {
+      "sourceCount": 1,
+      "sourceType": "0x41",
+      "renderFlags": "0x00000010",
+      "rendererCapBits": "0x701CFB80",
+      "rendererVtxFmts": "0x00000000",
+      "existingSinkFormat": 0,
+      "meshComplexFormatLatch": 0
+    },
+    "uniformResult": {
+      "simpleWriterCalls": 1,
+      "complexWriterCalls": 0,
+      "resourceResolverCalls": 0,
+      "fillSubtype": 0,
+      "primaryResource": "0x00000000",
+      "secondaryResource": "0x00000000",
+      "vertices": 12,
+      "triangles": 10
+    },
+    "result": "All 22 drawn image shapes carried one valid type-0x41 source, but RendererVtxFmts lacked the required 0x10 bit. The selector therefore chose format 3 and the simple writer, which preserved geometry while leaving the initialized no-resource descriptor unchanged."
+  },
+  "repairValidation": {
+    "status": "accepted",
+    "date": "2026-08-18",
+    "drawnSample": 27,
+    "uniformInputs": "Each sampled coupled build carried one type-0x41 source with RenderFlags 0x10, RendererCapBits 0x330C, RendererVtxFmts 0x1B, sink format zero, and mesh complex-format latch zero.",
+    "uniformResult": "Each build called the complex writer once and the simple writer zero times, resolved one resource, dispatched subtype 2 with a primary resource record, and drew 12 vertices and 10 triangles.",
+    "result": "Refreshing the stale render config with the same renderer's successful capabilities exercised the producer's existing complex-resource path without forcing format, subtype, or selectors."
+  },
   "staticQuery": {
     "mode": "foreground-read-only",
     "scripts": ["ghidra/DumpFunctions.java", "ghidra/FindFieldRefs.java"],
     "targets": ["0x821F4948", "0x821FBC38", "0x822688C0", "0x82269590", "0x822C9580", "0x822CA118", "0x822CA718"],
     "program": "rerevved_image.bin",
-    "qualification": "These Xenon-heavy functions truncate at their save-register thunks in Ghidra, so the function starts are confirmed there while the bounded field and control-flow claims are corroborated from generated version 1.3 bodies."
+    "qualification": "These Xenon-heavy functions truncate at their save-register thunks in Ghidra, so the function starts are confirmed there while the bounded field and control-flow claims are corroborated from generated bodies."
   },
   "guards": [
     "Do not claim logo source count, resource ordinal, config word, natural tuple, or an unverified validation tuple.",
-    "Config +0x28 is the second copied movie-view transform word; do not reinterpret its sampled raw bit as a standalone semantic flag.",
+    "Config +0x28 is RendererVtxFmts; bit 0x10 is the declared Vertex_XY16iCF32 capability, not a transform bit.",
     "Do not infer a shader program, renderer variant, texture slot, runtime draw, visible result, or presentation behavior from this static producer contract.",
     "Do not force format 4, change subtype, populate selectors, or edit config bits independently.",
-    "This packet authorizes no runtime hook, launch, or guest-memory write."
+    "A compatibility repair may refresh only a config whose own capability query failed, using a later successful result from the same renderer."
   ],
-  "conclusion": "Version 1.3 establishes the coupled fill producer at 0x822688C0: its callers forward bounded source data and config independently, source encoding marks bounded resource-bearing ordinals, format selection chooses the simple or complex writer, and the complex writer emits mapping cardinality and fill subtype as one coherent 0x28-byte descriptor."
+  "conclusion": "The title couples source mapping to renderer vertex-format support at 0x822688C0. The failed initial capability snapshot explained the simple untextured path; refreshing the same config from the same renderer's successful result made all 27 sampled image builds select the existing complex subtype-2 resource path."
 }

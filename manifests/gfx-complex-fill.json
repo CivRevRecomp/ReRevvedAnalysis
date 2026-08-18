@@ -5,14 +5,17 @@
   "status": "closed",
   "confidence": "strong",
   "image": "image.json",
-  "question": "What produces the version 1.3 movie-view transform word sampled by the coupled-fill selector, and which downstream presentation parts remain unverified?",
+  "question": "Why does the coupled-fill selector omit resource mappings for image shapes?",
   "scope": {
-    "movieDisplay": "0x8222E2A0",
-    "transformContextBuild": "0x82298898",
+    "rendererVtable": "0x82169E30",
+    "rendererGetCaps": "0x82302E90",
+    "renderConfigSetRenderer": "0x82245050",
+    "failedQueryReturn": "0x82245130",
+    "successfulQueryReturn": "0x82254900",
     "coupledFillBuild": "0x822688C0",
     "textureBind": "0x82302758",
     "textureBackendEnsure": "0x82305FD8",
-    "boundary": "This packet identifies the current transform producer, raw-bit selector read, and downstream lazy texture-backend boundary. It does not claim runtime addresses, observed values, injected descriptors, hook placements, crashes, shader state, asset identities, or visible-result conclusions."
+    "boundary": "This packet identifies the renderer capability snapshot that controls complex textured mesh generation and correlates its failed first query with exact image-shape writer selection. It does not authorize forcing capability bits or patching descriptors."
   },
   "dependencies": [
     {
@@ -36,13 +39,8 @@
     "method": "current generated-code structure followed by foreground read-only Ghidra word, function, and reference queries",
     "entries": [
       {
-        "role": "movie display",
-        "address": "0x8222E2A0",
-        "confidence": "strong"
-      },
-      {
-        "role": "transform context build",
-        "address": "0x82298898",
+        "role": "renderer capability query",
+        "address": "0x82302E90",
         "confidence": "strong"
       },
       {
@@ -61,25 +59,27 @@
         "confidence": "strong"
       }
     ],
-    "qualification": "The producer and selector use the recorded instruction-level field contract. The bounded title session observed the natural descriptor at this fill boundary, but did not establish a downstream bind."
+    "qualification": "The title implementation, Rosetta class layout, and exact-shape runtime samples agree on the render-config and descriptor fields."
   },
   "producer": {
-    "caller": "0x8222E2A0 passes movieView +0x98 in r8 to 0x82298898 at call site 0x8222E350.",
-    "builder": "0x82298898 copies six consecutive single-precision values from the supplied source into context offsets +0x24 through +0x38.",
-    "field": {
-      "offset": "0x28",
-      "writeSite": "0x82298A70",
-      "sourceOffset": "0x4",
-      "meaning": "Second element of the six-float movie-view transform copy."
+    "class": "GFxRenderConfig",
+    "layout": {
+      "+0x1C": "RenderFlags",
+      "+0x24": "RendererCapBits",
+      "+0x28": "RendererVtxFmts"
     },
-    "result": "The +0x28 word is produced by an ordinary floating-point transform copy and is not an independently authored Boolean flag."
+    "rendererVtable": "Vtable 0x82169E30 slot +0x4 resolves GetRenderCaps to 0x82302E90.",
+    "activeResult": "When renderer byte +0x10 is nonzero, 0x82302E90 returns 1 and writes cap bits 0x330C, vertex formats 0x1B, blend modes 0x36B, and max texture size 8192.",
+    "inactiveResult": "When renderer byte +0x10 is zero, 0x82302E90 returns 0 without populating VertexFormats.",
+    "rosetta": "GFx 2.1.57 GFxRenderConfig::SetRenderer calls GetRenderCaps and copies RenderCaps.VertexFormats into RendererVtxFmts without checking the boolean result.",
+    "result": "A render config created before video-mode activation can permanently snapshot zero vertex-format support."
   },
   "selector": {
     "function": "0x822688C0",
-    "readSite": "0x82268968",
-    "extractSite": "0x82268974",
-    "behavior": "The coupled-fill build loads configuration +0x28 and rotates raw bit 0x10 into a one-bit value used by the existing-format-zero branch. Format 3 is the default; format 4 additionally requires the mesh-state latch or a bounded source entry with a nonzero raw +0x0 byte.",
-    "qualification": "The function also tests independent eligibility bits from configuration +0x1C and +0x24. The sampled transform bit is one input to the selector, not a semantic flag or a sufficient format decision by itself.",
+    "readSite": "0x8226896C",
+    "extractSite": "0x82268978",
+    "behavior": "The coupled-fill build tests RendererVtxFmts bit 0x10, which represents Vertex_XY16iCF32 support. Format 3 is the default; format 4 additionally requires that capability and the mesh latch or a bounded resource-bearing source.",
+    "qualification": "RenderFlags +0x1C and RendererCapBits +0x24 independently gate EdgeAA eligibility.",
     "descriptorResult": "The simple and complex writer outcomes remain those recorded by gfx-coupled-fill-producer; the bounded title session adds the natural source count and descriptor tuple recorded in runtimeEvidence."
   },
   "textureBind": {
@@ -99,10 +99,8 @@
       "ghidra/DumpReferences.java"
     ],
     "targets": [
-      "0x8222E2A0",
-      "0x8222E350",
-      "0x82298898",
-      "0x82298A70",
+      "0x82169E30",
+      "0x82302E90",
       "0x822688C0",
       "0x82268968",
       "0x82268974",
@@ -112,7 +110,7 @@
       "0x82305FD8"
     ],
     "program": "rerevved_image.bin",
-    "result": "Ghidra confirms the current function starts, the sole direct call to 0x82298898 from 0x8222E350, the six-float copy words, the selector load/extract words, and the lazy backend load/call words. Generated version 1.3 bodies provide the bounded control-flow interpretation."
+    "result": "Ghidra confirms the renderer vtable and function starts. Generated bodies establish the capability writes, selector test, and lazy backend boundary."
   },
   "runtimeEvidence": {
     "status": "bounded",
@@ -124,7 +122,7 @@
       "sourceCount": 1,
       "source": "0x527f9e1c",
       "matchedSource": "0x527f9e1c",
-      "config28": "0x00000000",
+      "rendererVtxFmts": "0x00000000",
       "writerResult": 1,
       "tupleWords": [
         "0x00000000",
@@ -174,7 +172,7 @@
     "excluded": [
       "format or descriptor validation writes",
       "guest-memory changes, injected mappings, forced presentation, shader state, draw results, and visible-output conclusions",
-      "a semantic interpretation of the transform word or tuple fields"
+      "semantic names for the remaining opaque tuple fields"
     ],
     "gpuTextureEnumeration": {
       "status": "bounded",
@@ -206,6 +204,39 @@
       "qualification": "The enumeration is bounded to one session and records key identity only. It does not establish which guest function omits the fetch constant, nor any asset identity for a loaded key.",
       "scopeCorrection": "The shape table is bounded to the loading screen. A later 95 second interactive session counted 189440 binds at 0x82302758 with no null, unreadable, or bad-reference cases, and recorded 64x64, 16x16, 32x32, and 256x128 bound shapes. Image-sized textures therefore do bind. Do not read this table as a general claim that only 64x64 reaches the GPU.",
       "survivingClaim": "No 1024x256 tiled k_8_8_8_8 key was committed to a load, and no 1024x256 bind occurred in 189440 counted samples."
+    },
+    "capsInitialization": {
+      "status": "accepted",
+      "date": "2026-08-18",
+      "firstQuery": {
+        "caller": "0x82245130",
+        "rendererActive": 0,
+        "result": 0,
+        "capBits": "0x701CFB80",
+        "vertexFormats": "0x00000000",
+        "blendModes": "0x00000000",
+        "maxTextureSize": 0
+      },
+      "secondQuery": {
+        "caller": "0x82254900",
+        "delayMilliseconds": 109,
+        "sameRenderer": true,
+        "rendererActive": 1,
+        "result": 1,
+        "capBits": "0x0000330C",
+        "vertexFormats": "0x0000001B",
+        "blendModes": "0x0000036B",
+        "maxTextureSize": 8192
+      },
+      "exactShapeCorrelation": "A later exact-shape run observed 22 drawn type-0x41 image sources using RendererVtxFmts zero. All selected the simple writer and emitted no resource selectors.",
+      "result": "GFxRenderConfig::SetRenderer makes the first capability query before video mode is active and retains its zero VertexFormats snapshot even though the same renderer reports full capabilities 109 ms later."
+    },
+    "capsRefreshValidation": {
+      "status": "accepted",
+      "date": "2026-08-18",
+      "repair": "Remember only the config whose query at return 0x82245130 failed, then copy CapBits and VertexFormats from the first successful query by the same renderer.",
+      "drawnSample": 27,
+      "result": "All sampled coupled builds observed CapBits 0x330C and VertexFormats 0x1B, selected the complex writer, resolved one texture, dispatched subtype 2, and drew. The owner reported that all inspected graphics worked."
     },
     "rendererBoundary": {
       "status": "settled",
@@ -251,12 +282,12 @@
       "staticBlocker": "The GFx core producer at 0x822688C0 and the renderer vtable slots decompile only to save-register thunks or halt_baddata; undecoded VMX128 regions prevent a static read of the core side without the mutating repair chain."
     }
   },
-  "openBoundary": "The bounded version 1.3 runtime session identifies the natural descriptor tuple, its source-count-one fill boundary, the exact main-menu image/movie requests, type-11 cache service, and the first unobserved boundary before resolver/bind presentation. Downstream resolution, backend state, shader selection, draw completion, and the cause of missing visuals remain unverified.",
+  "openBoundary": "Closed for the missing-image symptom: refresh only the config produced by the failed pre-video-mode query, using the first successful capabilities returned by the same renderer.",
   "guards": [
-    "Do not write the transform word, force bit 0x10, or reinterpret the sampled float bits as a standalone flag.",
-    "Do not force format 4, change fill subtype, populate source selectors, or reuse an unverified validation tuple.",
-    "Do not infer a resolved image, runtime bind, backend state, shader selection, draw result, or visible outcome from the bounded pre-presentation trace.",
-    "This packet authorizes no runtime hook, launch, guest-memory write, generated-code edit, or presentation-path change."
+    "Do not force RendererVtxFmts bit 0x10, format 4, fill subtype, or source selectors independently.",
+    "Do not treat the inactive GetRenderCaps output record as initialized data.",
+    "Repair must preserve the renderer's own successful capability result 0x1B and refresh or correctly order the GFxRenderConfig snapshot.",
+    "Do not refresh an unrelated config or copy capabilities across renderer instances."
   ],
-  "conclusion": "Version 1.3 establishes the current static architecture, and the bounded session observed the natural tuple 0,0xffffffff,0xffffffff,0xffffffff,0 at the coupled-fill source-count-one boundary. Exact GFX_MainMenu_logo.dds and GFX_MainMenu.gfx requests were served by the type-11 cache with no exact-name filesystem fallback, while no resolver, output, or texture-bind marker appeared before the run's VFS failure. The downstream presentation path and any causal explanation for missing visuals remain unproven."
+  "conclusion": "ReXGlue reaches GFxRenderConfig capability capture before the guest renderer's video mode is active. Remembering that failed config and refreshing it from the same renderer's first successful result restored VertexFormats 0x1B. All 27 sampled image builds then used the existing complex subtype-2 textured path, and the owner reported the inspected graphics working."
 }

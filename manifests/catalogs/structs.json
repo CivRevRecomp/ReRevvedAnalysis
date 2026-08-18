@@ -503,7 +503,6 @@
       "claim": "Display context containing a six-float movie-view transform at offsets +0x24 through +0x38.",
       "confidence": "strong",
       "evidence": [
-        { "kind": "topic-manifest", "locator": "../gfx-complex-fill.json#/producer" },
         { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82298A64" },
         { "kind": "generated-code", "locator": "generated:rerevved/sub_82298898" }
       ],
@@ -515,14 +514,13 @@
           "id": "RVA-FLD-0001",
           "name": "movie_view_transform_element_1",
           "offset": "0x28",
-          "claim": "Second single-precision word copied from source transform offset +0x4 and sampled as raw bits by the coupled-fill selector.",
+          "claim": "Second single-precision word copied from source transform offset +0x4.",
           "confidence": "strong",
           "evidence": [
-            { "kind": "topic-manifest", "locator": "../gfx-complex-fill.json#/producer/field" },
             { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82298A70" }
           ],
           "qualification": {
-            "alternatives": ["The sampled raw bit is an implementation input and does not give the float element a standalone Boolean meaning."]
+            "alternatives": ["The field's consumers outside the bounded copy remain unresolved."]
           }
         }
       ]
