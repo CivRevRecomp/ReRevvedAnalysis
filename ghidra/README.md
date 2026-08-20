@@ -36,8 +36,8 @@ map and optional code-seed sites restore code coverage after structural repair:
 3. `SeedGeneratedFunctions.java` (optional)
 4. `RecoverSplitConstRefs.java`
 
-The constant-reference acceptance target and sites default to the current
-version 1.3 program. Pass both overrides together for a different image.
+The constant-reference acceptance target and sites are fixed to the supported
+program.
 
 The bootstrap requires an explicit disposable project and refuses the project
 configured by `REREVVED_GHIDRA_PROJECTS` and `REREVVED_GHIDRA_PROJECT`.

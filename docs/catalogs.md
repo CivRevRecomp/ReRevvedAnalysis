@@ -25,9 +25,9 @@ digits. Struct and slot offsets use `0x` followed by uppercase hexadecimal with
 no redundant leading zeroes. Address-derived placeholder names such as
 `sub_82267A28` are preferred until evidence supports a semantic name.
 
-Every top-level record references `../image.json`, the version 1.3 image
-contract. A native address or evidence locator enters a catalog only after it is
-verified against that image.
+Every top-level record references the supported image contract at
+`../image.json`. A native address or evidence locator enters a catalog only
+after it is verified against that image.
 
 ## Evidence and confidence
 

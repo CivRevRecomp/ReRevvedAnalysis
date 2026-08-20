@@ -49,8 +49,8 @@ The generated-image chain runs `FixXenonThunks.java`,
 `RecoverSplitConstRefs.java`. Use `-Plan` with the same explicit paths to
 validate the guard and print the order without starting Ghidra or writing files.
 
-The machine-local program is the separately imported version 1.3 image pinned
-by `manifests/image.json`. Flat images and all Ghidra projects stay outside this
+The machine-local program is the separately imported supported image pinned by
+`manifests/image.json`. Flat images and all Ghidra projects stay outside this
 repository.
 
 Batch-decompile a narrow function set with callers and callees:

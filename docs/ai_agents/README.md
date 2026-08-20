@@ -10,9 +10,10 @@ retail guest data and carries the locators required by the
 logs, and external material are interpretation tools rather than independent
 correctness authorities.
 
-Tracked documentation contains settled findings and reproducible methods. Keep
-branch state, work queues, session narration, machine paths, raw decompiler
-output, and private title material out of the tracked tree.
+Tracked reference documentation contains settled human-readable findings.
+Evidence locators and reproducible methods live in manifests and workflow
+records. Keep branch state, work queues, session narration, machine paths, raw
+decompiler output, and private title material out of the tracked tree.
 
 ## Policy shelf
 

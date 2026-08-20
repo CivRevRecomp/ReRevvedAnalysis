@@ -6,6 +6,9 @@ source of evidence.
 
 - [Unit definitions](unit-definitions.md) - unit type IDs, base combat stats,
   and shared combat and AI consumers.
+- [Civilization bonuses](civilization-bonuses.md) - civilization starting
+  bonuses, the 16 by 4 cumulative era-bonus table, and its shared activation
+  lookup.
 - [Save storage and slot identity](save-storage.md) - selected record layout,
   internal filenames, and pre-load/post-save sidecar edges.
 

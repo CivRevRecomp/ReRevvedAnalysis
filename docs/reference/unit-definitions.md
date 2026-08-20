@@ -1,13 +1,10 @@
 # Unit definitions
 
-Version 1.3 stores 29 unit definitions at `0x82F700D8`. Each record is
-`0x94` bytes. The unit type byte at offset `0x1` of the `0x54`-byte runtime
-unit record indexes this table.
+The game stores 29 unit definitions at `0x82F700D8`. Each record is `0x94`
+bytes. The unit type byte at offset `0x1` of the `0x54`-byte runtime unit
+record indexes this table.
 
 The names below are recovered semantic labels, not original debug symbols.
-The machine-readable evidence and qualifications live in
-[`unit-definitions-ai-evaluation.json`](../../manifests/unit-definitions-ai-evaluation.json)
-and the reusable catalogs.
 
 ## Recovered layout and readers
 
@@ -72,11 +69,8 @@ independent AI-side functions also call both readers:
 - `AITurnUnitEvaluation` at `0x82CB6E48`
 - `AITurnUnitFilter` at `0x82CBF570`
 
-A default-off runtime probe observed the shared readers during AI turns for
-players 1 through 5. It also observed the combat path for an AI attacker and a
-human defender. For base attack and defense, a table change therefore reaches
-both combat simulation and the recovered AI evaluation paths through the same
-effective accessors.
+For base attack and defense, a table change reaches both combat simulation and
+the AI evaluation paths through the same effective accessors.
 
 This is not general AI parity for a unique-unit modification. Costs, movement,
 abilities, flags, production weights, display names, and naval or air special

@@ -26,7 +26,7 @@ field is present. The current checkout enforces this common contract:
 | `topic` | Lowercase kebab-case, unique, and equal to the filename stem. |
 | `status` | `open` or `closed`; this records whether the bounded investigation remains active. |
 | `confidence` | `confirmed`, `strong`, `candidate`, or `rejected`. |
-| `image` | Exactly `image.json`, the version 1.3 image contract. |
+| `image` | Exactly `image.json`, the supported image contract. |
 | `question` | Current manifests carry a narrow question that the packet answers or bounds; this is a contribution convention rather than a field checked by the focused manifest test. |
 
 `scope` describes the bounded functions, fields, addresses, or other surface.

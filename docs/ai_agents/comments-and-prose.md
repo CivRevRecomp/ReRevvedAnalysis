@@ -30,6 +30,10 @@ style.
   them.
 - State uncertainty directly instead of promoting a candidate name or behavior.
 - Keep machine paths, private inputs, and active investigation state untracked.
+- Keep readable reference pages limited to settled game behavior. Do not repeat
+  the supported image version or narrate probes, test runs, capture sessions,
+  validation history, or branch state there. Evidence mechanics belong in
+  manifests and private operational context belongs in the maintainer island.
 - Do not date explanatory, status, progress, or change-history prose. Keep
   observation and capture times only as explicit metadata that identifies or
   bounds evidence. Preserve dates in source citations.

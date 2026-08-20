@@ -1,8 +1,8 @@
 # Save storage and slot identity
 
-Version 1.3 keeps the player-facing slot label separate from the internal
-storage filename. Ruleset persistence must use the internal filename inside
-the selected user/device content namespace.
+The player-facing slot label is separate from the internal storage filename.
+Ruleset persistence must use the internal filename inside the selected
+user/device content namespace.
 
 ## Selected content record
 
@@ -10,9 +10,9 @@ The save/load picker owns 11 UI records with stride `0x164`. On acceptance,
 `SelectedContentRecordCopy` at `0x82DDBFF8` copies a `0x13C`-byte payload to
 the caller. The reusable field is:
 
-| Offset | Recovered meaning | Evidence |
-| --- | --- | --- |
-| `0x108` | NUL-terminated internal slot filename | Read by both manual save and load owners; runtime produced `save0.sve` |
+| Offset | Recovered meaning |
+| --- | --- |
+| `0x108` | NUL-terminated internal slot filename read by both manual save and load owners |
 
 The filename is not a global identity. Two users or storage devices may expose
 the same filename, so a host sidecar key must retain the selected content
@@ -47,10 +47,6 @@ The save serializer returns at `0x82D82984`. The function then combines that
 result with file-finalization status. At `0x82D829E8`, `r25` is the final
 boolean and the selected filename remains live through `r29`. A sidecar may be
 atomically replaced only when this result is nonzero.
-
-The default-off `qol_probe_save_slots` matrix loaded and overwrote one existing
-manual slot. Both edges reported `save0.sve`; the post-finalization save result
-was successful. Cancel, storage removal, and write failure were not forced.
 
 ## Implementation guard
 
