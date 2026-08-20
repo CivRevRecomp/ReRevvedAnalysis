@@ -39,33 +39,38 @@ All 95 known call sites across 30 functions use cumulative mode. No exact-mode
 caller is known. Do not call exact mode without an
 independent era-range guard.
 
-## Starting bonuses
+## Leader and bonus map
 
-| Civ ID | Internal name | Starting bonus |
-| ---: | --- | --- |
-| 0 | Roman | Knowledge of Code of Laws and Republic government |
-| 1 | Egyptian | An Ancient Wonder |
-| 2 | Greek | A Courthouse in the capital |
-| 3 | Spanish | Knowledge of Navigation |
-| 4 | German | Automatic upgrades for Elite units |
-| 5 | Russian | More of the surrounding map revealed |
-| 6 | Chinese | Knowledge of Writing |
-| 7 | American | A Great Person |
-| 8 | Japanese | Knowledge of Ceremonial Burial |
-| 9 | French | A Cathedral in the capital |
-| 10 | Indian | Access to all resources |
-| 11 | Arab | Knowledge of Religion |
-| 12 | Aztec | Additional starting gold |
-| 13 | African | A lower combat-strength threshold for overrunning enemies |
-| 14 | Mongolian | Increased trade from captured cities |
-| 15 | English | Knowledge of Monarchy |
+The player-facing civilization names, leaders, and gameplay descriptions below
+follow the [Civilization Wiki CivRev civilization
+reference](https://civilization.fandom.com/wiki/Civilizations_%28CivRev%29).
+The internal names, row order, and numeric era-bonus IDs are recovered from the
+game image. Descriptions are normalized here for consistent terminology.
 
-These bonuses are not entries in the four-value era table. They also should not
-all be described as passive effects: several are one-time grants or initial game
-state, while the German, Indian, African, and Mongolian bonuses establish
-ongoing rules.
+| Civilization | Leader | Starting | Ancient | Medieval | Industrial | Modern |
+| --- | --- | --- | --- | --- | --- | --- |
+| Roman | Julius Caesar | Code of Laws and Republic | Roads cost half as much | Wonders cost half as much | Increased Great Person generation | New cities begin with +1 population |
+| Egyptian | Cleopatra | An Ancient Wonder | Desert tiles provide +1 Food and +1 Trade | Irrigation | Riflemen gain +1 movement | Caravans provide +50% Gold |
+| Greek | Alexander the Great | Courthouse in the capital | Democracy | Increased Great Person generation | Libraries cost half as much | Sea tiles provide +1 Food |
+| Spanish | Isabella | Navigation | Exploration provides twice the Gold | Naval units gain +1 combat | Cities produce +50% Gold | Hill tiles provide +1 Production |
+| German | Otto von Bismarck | Elite units upgrade automatically | New Warriors are Veterans | Forest tiles provide +1 Production | Barracks cost half as much | Gold reserves earn 2% interest |
+| Russian | Catherine the Great | Wider view of the surrounding map | Plains tiles provide +1 Food | New defensive units receive Loyalty | Riflemen cost half as much | Spies cost half as much |
+| Chinese | Mao Zedong | Writing | New cities begin with +1 population | Literacy | Libraries cost half as much | Cities are unaffected by Anarchy |
+| American | Abraham Lincoln | A Great Person | Gold reserves earn 2% interest | Rushing units costs half as much | Plains tiles provide +1 Food | Factories provide triple Production |
+| Japanese | Tokugawa Ieyasu | Ceremonial Burial | Sea tiles provide +1 Food | Samurai Knights gain +1 attack | Cities are unaffected by Anarchy | New defensive units receive Loyalty |
+| French | Napoleon | Cathedral in the capital | Pottery | Roads cost half as much | Cannons gain +2 attack | Riflemen gain +1 movement |
+| Indian | Mohandas Gandhi | Access to all resources | Cities are unaffected by Anarchy | Religion | Settlers cost half as much | Courthouses cost half as much |
+| Arabian | Saladin | Religion | Caravans provide +50% Gold | Mathematics | Cavalry and Knights gain +1 attack | Gold reserves earn 2% interest |
+| Aztec | Montezuma II | Additional starting Gold | Units heal after winning combat | Temples provide +3 Science | Roads cost half as much | Cities produce +50% Gold |
+| Zulu (`African` internally) | Shaka | Lower strength threshold for overrunning enemies | Warriors gain +1 movement | Faster city growth | Cities produce +50% Gold | Riflemen cost half as much |
+| Mongolian | Genghis Khan | Captured cities provide +50% Trade | Captured Barbarian villages become cities | Cavalry gains +1 movement | Mountain tiles provide +2 Production | Communism |
+| English | Elizabeth I | Monarchy | Longbow Archers gain +1 defense | Naval units gain +1 combat | Hill tiles provide +1 Production | Naval support is doubled |
 
-## Civilization rows
+The starting column is separate from the four-value era table. Its entries are
+not all passive effects: some are one-time grants or initial game state, while
+the German, Indian, Zulu, and Mongolian entries establish ongoing rules.
+
+## Era-bonus IDs
 
 The four values are ordered Ancient, Medieval, Industrial, and Modern. They
 are cumulative unlocks, not four mutually exclusive replacements.
@@ -89,8 +94,9 @@ are cumulative unlocks, not four mutually exclusive replacements.
 | 14 | Mongolian | 40 | 3 | 56 | 48 |
 | 15 | English | 61 | 6 | 41 | 51 |
 
-`African` is the internal image string for civilization index 13. This page
-does not substitute a player-facing civilization name.
+`African` is the internal image string for the player-facing Zulu civilization
+at index 13. `Arab` is likewise the internal name for the Arabian civilization
+at index 11.
 
 The Japanese row illustrates the two-layer model. Japan begins with knowledge
 of Ceremonial Burial, while its Ancient entry is bonus ID 28, which adds one
