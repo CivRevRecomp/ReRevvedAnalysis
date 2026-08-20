@@ -1830,6 +1830,39 @@
       "confidence": "confirmed",
       "evidence": [{ "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/combat" }],
       "qualification": { "falsificationCondition": "The direct call ending at 0x82D6AE68 does not target 0x82CD9970." }
+    },
+    {
+      "id": "RVA-REL-0258",
+      "kind": "calls",
+      "from": "RVA-SYM-0198",
+      "to": "RVA-SYM-0196",
+      "image": "../image.json",
+      "claim": "RushCommandSubmit calls RushCostCompute and places the returned amount in command 6.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/commandPath" }],
+      "qualification": { "falsificationCondition": "The producer does not submit the returned rush cost as the command cost." }
+    },
+    {
+      "id": "RVA-REL-0259",
+      "kind": "dispatches-to",
+      "from": "RVA-SYM-0185",
+      "to": "RVA-SYM-0199",
+      "image": "../image.json",
+      "claim": "NetworkCommandConsumer dispatches command case 6 to RushApply at 0x82CE0028.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/commandPath" }],
+      "qualification": { "falsificationCondition": "Command case 6 does not call 0x82D178A8." }
+    },
+    {
+      "id": "RVA-REL-0260",
+      "kind": "calls",
+      "from": "RVA-SYM-0196",
+      "to": "RVA-SYM-0197",
+      "image": "../image.json",
+      "claim": "RushCostCompute queries active civilization bonuses 25 and 35 while building the unit rush multiplier and divisor.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/bonusLookup" }],
+      "qualification": { "alternatives": ["Other bonus IDs and consumers remain assigned to G6."] }
     }
   ]
 }

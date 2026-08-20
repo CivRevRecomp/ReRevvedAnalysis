@@ -1919,6 +1919,71 @@
       "qualification": {
         "falsificationCondition": "Runtime accumulator samples do not match counter plus frame progress divided by this value."
       }
+    },
+    {
+      "id": "RVA-SYM-0196",
+      "name": "RushCostCompute",
+      "kind": "function",
+      "address": "0x82CE27F0",
+      "image": "../image.json",
+      "claim": "Computes the unit rush amount used by both the city-bar display and the Rush command producer.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/costFormula" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CE27F0" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82CE2910" }
+      ],
+      "qualification": {
+        "alternatives": ["Non-unit rush branches remain outside the accepted formula claim."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0197",
+      "name": "ActiveCivilizationBonusLookup",
+      "kind": "function",
+      "address": "0x82CF0CB0",
+      "image": "../image.json",
+      "claim": "Tests whether a player's civilization bonus ID is active for the current clamped era.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/bonusLookup" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CF0CB0" }
+      ],
+      "qualification": {
+        "alternatives": ["G6 must still map initialization, derived caches, and all consumers before general rule mutation."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0198",
+      "name": "RushCommandSubmit",
+      "kind": "function",
+      "address": "0x82CEDF90",
+      "image": "../image.json",
+      "claim": "Builds and submits Rush command 6 with player, city, and the cost returned by RushCostCompute.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/commandPath" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CEDF90" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The function does not call 0x82CE27F0 and submit its result in command record 6."
+      }
+    },
+    {
+      "id": "RVA-SYM-0199",
+      "name": "RushApply",
+      "kind": "function",
+      "address": "0x82D178A8",
+      "image": "../image.json",
+      "claim": "Applies Rush command 6 by converting submitted gold into production and then storing production and treasury.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/commandPath" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D178A8" }
+      ],
+      "qualification": {
+        "alternatives": ["Other production completion effects and non-unit rush branches remain outside this function-level claim."]
+      }
     }
   ]
 }

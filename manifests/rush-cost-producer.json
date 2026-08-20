@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0065",
+  "topic": "rush-cost-producer",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Why does America's Medieval rush-unit bonus charge 10 gold for a zero-production Warrior instead of the correct half-price cost of 15, and which producer and consumer must a safe correction preserve?",
+  "scope": {
+    "functions": ["0x82DFFE38", "0x82CE27F0", "0x82CF0CB0", "0x82CEDF90", "0x82CDDF08", "0x82D178A8"],
+    "interiorEdges": ["0x82CE2910", "0x82CE2934", "0x82CE0028", "0x82D17A7C", "0x82D17AA0", "0x82D17AA8"],
+    "globals": ["0x830ECD08", "0x830ECD28", "0x82F6F950", "0x82F7A348"],
+    "boundary": "This packet maps the v1.3 human unit-rush display, command, and apply path plus the civilization-bonus lookup needed to explain the America defect. It does not prove AI valuation, every non-unit rush branch, or composition with difficulty, speed, government, wonder, and other modifiers."
+  },
+  "oracle": {
+    "date": "2026-08-20",
+    "version": "1.3",
+    "unit": "Warrior",
+    "productionCost": 10,
+    "investedProduction": 0,
+    "americaBonusText": "Medieval: Rush units at 1/2 price",
+    "americaCosts": { "Ancient": 20, "Medieval": 10, "Industrial": 20 },
+    "japanControlCosts": { "Ancient": 20, "Medieval": 30, "Industrial": 40 },
+    "result": "The control rejects an era-doubling or one-era-behind model. Normal unit rush cost uses era_index + 2 gold per remaining production; America divides that integer multiplier by 2 after bonus ID 35 activates in Medieval."
+  },
+  "bonusLookup": {
+    "function": "0x82CF0CB0",
+    "playerEraArray": "0x830ECD08",
+    "playerCivilizationArray": "0x830ECD28",
+    "bonusTable": "0x82F6F950",
+    "civilizationNamePointers": "0x82F7A348",
+    "america": { "index": 7, "bonusRow": [47, 35, 16, 2] },
+    "japan": { "index": 8, "bonusRow": [28, 27, 42, 26] },
+    "rushFormulaBonuses": {
+      "25": "doubles the numerator multiplier when active; inactive for the America and Japan oracle cases",
+      "35": "sets divisor 2 when active; America's Medieval entry"
+    }
+  },
+  "costFormula": {
+    "owner": "0x82CE27F0",
+    "displayOwner": "0x82DFFE38",
+    "displayString": { "address": "0x8212511C", "text": "Rush for @NUM Gold" },
+    "gfxMethod": { "address": "0x8212513C", "name": "cityBar.SetRushArea" },
+    "unitNumerator": "(bonus_25_active ? 2 : 1) * era_index + 2",
+    "nativeUnitCost": "truncate(unit_numerator / (bonus_35_active ? 2 : 1)) * remaining_production",
+    "criticalInstructions": [
+      { "address": "0x82CE2910", "word": "0x7D5F33D6", "operation": "divw" },
+      { "address": "0x82CE2934", "word": "0x7D6A39D6", "operation": "mullw" }
+    ],
+    "defect": "The integer divide precedes the multiply. America's Medieval multiplier 3 becomes 1 before multiplication, producing 10 gold instead of half of 30 gold.",
+    "correctedUnitCost": "ceil(unit_numerator * remaining_production / divisor)",
+    "roundingQualification": "Round-up is the proposed correction contract for fractional gold under partial production; the native title cannot demonstrate this case because it truncates the multiplier first."
+  },
+  "commandPath": {
+    "producer": "0x82CEDF90",
+    "commandId": 6,
+    "consumer": "0x82CDDF08",
+    "dispatchEdge": "0x82CE0028",
+    "applyOwner": "0x82D178A8",
+    "contract": "The producer calls RushCostCompute and submits player, city, and returned cost. RushApply independently rebuilds the native integer multiplier, divides submitted gold by it at 0x82D17A7C, stores production at 0x82D17AA0, and stores treasury at 0x82D17AA8.",
+    "repairGuard": "A display-only or producer-only correction is unsafe. Submitting corrected Medieval cost 15 while the consumer retains native multiplier 1 would buy 15 production instead of the required 10. Producer and consumer arithmetic must change together."
+  },
+  "runtimeProbe": {
+    "status": "captured",
+    "date": "2026-08-20",
+    "default": "off",
+    "cvar": "qol_probe_rush_cost",
+    "hooks": ["0x82CE2938", "0x82D17A9C"],
+    "zeroProduction": {
+      "display": { "city": 0, "player": 0, "civilization": 7, "era": 1, "item": 6, "remaining": 10, "multiplier": 3, "divisor": 2, "native": 10, "correctedPrediction": 15 },
+      "apply": { "commandCost": 10, "productionBefore": 0, "productionBought": 10, "productionAfter": 10, "treasuryAfter": 25 }
+    },
+    "partialProduction": {
+      "display": { "city": 1, "player": 0, "civilization": 7, "era": 1, "item": 6, "remaining": 2, "multiplier": 3, "divisor": 2, "native": 2, "correctedPrediction": 3 },
+      "apply": { "commandCost": 2, "productionBefore": 8, "productionBought": 2, "productionAfter": 10, "treasuryAfter": 23 }
+    },
+    "result": "For both zero and partial production, the displayed native cost became the submitted and charged command cost, and the consumer bought exactly the remaining production under native arithmetic.",
+    "qualification": "An initial apply log included a late r5 value labeled divisor after that register had been clobbered. The field was removed from the final probe and is not evidence; multiplier, command cost, production, and treasury registers remain bounded by the hook site."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpReferences.java", "ghidra/DumpFunctions.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpInstructions.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": ["generated:rerevved/sub_82DFFE38", "generated:rerevved/sub_82CE27F0", "generated:rerevved/sub_82CF0CB0", "generated:rerevved/sub_82CEDF90", "generated:rerevved/sub_82CDDF08", "generated:rerevved/sub_82D178A8"],
+    "truncationGuard": "The configured version 1.3 Ghidra project truncates affected Xenon functions after save-register thunks. Raw Ghidra words establish the critical division-before-multiplication order; generated code is only bounded corroboration."
+  },
+  "guards": [
+    "Do not implement a display-only, string-only, or producer-only correction.",
+    "Preserve displayed cost equals submitted cost equals charged treasury cost.",
+    "Preserve exact remaining-production completion for zero and partial production.",
+    "Do not overwrite other rush modifiers; difficulty, speed, government, wonder, and other branches require composition tests.",
+    "Do not expose a rules module until G6 bounds bonus storage and every simulation consumer needed by the rule.",
+    "Do not claim AI parity until G7 maps independent AI valuation and decision consumers."
+  ],
+  "conclusion": "G5 confirms premature integer division in America's Medieval unit-rush bonus. RushCostCompute 0x82CE27F0 owns the displayed and submitted amount, RushCommandSubmit 0x82CEDF90 carries it as command 6, and RushApply 0x82D178A8 converts it back to production before treasury storage. Runtime proved the same native cost crosses both boundaries for zero and partial production. A safe fix is a coordinated producer-consumer repair; G6 may now expand from ActiveCivilizationBonusLookup 0x82CF0CB0."
+}
