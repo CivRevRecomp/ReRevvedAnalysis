@@ -6,7 +6,7 @@ unit record indexes this table.
 
 The names below are recovered semantic labels, not original debug symbols.
 The machine-readable evidence and qualifications live in
-[`unit-definitions-ai-evaluation.json`](../manifests/unit-definitions-ai-evaluation.json)
+[`unit-definitions-ai-evaluation.json`](../../manifests/unit-definitions-ai-evaluation.json)
 and the reusable catalogs.
 
 ## Recovered layout and readers

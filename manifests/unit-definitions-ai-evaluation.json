@@ -34,7 +34,7 @@
     "internalNameOffset": "0x0",
     "baseAttackOffset": "0x40",
     "baseDefenseOffset": "0x41",
-    "referencePage": "../docs/unit-definitions.md",
+    "referencePage": "../docs/reference/unit-definitions.md",
     "records": [
       { "id": 0, "name": "Settlers", "attack": 0, "defense": 0 },
       { "id": 1, "name": "FSettler", "attack": 0, "defense": 0 },
