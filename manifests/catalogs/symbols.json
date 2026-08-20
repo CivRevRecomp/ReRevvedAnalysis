@@ -1824,18 +1824,19 @@
     },
     {
       "id": "RVA-SYM-0190",
-      "name": "conditional_movement_duration_ms_830E4548",
+      "name": "post_action_cooldown_ms_830E4548",
       "kind": "global",
       "address": "0x830E4548",
       "image": "../image.json",
-      "claim": "Receives conditional 500 or 1000 millisecond values immediately before selected movement-presentation starts.",
-      "confidence": "strong",
+      "claim": "Stores a shared post-action cooldown decremented by elapsed frame time and read by multiple action-availability paths.",
+      "confidence": "confirmed",
       "evidence": [
         { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/presentation" },
+        { "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/movement" },
         { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82CD7578" }
       ],
       "qualification": {
-        "alternatives": ["It is not established as the universal movement duration; G4 must identify its readers."]
+        "alternatives": ["It is not a movement presentation duration or speed scalar."]
       }
     },
     {
@@ -1869,6 +1870,54 @@
       ],
       "qualification": {
         "falsificationCondition": "The indirect call at 0x82CDD930 does not target 0x82D7F838 on the observed path."
+      }
+    },
+    {
+      "id": "RVA-SYM-0193",
+      "name": "CombatPaceSetup",
+      "kind": "function",
+      "address": "0x82D66B20",
+      "image": "../image.json",
+      "claim": "Selects the combat pace divisor used by the mapped unit-versus-unit presentation path.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/combat" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D66B20" }
+      ],
+      "qualification": {
+        "alternatives": ["Other setup state in this large function remains outside the pace claim."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0194",
+      "name": "CombatPaceUpdate",
+      "kind": "function",
+      "address": "0x82D6A960",
+      "image": "../image.json",
+      "claim": "Advances a combat counter by frame progress divided by the selected pace divisor before another mode-2 CombatResolve call.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/combat" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D6A960" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete event-state machine and counter meaning remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0195",
+      "name": "combat_pace_divisor_82F79FBC",
+      "kind": "global",
+      "address": "0x82F79FBC",
+      "image": "../image.json",
+      "claim": "Stores the float divisor consumed by CombatPaceUpdate when advancing its combat counter.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/combat" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82D6ADF8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "Runtime accumulator samples do not match counter plus frame progress divided by this value."
       }
     }
   ]

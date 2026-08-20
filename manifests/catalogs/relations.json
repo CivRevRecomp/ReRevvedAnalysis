@@ -1786,6 +1786,50 @@
       "confidence": "confirmed",
       "evidence": [{ "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/presentation" }],
       "qualification": { "falsificationCondition": "The loop at 0x82CDD938 does not call 0x82E2A838 before rechecking its busy flags." }
+    },
+    {
+      "id": "RVA-REL-0254",
+      "kind": "calls",
+      "from": "RVA-SYM-0192",
+      "to": "RVA-SYM-0193",
+      "image": "../image.json",
+      "claim": "CombatPresentationApply calls CombatPaceSetup at 0x82D7F930 on the mapped path.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/combat" }],
+      "qualification": { "falsificationCondition": "The direct call at 0x82D7F930 does not target 0x82D66B20." }
+    },
+    {
+      "id": "RVA-REL-0255",
+      "kind": "produces",
+      "from": "RVA-SYM-0193",
+      "to": "RVA-SYM-0195",
+      "image": "../image.json",
+      "claim": "CombatPaceSetup selects and stores the pace divisor before combat presentation updates begin.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/combat" }],
+      "qualification": { "alternatives": ["Several native branches select different accepted float values."] }
+    },
+    {
+      "id": "RVA-REL-0256",
+      "kind": "consumes",
+      "from": "RVA-SYM-0194",
+      "to": "RVA-SYM-0195",
+      "image": "../image.json",
+      "claim": "CombatPaceUpdate divides frame progress by the current combat pace divisor before advancing its counter.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/combat" }],
+      "qualification": { "falsificationCondition": "The arithmetic at 0x82D6ADF8 through 0x82D6AE3C does not consume this global." }
+    },
+    {
+      "id": "RVA-REL-0257",
+      "kind": "calls",
+      "from": "RVA-SYM-0194",
+      "to": "RVA-SYM-0191",
+      "image": "../image.json",
+      "claim": "CombatPaceUpdate calls CombatResolve in mode 2 after advancing presentation state.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../presentation-speed-producers.json#/combat" }],
+      "qualification": { "falsificationCondition": "The direct call ending at 0x82D6AE68 does not target 0x82CD9970." }
     }
   ]
 }

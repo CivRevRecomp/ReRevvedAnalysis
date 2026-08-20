@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0064",
+  "topic": "presentation-speed-producers",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Do the mapped movement and combat paths expose bounded presentation-speed producers that can accelerate presentation without skipping their native state machines?",
+  "scope": {
+    "functions": ["0x82CD69B8", "0x82D259E8", "0x82D66B20", "0x82D6A960", "0x82D7F838"],
+    "interiorEdges": ["0x82CD7580", "0x82D66F08", "0x82D6ADF8", "0x82D6AE3C", "0x82D7F930", "0x82D7F934"],
+    "globals": ["0x830E4548", "0x82F79FBC", "0x82F79FFC", "0x8314F04C"],
+    "boundary": "This packet tests only producers reached from the accepted G2 movement and G3 unit-versus-unit combat paths. It does not authorize a movement hard skip, sustained combat override, or parity claims for city, naval, air, defeat, promotion, retreat, and capture cases."
+  },
+  "dependencies": [
+    {
+      "topic": "unit-movement-lifecycle",
+      "use": "ordinary movement producer and presentation interval"
+    },
+    {
+      "topic": "combat-resolution-lifecycle",
+      "use": "observed combat presentation target, resolver recurrence, and completion edges"
+    }
+  ],
+  "currentEvidence": {
+    "method": "foreground read-only Ghidra reference, function, instruction, and raw-word queries; bounded generated-code corroboration; and default-off read-only and mutation probes over owner-performed attacks",
+    "qualification": "The configured version 1.3 Ghidra project truncates several affected Xenon functions. Raw Ghidra words establish critical instructions and native float constants; generated code supplies only bounded control-flow corroboration."
+  },
+  "movement": {
+    "candidateGlobal": "0x830E4548",
+    "producer": "0x82CD7580",
+    "nativeValues": [500, 1000],
+    "countdownOwner": "0x82D259E8",
+    "boundedReaders": ["0x82E096F4", "0x82E0A7B4", "0x82CF5DD4"],
+    "result": "The value is a general post-action input and command cooldown. The countdown owner subtracts elapsed frame time and clears it at zero, while multiple action-availability readers reject input while it is positive. Combat and other command cases also write it.",
+    "runtimeCorroboration": "G2 observed one movement path bypass the store and another complete in 589 ms after storing 1000. The movement presenter does not consume this global.",
+    "decision": "Rejected as a movement presentation-speed control. G4 found no bounded movement speed producer in the accepted G2 functions; movement acceleration remains unimplemented rather than mutating a shared action gate."
+  },
+  "combat": {
+    "setup": "0x82D66B20",
+    "paceDivisorGlobal": "0x82F79FBC",
+    "update": "0x82D6A960",
+    "progressGlobal": "0x8314F04C",
+    "accumulator": "combat setup object minus 4 from r31",
+    "consumerEdges": {
+      "divisorLoad": "0x82D6ADF8",
+      "accumulatorStore": "0x82D6AE3C",
+      "resolverCall": "0x82D6AE64"
+    },
+    "nativeValues": [0.5, 1.0, 1.5, 2.0, 10.0],
+    "formula": "truncate(counter + frame_progress / pace_divisor)",
+    "result": "The setup selects a float divisor, and the update consumes it immediately before another CombatResolve mode-2 call. Runtime samples with divisor 2.0 exactly matched the formula, including -1 + 129 / 2 becoming 63 and 63 + 20 / 2 becoming 73.",
+    "boundedOverride": {
+      "edge": "0x82D7F934",
+      "condition": "qol_fast_combat is enabled and the selected divisor equals the observed normal value 2.0",
+      "value": 0.5,
+      "guard": "The hook runs after the mapped 0x82D7F838 target calls setup, changes only the divisor, and leaves every native resolver, pump, participant write, completion edge, and object-scale assignment reachable. The title may overwrite the divisor later."
+    }
+  },
+  "objectScale": {
+    "savedGlobal": "0x82F79FFC",
+    "assignmentEdge": "0x82D7F92C",
+    "observedSaved": 1.0,
+    "observedActive": 3.0,
+    "decision": "Kept independent from the combat pace control. The field at presentation object plus 0x48 is forced to 3.0 after saving 1.0, but no restoring consumer or speed semantics were accepted."
+  },
+  "runtimeProbe": {
+    "status": "captured",
+    "date": "2026-08-20",
+    "default": "off",
+    "probeCvar": "qol_probe_combat",
+    "overrideCvar": "qol_fast_combat",
+    "runs": [
+      {
+        "kind": "normal unit-versus-unit",
+        "selectedDivisor": 2.0,
+        "presentationPolls": 247,
+        "resolverCalls": 275,
+        "presentationMs": 7612.372,
+        "result": "Every sampled accumulator result matched counter plus frame progress divided by 2.0."
+      },
+      {
+        "kind": "bounded native-fast override",
+        "selectedDivisor": 2.0,
+        "overrideDivisor": 0.5,
+        "presentationPolls": 125,
+        "resolverCalls": 139,
+        "presentationMs": 3892.382,
+        "result": "The override applied successfully, early accumulator gains matched division by 0.5, participant record changes matched the normal path, and the native presentation completion edge remained reachable. A later title event restored divisor 2.0, limiting this prototype to a conservative Fast preset."
+      }
+    ],
+    "mutationBoundary": "The override refuses any setup value other than observed normal 2.0 and performs no register, unit-record, object-scale, busy-flag, pump-loop, or completion-edge mutation."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpReferences.java", "ghidra/DumpFunctions.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpInstructions.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": ["generated:rerevved/sub_82CD69B8", "generated:rerevved/sub_82D259E8", "generated:rerevved/sub_82D66B20", "generated:rerevved/sub_82D6A960", "generated:rerevved/sub_82D7F838"],
+    "truncationGuard": "Missing references to 0x82F79FBC in the configured Ghidra project are not negative evidence. Raw words confirm the producer and consumer instructions; generated code is used only within those bounded functions."
+  },
+  "guards": [
+    "Do not rename or mutate 0x830E4548 as movement duration; it is a shared post-action cooldown with input and command readers.",
+    "Do not mutate 0x830E45BC; it is a broad combat and session state gate, not a speed scalar.",
+    "Do not mutate presentation object plus 0x48 or saved global 0x82F79FFC without a restoring consumer and semantic proof.",
+    "Do not hard-skip movement or combat presentation, their pump loops, resolver calls, participant writes, or completion edges.",
+    "Keep movement and combat controls independent. No accepted movement speed control exists in this packet.",
+    "Keep qol_fast_combat debug-only and default-off until the full combat parity matrix passes."
+  ],
+  "conclusion": "G4 rejects 0x830E4548 as a movement speed producer and leaves movement acceleration open. Combat setup 0x82D66B20 and update 0x82D6A960 do expose a state-machine-preserving pace divisor at 0x82F79FBC. A bounded 2.0-to-native-0.5 override after the mapped presentation setup reduced the observed presentation by about half while retaining native participant advancement and completion. This supports an experimental Fast combat preset, not Instant combat or broad parity."
+}
