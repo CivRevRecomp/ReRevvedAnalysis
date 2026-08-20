@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0067",
+  "topic": "unit-definitions-ai-evaluation",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Do combat simulation and AI unit evaluation consume the same base attack and defense fields, or require separate stat adjustments?",
+  "scope": {
+    "functions": ["0x82CF2230", "0x82CF21A0", "0x82CB44E0", "0x82CB6E48", "0x82CBF570", "0x82CD9970", "0x82CEEA90"],
+    "globals": ["0x82F700D8", "0x830F2BF0"],
+    "boundary": "This packet maps the unit-definition index, names, base attack and defense fields, their effective accessors, and bounded combat and AI consumers. It does not name adjacent definition bytes or map costs, movement, abilities, production weights, unique-unit substitutions, or naval and air special behavior."
+  },
+  "dependencies": [
+    {
+      "topic": "combat-resolution-lifecycle",
+      "use": "Accepted CombatResolve and the 0x54-byte runtime unit record"
+    },
+    {
+      "topic": "civilization-bonus-storage",
+      "use": "Accepted shared civilization-bonus lookup called by the effective stat accessors"
+    }
+  ],
+  "unitRecordLink": {
+    "table": "0x830F2BF0",
+    "recordSize": "0x54",
+    "unitTypeOffset": "0x1",
+    "indexRule": "The unsigned unit type byte selects one 0x94-byte record from the unit-definition table."
+  },
+  "unitDefinitions": {
+    "table": "0x82F700D8",
+    "recordSize": "0x94",
+    "recordCount": 29,
+    "internalNameOffset": "0x0",
+    "baseAttackOffset": "0x40",
+    "baseDefenseOffset": "0x41",
+    "referencePage": "../docs/unit-definitions.md",
+    "records": [
+      { "id": 0, "name": "Settlers", "attack": 0, "defense": 0 },
+      { "id": 1, "name": "FSettler", "attack": 0, "defense": 0 },
+      { "id": 2, "name": "Naval Crew", "attack": 0, "defense": 1 },
+      { "id": 3, "name": "Barbarian Hot", "attack": 1, "defense": 1 },
+      { "id": 4, "name": "Barbarian Temperate", "attack": 1, "defense": 1 },
+      { "id": 5, "name": "Barbarian Cold", "attack": 1, "defense": 1 },
+      { "id": 6, "name": "Warrior", "attack": 1, "defense": 1 },
+      { "id": 7, "name": "Militia", "attack": 0, "defense": 1 },
+      { "id": 8, "name": "Legion", "attack": 2, "defense": 1 },
+      { "id": 9, "name": "Archer", "attack": 1, "defense": 2 },
+      { "id": 10, "name": "Riflemen", "attack": 3, "defense": 5 },
+      { "id": 11, "name": "Modern Infantry", "attack": 4, "defense": 8 },
+      { "id": 12, "name": "Horsemen", "attack": 2, "defense": 1 },
+      { "id": 13, "name": "Knights", "attack": 4, "defense": 2 },
+      { "id": 14, "name": "Tank", "attack": 10, "defense": 6 },
+      { "id": 15, "name": "Phalanx", "attack": 1, "defense": 3 },
+      { "id": 16, "name": "Catapult", "attack": 4, "defense": 1 },
+      { "id": 17, "name": "Cannon", "attack": 6, "defense": 2 },
+      { "id": 18, "name": "Artillery", "attack": 16, "defense": 2 },
+      { "id": 19, "name": "Submarine", "attack": 12, "defense": 2 },
+      { "id": 20, "name": "Galley", "attack": 1, "defense": 1 },
+      { "id": 21, "name": "Galleon", "attack": 2, "defense": 2 },
+      { "id": 22, "name": "Cruiser", "attack": 6, "defense": 6 },
+      { "id": 23, "name": "Battleship", "attack": 12, "defense": 18 },
+      { "id": 24, "name": "Space Station", "attack": 0, "defense": 3 },
+      { "id": 25, "name": "Bomber", "attack": 18, "defense": 3 },
+      { "id": 26, "name": "Fighter", "attack": 6, "defense": 4 },
+      { "id": 27, "name": "ICBM", "attack": 0, "defense": 0 },
+      { "id": 28, "name": "Spy", "attack": 0, "defense": 0 }
+    ],
+    "nameQualification": "Records 3 through 5 begin with an empty string. Their labels derive from record-local strings at offset 0x20. No original enum identifiers or localized player-facing names are claimed."
+  },
+  "statAccessors": {
+    "attack": {
+      "function": "0x82CF2230",
+      "semanticName": "EffectiveUnitAttackLookup",
+      "baseField": "unit_definition+0x40",
+      "result": "Reads signed base attack and applies recovered unit and civilization modifiers."
+    },
+    "defense": {
+      "function": "0x82CF21A0",
+      "semanticName": "EffectiveUnitDefenseLookup",
+      "baseField": "unit_definition+0x41",
+      "result": "Reads signed base defense and applies recovered unit and civilization modifiers."
+    }
+  },
+  "simulationConsumer": {
+    "function": "0x82CD9970",
+    "semanticName": "CombatResolve",
+    "result": "The accepted combat resolver calls both effective stat accessors."
+  },
+  "aiConsumers": [
+    {
+      "function": "0x82CB44E0",
+      "semanticName": "AIUnitChoiceEvaluate",
+      "result": "Calls both accessors repeatedly while scoring unit choices; runtime observed the path for AI players 1 through 5."
+    },
+    {
+      "function": "0x82CB6E48",
+      "semanticName": "AITurnUnitEvaluation",
+      "result": "Calls both accessors during AI turn evaluation; runtime observed the path for player 5."
+    },
+    {
+      "function": "0x82CBF570",
+      "semanticName": "AITurnUnitFilter",
+      "result": "Calls both accessors during an AI unit comparison or filter; runtime observed the path for player 5."
+    }
+  ],
+  "displayNameConsumer": {
+    "function": "0x82CEEA90",
+    "semanticName": "UnitDisplayNameBuild",
+    "result": "Reads definition-record names and includes civilization-specific substitutions or additions.",
+    "qualification": "The complete unique-unit name mapping and substitution rules remain unresolved."
+  },
+  "runtimeProbe": {
+    "status": "captured",
+    "default": "off",
+    "cvar": "qol_probe_unit_stats",
+    "hooks": ["0x82CF2230", "0x82CF21A0"],
+    "mutation": "none",
+    "result": "AI turns for players 1 through 5 invoked both shared stat accessors from AIUnitChoiceEvaluate. Player 5 also invoked both from AITurnUnitEvaluation and AITurnUnitFilter. AI combat invoked the attack accessor for the attacker and the defense accessor for a human defender. The game exited normally.",
+    "ownershipGuard": "The probe logged the active player, human-player mask, queried player, unit type, base value, and caller without changing registers or guest memory."
+  },
+  "staticQuery": {
+    "scripts": ["ghidra/DumpDataValues.java", "ghidra/DumpMemoryWords.java", "ghidra/DumpReferences.java", "ghidra/DumpFunctions.java", "ghidra/DumpInstructions.java", "ghidra/DumpStringsInRange.java"],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": ["generated:rerevved/sub_82CB44E0", "generated:rerevved/sub_82CB6E48", "generated:rerevved/sub_82CBF570", "generated:rerevved/sub_82CD9970", "generated:rerevved/sub_82CEEA90", "generated:rerevved/sub_82CF21A0", "generated:rerevved/sub_82CF2230"],
+    "truncationGuard": "The configured Ghidra project truncates several Xenon functions after save-register thunks. Generated code is used only to enumerate direct calls to the accepted stat accessors and corroborate bounded bodies."
+  },
+  "guards": [
+    "Treat the recovered names as semantic analysis labels, not original C++ symbols or enum identifiers.",
+    "Do not assign meanings to definition bytes other than the accepted name, attack, and defense fields from adjacency alone.",
+    "A base attack or defense mutation reaches combat and the recovered AI paths through the shared accessors; do not add a duplicate AI adjustment for these two fields.",
+    "Do not infer general unique-unit AI parity from attack and defense parity. Costs, movement, abilities, flags, production weights, and special-domain behavior require separate mapping.",
+    "Keep the runtime probe debug-only and default-off; it performs no guest writes or register mutation."
+  ],
+  "conclusion": "Version 1.3 stores 29 unit definitions in one 0x94-byte table. Base attack at +0x40 and base defense at +0x41 flow through one effective accessor each. CombatResolve and three independently recovered AI unit evaluation paths call the same accessors, and runtime confirms those readers execute for AI turns and AI combat. A change to these two base fields therefore reaches both combat simulation and the mapped AI consumers without a separate AI stat table, while every other unique-unit property remains independent analysis work."
+}

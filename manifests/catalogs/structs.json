@@ -889,6 +889,20 @@
       "size": "0x54",
       "fields": [
         {
+          "id": "RVA-FLD-0109",
+          "name": "unit_type",
+          "offset": "0x1",
+          "claim": "Stores the zero-based unit type that indexes the unit-definition table.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/unitRecordLink" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82CF2230" }
+          ],
+          "qualification": {
+            "alternatives": ["The numeric values are semantic analysis labels, not recovered original enum identifiers."]
+          }
+        },
+        {
           "id": "RVA-FLD-0102",
           "name": "movement_budget",
           "offset": "0x2",
@@ -980,6 +994,66 @@
           ],
           "qualification": {
             "alternatives": ["The numeric direction-to-map-delta table remains unnamed."]
+          }
+        }
+      ]
+    },
+    {
+      "id": "RVA-STR-0035",
+      "name": "unit_definition",
+      "image": "../image.json",
+      "claim": "0x94-byte image-backed unit-definition record indexed by the runtime unit type.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/unitDefinitions" }
+      ],
+      "qualification": {
+        "alternatives": ["Fields other than the accepted name and base combat stats remain unresolved."]
+      },
+      "size": "0x94",
+      "fields": [
+        {
+          "id": "RVA-FLD-0110",
+          "name": "internal_name",
+          "offset": "0x0",
+          "claim": "Begins the NUL-terminated internal unit name when the record provides one.",
+          "confidence": "strong",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/unitDefinitions" },
+            { "kind": "ghidra-static", "locator": "ghidra/DumpDataValues.java:0x82F700D8" }
+          ],
+          "qualification": {
+            "alternatives": ["Barbarian records 3 through 5 begin empty and expose record-local labels at offset 0x20."]
+          }
+        },
+        {
+          "id": "RVA-FLD-0111",
+          "name": "base_attack",
+          "offset": "0x40",
+          "claim": "Stores the signed base attack consumed by EffectiveUnitAttackLookup.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/statAccessors/attack" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82CF2230" },
+            { "kind": "runtime-probe", "locator": "runtime:qol_probe_unit_stats" }
+          ],
+          "qualification": {
+            "falsificationCondition": "The accessor does not load the signed byte at definition offset 0x40."
+          }
+        },
+        {
+          "id": "RVA-FLD-0112",
+          "name": "base_defense",
+          "offset": "0x41",
+          "claim": "Stores the signed base defense consumed by EffectiveUnitDefenseLookup.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/statAccessors/defense" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82CF21A0" },
+            { "kind": "runtime-probe", "locator": "runtime:qol_probe_unit_stats" }
+          ],
+          "qualification": {
+            "falsificationCondition": "The accessor does not load the signed byte at definition offset 0x41."
           }
         }
       ]

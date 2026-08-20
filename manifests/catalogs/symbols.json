@@ -2048,6 +2048,123 @@
       "qualification": {
         "alternatives": ["Internal names are not substituted with localized player-facing labels."]
       }
+    },
+    {
+      "id": "RVA-SYM-0204",
+      "name": "unit_definition_table_82F700D8",
+      "kind": "global",
+      "address": "0x82F700D8",
+      "image": "../image.json",
+      "claim": "Begins the image-backed 29-record unit-definition table with stride 0x94.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/unitDefinitions" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpDataValues.java:0x82F700D8" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the accepted name, base-attack, and base-defense fields are assigned meanings."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0205",
+      "name": "EffectiveUnitDefenseLookup",
+      "kind": "function",
+      "address": "0x82CF21A0",
+      "image": "../image.json",
+      "claim": "Reads signed base defense from the indexed unit definition and applies recovered unit and civilization modifiers.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/statAccessors/defense" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CF21A0" },
+        { "kind": "runtime-probe", "locator": "runtime:qol_probe_unit_stats" }
+      ],
+      "qualification": {
+        "alternatives": ["The label is recovered semantics, not an original debug symbol."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0206",
+      "name": "EffectiveUnitAttackLookup",
+      "kind": "function",
+      "address": "0x82CF2230",
+      "image": "../image.json",
+      "claim": "Reads signed base attack from the indexed unit definition and applies recovered unit and civilization modifiers.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/statAccessors/attack" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CF2230" },
+        { "kind": "runtime-probe", "locator": "runtime:qol_probe_unit_stats" }
+      ],
+      "qualification": {
+        "alternatives": ["The label is recovered semantics, not an original debug symbol."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0207",
+      "name": "AIUnitChoiceEvaluate",
+      "kind": "function",
+      "address": "0x82CB44E0",
+      "image": "../image.json",
+      "claim": "Calls both effective unit-stat accessors repeatedly while evaluating AI unit choices.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/aiConsumers/0" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CB44E0" },
+        { "kind": "runtime-probe", "locator": "runtime:qol_probe_unit_stats" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete score formula and original class or function name remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0208",
+      "name": "AITurnUnitEvaluation",
+      "kind": "function",
+      "address": "0x82CB6E48",
+      "image": "../image.json",
+      "claim": "Consumes both effective unit stats during an AI turn evaluation path.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/aiConsumers/1" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CB6E48" },
+        { "kind": "runtime-probe", "locator": "runtime:qol_probe_unit_stats" }
+      ],
+      "qualification": {
+        "alternatives": ["The enclosing AI action and complete score formula remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0209",
+      "name": "AITurnUnitFilter",
+      "kind": "function",
+      "address": "0x82CBF570",
+      "image": "../image.json",
+      "claim": "Consumes both effective unit stats during an AI unit comparison or filter path.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/aiConsumers/2" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CBF570" },
+        { "kind": "runtime-probe", "locator": "runtime:qol_probe_unit_stats" }
+      ],
+      "qualification": {
+        "alternatives": ["The compared candidates and complete rejection rule remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0210",
+      "name": "UnitDisplayNameBuild",
+      "kind": "function",
+      "address": "0x82CEEA90",
+      "image": "../image.json",
+      "claim": "Reads unit-definition names and includes civilization-specific substitutions or additions while building a display name.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/displayNameConsumer" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CEEA90" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete unique-unit name mapping and original function name remain unresolved."]
+      }
     }
   ]
 }

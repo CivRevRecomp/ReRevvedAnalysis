@@ -1896,6 +1896,72 @@
       "confidence": "confirmed",
       "evidence": [{ "kind": "topic-manifest", "locator": "../civilization-bonus-storage.json#/lookup" }],
       "qualification": { "falsificationCondition": "Runtime row selection does not match the player civilization array." }
+    },
+    {
+      "id": "RVA-REL-0264",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0206",
+      "to": "RVA-FLD-0111",
+      "image": "../image.json",
+      "claim": "EffectiveUnitAttackLookup reads base attack at unit-definition offset 0x40.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/statAccessors/attack" }],
+      "qualification": { "falsificationCondition": "The signed load does not target definition offset 0x40." }
+    },
+    {
+      "id": "RVA-REL-0265",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0205",
+      "to": "RVA-FLD-0112",
+      "image": "../image.json",
+      "claim": "EffectiveUnitDefenseLookup reads base defense at unit-definition offset 0x41.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/statAccessors/defense" }],
+      "qualification": { "falsificationCondition": "The signed load does not target definition offset 0x41." }
+    },
+    {
+      "id": "RVA-REL-0266",
+      "kind": "calls",
+      "from": "RVA-SYM-0191",
+      "to": "RVA-SYM-0206",
+      "image": "../image.json",
+      "claim": "CombatResolve calls EffectiveUnitAttackLookup while resolving the accepted combat path.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/simulationConsumer" }],
+      "qualification": { "falsificationCondition": "The resolver does not directly call 0x82CF2230." }
+    },
+    {
+      "id": "RVA-REL-0267",
+      "kind": "calls",
+      "from": "RVA-SYM-0191",
+      "to": "RVA-SYM-0205",
+      "image": "../image.json",
+      "claim": "CombatResolve calls EffectiveUnitDefenseLookup while resolving the accepted combat path.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/simulationConsumer" }],
+      "qualification": { "falsificationCondition": "The resolver does not directly call 0x82CF21A0." }
+    },
+    {
+      "id": "RVA-REL-0268",
+      "kind": "calls",
+      "from": "RVA-SYM-0207",
+      "to": "RVA-SYM-0206",
+      "image": "../image.json",
+      "claim": "AIUnitChoiceEvaluate calls EffectiveUnitAttackLookup while evaluating AI unit choices.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/aiConsumers/0" }],
+      "qualification": { "falsificationCondition": "The function does not directly call 0x82CF2230." }
+    },
+    {
+      "id": "RVA-REL-0269",
+      "kind": "calls",
+      "from": "RVA-SYM-0207",
+      "to": "RVA-SYM-0205",
+      "image": "../image.json",
+      "claim": "AIUnitChoiceEvaluate calls EffectiveUnitDefenseLookup while evaluating AI unit choices.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/aiConsumers/0" }],
+      "qualification": { "falsificationCondition": "The function does not directly call 0x82CF21A0." }
     }
   ]
 }
