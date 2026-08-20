@@ -1488,10 +1488,10 @@
       "qualification": {"alternatives": ["Runtime cadence and precision remain unconfirmed."]}
     },
     {
-      "id": "RVA-SYM-0114", "name": "FeGfxPerFrameStep", "kind": "function", "address": "0x82C5F680", "image": "../image.json",
-      "claim": "Invokes frame-timing slot 0x8 and consumes the resulting timing values in frontend and GFx update calls.", "confidence": "strong",
-      "evidence": [{"kind": "topic-manifest", "locator": "../gameplay-frame-timing-owner.json#/perFrameUpdate"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82C5F680"}],
-      "qualification": {"alternatives": ["Static dispatch does not prove successful runtime rendering."]}
+      "id": "RVA-SYM-0114", "name": "AttractMovieFrameStep", "kind": "function", "address": "0x82C5F680", "image": "../image.json",
+      "claim": "Advances the shared frame-timing owner and runs the frame work for the constructed attract-movie object.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../attract-movie-frame-driver.json#/frameOwnership"}, {"kind": "generated-code", "locator": "generated:rerevved/sub_82C5F680"}],
+      "qualification": {"alternatives": ["Runtime cadence and successful movie playback remain unconfirmed."]}
     },
     {
       "id": "RVA-SYM-0119",

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0059",
+  "topic": "attract-movie-frame-driver",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which frontend object owns the timing-consuming frame driver at 0x82C5F680?",
+  "scope": {
+    "functions": ["0x821B3BB8", "0x82E60360", "0x82C5F590", "0x82C5F680", "0x82C5E778"],
+    "tables": ["0x82121320", "0x82121340"],
+    "strings": ["0x821212F4", "0x82121304"],
+    "boundary": "This packet identifies the frontend state and object that own 0x82C5F680. It does not prove runtime cadence, successful movie playback, or a playable-game update edge."
+  },
+  "dependencies": [
+    {
+      "topic": "gameplay-frame-timing-owner",
+      "use": "the bounded timing consumption previously observed in 0x82C5F680"
+    }
+  ],
+  "currentEvidence": {
+    "method": "identified the key-5 state factory, AttractMovie strings, object construction path, object vtable, and frame slot through foreground read-only Ghidra queries and narrow generated-code corroboration",
+    "entries": [
+      {
+        "role": "key-5 frontend state factory",
+        "address": "0x821B3BB8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "attract-movie object builder",
+        "address": "0x82E60360",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "attract-movie frame driver",
+        "address": "0x82C5F680",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The exact AttractMovie strings and the constructed object's slot table establish the bounded ownership chain without assigning an original class name."
+  },
+  "staticQuery": {
+    "scripts": [
+      "ghidra/FindCallConstantArgs.java",
+      "ghidra/FindPointerValues.java",
+      "ghidra/DumpFunctions.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/DumpDataValues.java"
+    ],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_821B3BB8",
+      "generated:rerevved/sub_82E60360",
+      "generated:rerevved/sub_82C5F680"
+    ]
+  },
+  "stateFactory": {
+    "factory": "0x821B3BB8",
+    "allocationSize": "0x10",
+    "stateKey": 5,
+    "vtable": "0x82121320",
+    "result": "The factory allocates 0x10 bytes, stores numeric key 5 at offset 0x4, installs table 0x82121320, clears word 0x8, and clears byte 0xC."
+  },
+  "objectConstruction": {
+    "builder": "0x82E60360",
+    "stateTable": "0x82121320",
+    "stateSlotOffset": "0x1C",
+    "stateSlotWord": "0x8212133C",
+    "nameString": "AttractMovie",
+    "logString": "Using attract movie: '%s'",
+    "baseInitializer": "0x82C5F590",
+    "objectVtable": "0x82121340",
+    "result": "The key-5 state entry selects an attract-movie resource, reports it with the exact AttractMovie log text, initializes the allocated object through 0x82C5F590, and installs vtable 0x82121340."
+  },
+  "frameOwnership": {
+    "vtable": "0x82121340",
+    "frameSlotOffset": "0x4",
+    "frameSlotWord": "0x82121344",
+    "driver": "0x82C5F680",
+    "otherBoundedSlotOffset": "0x8",
+    "otherBoundedSlotTarget": "0x82C5E778",
+    "result": "The constructed attract-movie object's slot 0x4 targets 0x82C5F680. Its timing advance and frontend/GFx calls therefore belong to attract-movie playback, not evidence of a playable-game update loop.",
+    "boundary": "The slot's runtime cadence and successful playback remain unproven."
+  },
+  "rejectedLeads": {
+    "playableFrameBoundary": {
+      "result": "0x82C5F680 was a plausible frame candidate because it advances the shared timing owner, but its construction and vtable ownership identify it as the attract-movie driver."
+    },
+    "stateKeyMeaning": {
+      "result": "Numeric key 5 identifies this frontend state record only; no global state-enum meaning is inferred."
+    }
+  },
+  "guards": [
+    "Do not use 0x82C5F680 as the playable-game guest-main-thread boundary.",
+    "Do not assign original class names from the frontend state key or vtable shape.",
+    "Do not infer successful attract-movie playback or cadence from static dispatch.",
+    "Keep the shared frame-timing owner distinct from the object that consumes it."
+  ],
+  "conclusion": "Version 1.3 function 0x82C5F680 is the slot-0x4 frame driver of the object built by the key-5 AttractMovie frontend state. It is a confirmed negative lead for the playable-game main-thread boundary."
+}
