@@ -73,6 +73,21 @@ if (-not $python) {
         Add-Failure "catalog validation failed: $($validatorOutput -join ' ')"
     }
 
+    $referenceArgs = @(
+        (Join-Path $repo 'tools/reference_data.py')
+    )
+    $savedErrorAction = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $referenceOutput = @(& $python.Source @referenceArgs 2>&1)
+        $referenceExitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $savedErrorAction
+    }
+    if ($referenceExitCode -ne 0) {
+        Add-Failure "reference data validation failed: $($referenceOutput -join ' ')"
+    }
+
     $pythonFiles = @($trackedPaths | Where-Object { $_ -match '(?i)\.py$' })
     if ($pythonFiles.Count -eq 0) {
         Add-Failure 'no tracked Python files found'
@@ -223,7 +238,7 @@ if ($failures.Count -gt 0) {
     exit 1
 }
 
-$summary = "verify: passed JSON={0} PythonAST={1} PythonTests=1 " +
+$summary = "verify: passed JSON={0} PythonAST={1} PythonTests=1 ReferenceData=1 " +
     "PowerShellAST={2} MarkdownLinks={3} ASCII=1 GhidraIndex=1 " +
     "repository-hygiene=1 git-diff=1 cached-diff=1"
 Write-Output ($summary -f

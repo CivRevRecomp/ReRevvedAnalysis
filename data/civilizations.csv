@@ -1,0 +1,17 @@
+civ_id,internal_name,display_name,leader,starting_bonus_id,starting_bonus
+0,Roman,Roman,Julius Caesar,,Code of Laws and Republic
+1,Egyptian,Egyptian,Cleopatra,,An Ancient Wonder
+2,Greek,Greek,Alexander the Great,,Courthouse in the capital
+3,Spanish,Spanish,Isabella,,Navigation
+4,German,German,Otto von Bismarck,,Elite units upgrade automatically
+5,Russian,Russian,Catherine the Great,,Wider view of the surrounding map
+6,Chinese,Chinese,Mao Zedong,,Writing
+7,American,American,Abraham Lincoln,,A Great Person
+8,Japanese,Japanese,Tokugawa Ieyasu,,Ceremonial Burial
+9,French,French,Napoleon,,Cathedral in the capital
+10,Indian,Indian,Mohandas Gandhi,,Access to all resources
+11,Arab,Arabian,Saladin,,Religion
+12,Aztec,Aztec,Montezuma II,,Additional starting Gold
+13,African,Zulu,Shaka,,Lower strength threshold for overrunning enemies
+14,Mongolian,Mongolian,Genghis Khan,,Captured cities provide +50% Trade
+15,English,English,Elizabeth I,,Monarchy

@@ -42,11 +42,13 @@ independent era-range guard.
 ## Leader and bonus map
 
 The player-facing civilization names, leaders, and gameplay descriptions below
-follow the [Civilization Wiki CivRev civilization
-reference](https://civilization.fandom.com/wiki/Civilizations_%28CivRev%29).
-The internal names, row order, and numeric era-bonus IDs are recovered from the
-game image. Descriptions are normalized here for consistent terminology.
+are normalized in [`civilizations.csv`](../../data/civilizations.csv) and
+[`era-bonus-definitions.csv`](../../data/era-bonus-definitions.csv). The
+internal names, row order, and numeric era-bonus IDs are recovered from the game
+image. The [reference-data contract](../../data/README.md) records the external
+interpretation sources and generation rule.
 
+<!-- civilization-bonus-map:begin -->
 | Civilization | Leader | Starting | Ancient | Medieval | Industrial | Modern |
 | --- | --- | --- | --- | --- | --- | --- |
 | Roman | Julius Caesar | Code of Laws and Republic | Roads cost half as much | Wonders cost half as much | Increased Great Person generation | New cities begin with +1 population |
@@ -56,15 +58,16 @@ game image. Descriptions are normalized here for consistent terminology.
 | German | Otto von Bismarck | Elite units upgrade automatically | New Warriors are Veterans | Forest tiles provide +1 Production | Barracks cost half as much | Gold reserves earn 2% interest |
 | Russian | Catherine the Great | Wider view of the surrounding map | Plains tiles provide +1 Food | New defensive units receive Loyalty | Riflemen cost half as much | Spies cost half as much |
 | Chinese | Mao Zedong | Writing | New cities begin with +1 population | Literacy | Libraries cost half as much | Cities are unaffected by Anarchy |
-| American | Abraham Lincoln | A Great Person | Gold reserves earn 2% interest | Rushing units costs half as much | Plains tiles provide +1 Food | Factories provide triple Production |
+| American | Abraham Lincoln | A Great Person | Gold reserves earn 2% interest | Unit rush costs are halved | Plains tiles provide +1 Food | Factories provide triple Production |
 | Japanese | Tokugawa Ieyasu | Ceremonial Burial | Sea tiles provide +1 Food | Samurai Knights gain +1 attack | Cities are unaffected by Anarchy | New defensive units receive Loyalty |
 | French | Napoleon | Cathedral in the capital | Pottery | Roads cost half as much | Cannons gain +2 attack | Riflemen gain +1 movement |
 | Indian | Mohandas Gandhi | Access to all resources | Cities are unaffected by Anarchy | Religion | Settlers cost half as much | Courthouses cost half as much |
-| Arabian | Saladin | Religion | Caravans provide +50% Gold | Mathematics | Cavalry and Knights gain +1 attack | Gold reserves earn 2% interest |
+| Arabian (`Arab` internally) | Saladin | Religion | Caravans provide +50% Gold | Mathematics | Cavalry and Knights gain +1 attack | Gold reserves earn 2% interest |
 | Aztec | Montezuma II | Additional starting Gold | Units heal after winning combat | Temples provide +3 Science | Roads cost half as much | Cities produce +50% Gold |
 | Zulu (`African` internally) | Shaka | Lower strength threshold for overrunning enemies | Warriors gain +1 movement | Faster city growth | Cities produce +50% Gold | Riflemen cost half as much |
 | Mongolian | Genghis Khan | Captured cities provide +50% Trade | Captured Barbarian villages become cities | Cavalry gains +1 movement | Mountain tiles provide +2 Production | Communism |
 | English | Elizabeth I | Monarchy | Longbow Archers gain +1 defense | Naval units gain +1 combat | Hill tiles provide +1 Production | Naval support is doubled |
+<!-- civilization-bonus-map:end -->
 
 The starting column is separate from the four-value era table. Its entries are
 not all passive effects: some are one-time grants or initial game state, while
@@ -75,6 +78,7 @@ the German, Indian, Zulu, and Mongolian entries establish ongoing rules.
 The four values are ordered Ancient, Medieval, Industrial, and Modern. They
 are cumulative unlocks, not four mutually exclusive replacements.
 
+<!-- civilization-era-id-map:begin -->
 | Civ ID | Internal name | Ancient | Medieval | Industrial | Modern |
 | ---: | --- | ---: | ---: | ---: | ---: |
 | 0 | Roman | 1 | 24 | 23 | 36 |
@@ -93,6 +97,7 @@ are cumulative unlocks, not four mutually exclusive replacements.
 | 13 | African | 55 | 8 | 25 | 17 |
 | 14 | Mongolian | 40 | 3 | 56 | 48 |
 | 15 | English | 61 | 6 | 41 | 51 |
+<!-- civilization-era-id-map:end -->
 
 `African` is the internal image string for the player-facing Zulu civilization
 at index 13. `Arab` is likewise the internal name for the Arabian civilization

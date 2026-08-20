@@ -34,7 +34,7 @@ WHAT THIS COVERS
 
 This license applies to the catalog and its supporting research records:
 
-  manifests/, schemas/, docs/
+  data/, manifests/, schemas/, docs/
 
 Source code is licensed separately under the MIT License; see LICENSE. That
 covers tools/, tests/, the Ghidra helper scripts under ghidra/, dependency and
