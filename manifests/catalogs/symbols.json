@@ -1984,6 +1984,70 @@
       "qualification": {
         "alternatives": ["Other production completion effects and non-unit rush branches remain outside this function-level claim."]
       }
+    },
+    {
+      "id": "RVA-SYM-0200",
+      "name": "civilization_bonus_table_82F6F950",
+      "kind": "global",
+      "address": "0x82F6F950",
+      "image": "../image.json",
+      "claim": "Begins the image-backed 16-civilization by four-era table of cumulative civilization bonus IDs.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../civilization-bonus-storage.json#/storage" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82F6F950" }
+      ],
+      "qualification": {
+        "alternatives": ["Gameplay meanings remain assigned to bonus IDs only when accepted by their own packets."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0201",
+      "name": "player_era_array_830ECD08",
+      "kind": "global",
+      "address": "0x830ECD08",
+      "image": "../image.json",
+      "claim": "Stores the current era index consumed per player by ActiveCivilizationBonusLookup.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../civilization-bonus-storage.json#/lookup" },
+        { "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/bonusLookup" }
+      ],
+      "qualification": {
+        "alternatives": ["Assignment and persistence writers remain outside G6."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0202",
+      "name": "player_civilization_array_830ECD28",
+      "kind": "global",
+      "address": "0x830ECD28",
+      "image": "../image.json",
+      "claim": "Stores the civilization index consumed per player by ActiveCivilizationBonusLookup.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../civilization-bonus-storage.json#/lookup" },
+        { "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/bonusLookup" }
+      ],
+      "qualification": {
+        "alternatives": ["Assignment and persistence writers remain outside G6."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0203",
+      "name": "civilization_name_pointers_82F7A348",
+      "kind": "global",
+      "address": "0x82F7A348",
+      "image": "../image.json",
+      "claim": "Begins the 16-entry internal civilization-name pointer table aligned by index with the civilization bonus rows.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../civilization-bonus-storage.json#/storage" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82F7A348" }
+      ],
+      "qualification": {
+        "alternatives": ["Internal names are not substituted with localized player-facing labels."]
+      }
     }
   ]
 }

@@ -1863,6 +1863,39 @@
       "confidence": "confirmed",
       "evidence": [{ "kind": "topic-manifest", "locator": "../rush-cost-producer.json#/bonusLookup" }],
       "qualification": { "alternatives": ["Other bonus IDs and consumers remain assigned to G6."] }
+    },
+    {
+      "id": "RVA-REL-0261",
+      "kind": "consumes",
+      "from": "RVA-SYM-0197",
+      "to": "RVA-SYM-0200",
+      "image": "../image.json",
+      "claim": "ActiveCivilizationBonusLookup is the only recovered reader of the civilization bonus table.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../civilization-bonus-storage.json#/storage" }],
+      "qualification": { "falsificationCondition": "A second table-base reference or runtime-derived row cache is recovered." }
+    },
+    {
+      "id": "RVA-REL-0262",
+      "kind": "consumes",
+      "from": "RVA-SYM-0197",
+      "to": "RVA-SYM-0201",
+      "image": "../image.json",
+      "claim": "ActiveCivilizationBonusLookup reads the requested player's era before selecting cumulative row entries.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../civilization-bonus-storage.json#/lookup" }],
+      "qualification": { "alternatives": ["The cumulative path clamps this value to 0 through 3."] }
+    },
+    {
+      "id": "RVA-REL-0263",
+      "kind": "consumes",
+      "from": "RVA-SYM-0197",
+      "to": "RVA-SYM-0202",
+      "image": "../image.json",
+      "claim": "ActiveCivilizationBonusLookup reads the requested player's civilization index to select one four-entry row.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../civilization-bonus-storage.json#/lookup" }],
+      "qualification": { "falsificationCondition": "Runtime row selection does not match the player civilization array." }
     }
   ]
 }
