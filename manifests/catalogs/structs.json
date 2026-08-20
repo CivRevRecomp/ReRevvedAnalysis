@@ -877,13 +877,14 @@
       "id": "RVA-STR-0034",
       "name": "unit_record",
       "image": "../image.json",
-      "claim": "0x54-byte per-player unit record used by the ordinary movement lifecycle.",
+      "claim": "0x54-byte per-player unit record used by ordinary movement and the observed combat lifecycle.",
       "confidence": "confirmed",
       "evidence": [
-        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" },
+        { "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/participants" }
       ],
       "qualification": {
-        "alternatives": ["Fields outside the accepted movement boundary remain unnamed."]
+        "alternatives": ["Combat-observed offsets remain unnamed until a producer and semantic consumer are both accepted."]
       },
       "size": "0x54",
       "fields": [

@@ -1748,14 +1748,15 @@
       "kind": "function",
       "address": "0x82CDDF08",
       "image": "../image.json",
-      "claim": "Consumes queued command records and dispatches command 0x11 to the bounded Move case.",
+      "claim": "Consumes queued command records and dispatches command 0x00 to Combat and command 0x11 to Move.",
       "confidence": "confirmed",
       "evidence": [
         { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/commandPath" },
+        { "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/commandPath" },
         { "kind": "generated-code", "locator": "generated:rerevved/sub_82CDDF08" }
       ],
       "qualification": {
-        "alternatives": ["Only the Move case is named by this packet."]
+        "alternatives": ["Other command cases remain unnamed unless accepted by their own packets."]
       }
     },
     {
@@ -1811,10 +1812,11 @@
       "kind": "global",
       "address": "0x830F2BF0",
       "image": "../image.json",
-      "claim": "Begins the 256-record-per-player unit table used by the ordinary movement executor.",
+      "claim": "Begins the 256-record-per-player unit table used by ordinary movement and the observed combat path.",
       "confidence": "confirmed",
       "evidence": [
-        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" },
+        { "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/participants" }
       ],
       "qualification": {
         "falsificationCondition": "The executor does not index 0x54-byte records from this base by player times 256 plus unit."
@@ -1834,6 +1836,39 @@
       ],
       "qualification": {
         "alternatives": ["It is not established as the universal movement duration; G4 must identify its readers."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0191",
+      "name": "CombatResolve",
+      "kind": "function",
+      "address": "0x82CD9970",
+      "image": "../image.json",
+      "claim": "Owns the observed unit-versus-unit combat resolution lifecycle, including participant selection, presentation work, pumping, and final command cleanup.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/conclusion" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CD9970" }
+      ],
+      "qualification": {
+        "alternatives": ["Individual RNG, damage, XP, promotion, retreat, and capture phases remain unnamed."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0192",
+      "name": "CombatPresentationApply",
+      "kind": "function",
+      "address": "0x82D7F838",
+      "image": "../image.json",
+      "claim": "Is the runtime-observed main combat presentation target for the captured unit-versus-unit path and advances work over both participant records before returning success.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/presentation" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D7F838" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82D7F838" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The indirect call at 0x82CDD930 does not target 0x82D7F838 on the observed path."
       }
     }
   ]

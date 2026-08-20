@@ -1753,6 +1753,39 @@
       "confidence": "confirmed",
       "evidence": [{ "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/presentation" }],
       "qualification": { "falsificationCondition": "The loop at 0x82CD7590 does not call 0x82E2A838 before rechecking the busy condition." }
+    },
+    {
+      "id": "RVA-REL-0251",
+      "kind": "calls",
+      "from": "RVA-SYM-0185",
+      "to": "RVA-SYM-0191",
+      "image": "../image.json",
+      "claim": "The Combat command case calls CombatResolve at 0x82CDF8F8.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/commandPath" }],
+      "qualification": { "falsificationCondition": "The direct call at 0x82CDF8F8 does not target 0x82CD9970." }
+    },
+    {
+      "id": "RVA-REL-0252",
+      "kind": "calls",
+      "from": "RVA-SYM-0191",
+      "to": "RVA-SYM-0192",
+      "image": "../image.json",
+      "claim": "CombatResolve indirectly invokes CombatPresentationApply at 0x82CDD930 on the captured unit-versus-unit path.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/presentation" }],
+      "qualification": { "alternatives": ["Other combat variants may select a different indirect target."] }
+    },
+    {
+      "id": "RVA-REL-0253",
+      "kind": "calls",
+      "from": "RVA-SYM-0191",
+      "to": "RVA-SYM-0188",
+      "image": "../image.json",
+      "claim": "CombatResolve calls GuestPresentationPump at 0x82CDD958 until the combat wait condition clears.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../combat-resolution-lifecycle.json#/presentation" }],
+      "qualification": { "falsificationCondition": "The loop at 0x82CDD938 does not call 0x82E2A838 before rechecking its busy flags." }
     }
   ]
 }
