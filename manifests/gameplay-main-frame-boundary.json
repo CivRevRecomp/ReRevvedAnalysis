@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "id": "RVA-F-0060",
   "topic": "gameplay-main-frame-boundary",
-  "status": "open",
-  "confidence": "strong",
+  "status": "closed",
+  "confidence": "confirmed",
   "image": "image.json",
   "question": "Does the version 1.3 application callback at 0x82E87D18 provide a guest-main-thread frame boundary that remains active during playable gameplay?",
   "scope": {
     "functions": ["0x82E2AF20", "0x82E2AFD0", "0x82E87D18", "0x82C7DF58", "0x82E43B50", "0x82D526A0", "0x82E60F70"],
     "tables": ["0x82120D2C"],
     "globals": ["0x8314F280", "0x8314F284", "0x8314F288", "0x8314F28C"],
-    "boundary": "Static evidence establishes callback registration and a broad update chain. A runtime probe must still prove playable-game cadence and thread identity before this packet can close."
+    "boundary": "Static evidence establishes callback registration and the broad update chain. The bounded runtime probe proves that the driver continues during owner-observed playable gameplay on the AudioGameStartInit thread; it does not prove that every callback slot or downstream manager shares that thread."
   },
   "dependencies": [
     {
@@ -37,12 +37,12 @@
       {
         "role": "application callback",
         "address": "0x82E87D18",
-        "confidence": "strong"
+        "confidence": "confirmed"
       },
       {
-        "role": "candidate broad frame driver",
+        "role": "playable broad frame driver",
         "address": "0x82C7DF58",
-        "confidence": "strong"
+        "confidence": "confirmed"
       },
       {
         "role": "AudioGameStartInit probe boundary",
@@ -50,7 +50,7 @@
         "confidence": "confirmed"
       }
     ],
-    "qualification": "The callback is registered by application construction and may run outside playable gameplay; runtime correlation with AudioGameStartInit is required."
+    "qualification": "The callback begins before game start and remains active through playable gameplay. Its application-wide lifetime is broader than the playable-state availability gate that G1 must identify."
   },
   "staticQuery": {
     "scripts": [
@@ -92,16 +92,34 @@
     "sceneUpdateHelper": "0x82E43B50",
     "sceneManagerUpdate": "0x82D526A0",
     "result": "The driver advances the shared timing owner, consumes its timing values across several manager calls, services bounded global owners, and reaches the scene-manager update through 0x82E43B50 when its gates pass.",
-    "boundary": "The broad shape supports a frame-driver candidate but does not establish playable-game execution or original subsystem names."
+    "boundary": "The broad shape and runtime capture establish a playable frame boundary, but they do not assign original subsystem names or make this callback a playable-state availability gate."
   },
   "runtimeProbe": {
-    "status": "pending-owner-visible-run",
+    "status": "captured",
+    "date": "2026-08-20",
     "default": "off",
     "cvar": "qol_probe_gameplay_frame",
     "startHook": "0x82E60F70",
     "frameHook": "0x82C7DF58",
-    "result": "The built diagnostic logs AudioGameStartInit thread identity and reports the candidate driver's frame count, host cadence, thread identity, game-start observation, and thread match every 300 hits.",
-    "exitCriterion": "During an owner-observed playable game, the driver continues at stable frame cadence after AudioGameStartInit and reports the same thread identity."
+    "sessionThreadToken": "0x692D7C5D271669F9",
+    "firstFrame": {
+      "frame": 1,
+      "gameStartSeen": false
+    },
+    "gameStart": {
+      "frameRange": "601-899",
+      "threadMatch": true
+    },
+    "postStartSamples": [
+      { "frame": 900, "elapsedSeconds": 34.931, "cumulativeCadenceHz": 25.74, "threadMatch": true },
+      { "frame": 3000, "elapsedSeconds": 94.661, "cumulativeCadenceHz": 31.68, "threadMatch": true },
+      { "frame": 5400, "elapsedSeconds": 166.972, "cumulativeCadenceHz": 32.33, "threadMatch": true },
+      { "frame": 7800, "elapsedSeconds": 239.183, "cumulativeCadenceHz": 32.61, "threadMatch": true }
+    ],
+    "ownerObservation": "During the same uninterrupted run, the owner reached a controllable map and moved a unit one tile successfully while the post-start samples continued.",
+    "processExitCode": 0,
+    "result": "The driver was already active before game start, AudioGameStartInit ran on the same session thread, and every sampled post-start hit through frame 7800 retained that thread. The owner-observed one-tile move proves that the callback continued during playable gameplay; the application then exited normally.",
+    "qualification": "The thread token is session-local, cumulative cadence includes startup time, and the unrelated ObjectIcons VFS lookup error did not interrupt the observed playable run."
   },
   "rejectedLeads": {
     "attractMovieDriver": {
@@ -113,10 +131,10 @@
     }
   },
   "guards": [
-    "Keep this packet open until a playable owner-observed runtime capture satisfies the exit criterion.",
-    "Do not call 0x82C7DF58 a playable-game frame boundary from static evidence alone.",
+    "Use 0x82C7DF58 as the proved guest-main-thread drain boundary, not as the playable-state availability predicate.",
+    "Do not generalize the session-local thread token or observed cadence into a platform guarantee.",
     "Do not infer original class or manager names from vtable position or call shape.",
     "The probe remains default-off and must not mutate guest state."
   ],
-  "conclusion": "Version 1.3 application callback 0x82E87D18 dispatches broad update driver 0x82C7DF58 through registered callback vtable 0x82120D2C. This is the strongest static G0 candidate, with playable cadence and guest-main-thread identity pending the default-off runtime probe."
+  "conclusion": "Version 1.3 application callback 0x82E87D18 dispatches broad update driver 0x82C7DF58 through registered callback vtable 0x82120D2C. A default-off runtime probe confirmed that 0x82C7DF58 continues during owner-observed playable gameplay on the same thread that enters AudioGameStartInit, making it the accepted guest-main-thread frame boundary for queued title work."
 }

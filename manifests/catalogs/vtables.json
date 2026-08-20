@@ -445,6 +445,37 @@
     {"id":"RVA-VTBL-0014","name":"input_poller_vtable_8216A26C","address":"0x8216A26C","image":"../image.json","claim":"Function-pointer table installed by the input-poller constructor.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/controllerEvents"},{"kind":"generated-code","locator":"generated:rerevved/sub_82C15038"}],"qualification":{"alternatives":["Only the poll slot is cataloged."]},"slots":[{"id":"RVA-SLOT-0020","offset":"0x4","target":"RVA-SYM-0064","claim":"Refreshes controller snapshots and enters delta emission.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../controller-input-glyph-selection.json#/controllerEvents"}],"qualification":{"falsificationCondition":"The slot does not target the poller at 0x82C14EE8."}}]},
     {"id":"RVA-VTBL-0020","name":"hall_of_achievements_environment_vtable_8212FBE8","address":"0x8212FBE8","image":"../image.json","claim":"Function-pointer table installed in the version 1.3 Hall of Achievements resource owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../ingame-screen-hoa-resource-owner.json#/ownerConstruction"},{"kind":"generated-code","locator":"generated:rerevved/sub_82DCE090"}],"qualification":{"alternatives":["Slot roles are outside this bounded packet."]},"slots":[]},
     {"id":"RVA-VTBL-0017","name":"localization_owner_vtable_82120FC0","address":"0x82120FC0","image":"../image.json","claim":"Function-pointer table installed in the 0x14C-byte localization owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"},{"kind":"ghidra-static","locator":"ghidra/DumpMemoryWords.java:0x82120FC0"}],"qualification":{"alternatives":["Only the locale-selection slot is recorded."]},"slots":[{"id":"RVA-SLOT-0025","offset":"0x14","target":"RVA-SYM-0095","claim":"Resolves, validates, and applies an internal locale ID.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner/localeSlot"}],"qualification":{"falsificationCondition":"The word at 0x82120FD4 is not 0x82E6AD10."}}]},
-    {"id":"RVA-VTBL-0016","name":"faudio_system_miles_vtable_82147C38","address":"0x82147C38","image":"../image.json","claim":"Function-pointer table installed in the 0x6C-byte low-level audio object.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem"},{"kind":"ghidra-static","locator":"ghidra/DumpMemoryWords.java:0x82147C38"}],"qualification":{"alternatives":["Only initialization and stream-setup slots are recorded."]},"slots":[{"id":"RVA-SLOT-0023","offset":"0x0","target":"RVA-SYM-0088","claim":"Initializes driver and stream-array state.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem/initSlot"}],"qualification":{"falsificationCondition":"The word at 0x82147C38 is not 0x82D457E0."}},{"id":"RVA-SLOT-0024","offset":"0x14","target":"RVA-SYM-0089","claim":"Dispatches low-level stream setup.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem/setupSlot"}],"qualification":{"falsificationCondition":"The word at 0x82147C4C is not 0x82D46380."}}]}
+    {"id":"RVA-VTBL-0016","name":"faudio_system_miles_vtable_82147C38","address":"0x82147C38","image":"../image.json","claim":"Function-pointer table installed in the 0x6C-byte low-level audio object.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem"},{"kind":"ghidra-static","locator":"ghidra/DumpMemoryWords.java:0x82147C38"}],"qualification":{"alternatives":["Only initialization and stream-setup slots are recorded."]},"slots":[{"id":"RVA-SLOT-0023","offset":"0x0","target":"RVA-SYM-0088","claim":"Initializes driver and stream-array state.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem/initSlot"}],"qualification":{"falsificationCondition":"The word at 0x82147C38 is not 0x82D457E0."}},{"id":"RVA-SLOT-0024","offset":"0x14","target":"RVA-SYM-0089","claim":"Dispatches low-level stream setup.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem/setupSlot"}],"qualification":{"falsificationCondition":"The word at 0x82147C4C is not 0x82D46380."}}]},
+    {
+      "id": "RVA-VTBL-0023",
+      "name": "playable_frame_callback_vtable_82120D2C",
+      "address": "0x82120D2C",
+      "image": "../image.json",
+      "claim": "Function-pointer table installed in the registered 4-byte application frame callback object.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gameplay-main-frame-boundary.json#/callbackRegistration" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82120D2C" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E2AFD0" }
+      ],
+      "qualification": {
+        "alternatives": ["Only slot 0 is interpreted; the callback's original type name remains unresolved."]
+      },
+      "slots": [
+        {
+          "id": "RVA-SLOT-0033",
+          "offset": "0x0",
+          "target": "RVA-SYM-0175",
+          "claim": "Dispatches the application callback that reaches the playable frame driver.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../gameplay-main-frame-boundary.json#/callbackDispatch" }
+          ],
+          "qualification": {
+            "falsificationCondition": "The word at 0x82120D2C is not 0x82E87D18."
+          }
+        }
+      ]
+    }
   ]
 }

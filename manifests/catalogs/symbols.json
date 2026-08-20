@@ -1583,6 +1583,38 @@
     {"id":"RVA-SYM-0090","name":"FAudioSystemMilesStreamOpen","kind":"function","address":"0x82D461E8","image":"../image.json","claim":"Opens a stream and stores its handle at slot offset 0x4.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Successful runtime I/O is not claimed."]}},
     {"id":"RVA-SYM-0091","name":"MilesOpenStream","kind":"function","address":"0x82A34630","image":"../image.json","claim":"Miles open-stream wrapper used by the low-level stream owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Wrapper internals are outside this topic."]}},
     {"id":"RVA-SYM-0142","name":"Audio2DScriptEntryLookup","kind":"function","address":"0x82D4E5C8","image":"../image.json","claim":"Returns a bounded pointer-table entry for a 2D script ID.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-2d-script-entry-lookup.json#/indexedLookup"}],"qualification":{"alternatives":["The concrete entry type remains unresolved."]}},
-    {"id":"RVA-SYM-0144","name":"Audio2DScriptPointerTablePopulate","kind":"function","address":"0x82D47128","image":"../image.json","claim":"Allocates and fills the audio manager's bounded 2D script pointer table.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-2d-script-table-ownership.json#/collectionProduction"}],"qualification":{"alternatives":["Inserted entry ownership remains unresolved."]}}
+    {"id":"RVA-SYM-0144","name":"Audio2DScriptPointerTablePopulate","kind":"function","address":"0x82D47128","image":"../image.json","claim":"Allocates and fills the audio manager's bounded 2D script pointer table.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-2d-script-table-ownership.json#/collectionProduction"}],"qualification":{"alternatives":["Inserted entry ownership remains unresolved."]}},
+    {
+      "id": "RVA-SYM-0175",
+      "name": "PlayableFrameCallback",
+      "kind": "function",
+      "address": "0x82E87D18",
+      "image": "../image.json",
+      "claim": "Application callback that dispatches the broad frame driver which remains active during playable gameplay.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gameplay-main-frame-boundary.json#/callbackDispatch" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E87D18" }
+      ],
+      "qualification": {
+        "alternatives": ["The callback is application-wide and begins before playable gameplay."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0176",
+      "name": "PlayableFrameDriver",
+      "kind": "function",
+      "address": "0x82C7DF58",
+      "image": "../image.json",
+      "claim": "Broad update driver proved to continue during playable gameplay on the AudioGameStartInit thread.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../gameplay-main-frame-boundary.json#/runtimeProbe" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82C7DF58" }
+      ],
+      "qualification": {
+        "alternatives": ["This frame boundary is not itself the playable-state availability predicate."]
+      }
+    }
   ]
 }
