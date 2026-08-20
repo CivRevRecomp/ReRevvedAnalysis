@@ -1057,6 +1057,39 @@
           }
         }
       ]
+    },
+    {
+      "id": "RVA-STR-0036",
+      "name": "selected_save_content_record",
+      "image": "../image.json",
+      "claim": "0x13C-byte payload copied from an accepted save/load picker record and consumed by manual game storage owners.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/slotIdentity" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82DDBFF8" }
+      ],
+      "qualification": {
+        "alternatives": ["The picker-owned UI array uses a larger 0x164-byte stride with presentation metadata outside this copied payload."]
+      },
+      "size": "0x13C",
+      "fields": [
+        {
+          "id": "RVA-FLD-0113",
+          "name": "internal_slot_filename",
+          "offset": "0x108",
+          "claim": "Begins the normalized NUL-terminated internal filename consumed by both manual save and load owners.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/slotIdentity" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82D82510" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82D84238" },
+            { "kind": "runtime-probe", "locator": "runtime:qol_probe_save_slots" }
+          ],
+          "qualification": {
+            "alternatives": ["The filename must remain scoped by the selected user/device content namespace."]
+          }
+        }
+      ]
     }
   ]
 }

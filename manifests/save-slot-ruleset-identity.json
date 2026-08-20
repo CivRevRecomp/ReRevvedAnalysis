@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0068",
+  "topic": "save-slot-ruleset-identity",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which selected-record field identifies a manual save slot, and where can a host ruleset sidecar be checked before load and committed after save success?",
+  "scope": {
+    "functions": ["0x82D82510", "0x82D83208", "0x82D834F0", "0x82D84238", "0x82DDBFF8"],
+    "edges": ["0x82D82984", "0x82D829E8", "0x82D844CC"],
+    "recordOffsets": ["0x108"],
+    "runtimeProbe": "qol_probe_save_slots"
+  },
+  "dependencies": [
+    {
+      "topic": "save-profile-storage",
+      "use": "Provides the selected-user resolver, selected device field, content enumeration owner, and 0x164 UI record stride."
+    }
+  ],
+  "currentEvidence": {
+    "method": "foreground read-only Ghidra queries, narrow generated-code comparison, hook-placement tests, and a default-off runtime load/overwrite matrix",
+    "entries": [
+      {
+        "role": "save slot picker",
+        "address": "0x82D83208",
+        "confidence": "strong"
+      },
+      {
+        "role": "load slot picker",
+        "address": "0x82D834F0",
+        "confidence": "strong"
+      },
+      {
+        "role": "selected content record copy",
+        "address": "0x82DDBFF8",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "manual save owner",
+        "address": "0x82D82510",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "manual load owner",
+        "address": "0x82D84238",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "The runtime matrix observed one existing manual slot, save0.sve. Other manual and autosave identifiers retain the same statically proved field contract but were not individually exercised."
+  },
+  "staticQuery": {
+    "scripts": [
+      "ghidra/DumpDataValues.java",
+      "ghidra/DumpFunctions.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/DumpStringBoundary.java",
+      "ghidra/FindStrings.java"
+    ],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82D82510",
+      "generated:rerevved/sub_82D83208",
+      "generated:rerevved/sub_82D834F0",
+      "generated:rerevved/sub_82D84238",
+      "generated:rerevved/sub_82DDBFF8"
+    ]
+  },
+  "slotIdentity": {
+    "selectedRecordCopy": "0x82DDBFF8",
+    "copiedSize": "0x13C",
+    "uiRecordStride": "0x164",
+    "internalFilenameOffset": "0x108",
+    "runtimeValue": "save0.sve",
+    "result": "Both manual save and manual load owners derive the storage name from the selected content record at offset 0x108. The runtime probe observed the same normalized NUL-terminated identifier on load and overwrite-save.",
+    "boundary": "Use the filename only inside the selected user/device content namespace; filename alone is not a process-global key."
+  },
+  "loadBoundary": {
+    "function": "0x82D84238",
+    "preLoadEdge": "0x82D84238",
+    "nativeDeserializeCall": "0x82D844CC",
+    "runtimeObservation": {
+      "slot": "save0.sve",
+      "identifierValid": true
+    },
+    "result": "Function entry receives the selected content record before content open and before the native deserializer call, so a missing or mismatched sidecar can stop the load without modifying native save data.",
+    "boundary": "A mismatch policy and owner-facing warning UI remain implementation work."
+  },
+  "saveBoundary": {
+    "function": "0x82D82510",
+    "nativeSerializeCall": "0x82D82984",
+    "finalizedOutcomeEdge": "0x82D829E8",
+    "outcomeRegister": "r25",
+    "runtimeObservation": {
+      "slot": "save0.sve",
+      "identifierValid": true,
+      "success": true
+    },
+    "result": "The serializer result is combined with file-finalization status before 0x82D829E8. The result and selected internal filename remain live there, so a host sidecar can be atomically committed only when r25 is nonzero.",
+    "boundary": "Failure and device-removal outcomes were not forced; the static branch keeps them distinguishable from success."
+  },
+  "sidecarContract": {
+    "key": "selected user/device content namespace plus the normalized internal filename from record offset 0x108",
+    "loadRule": "Resolve and compare the sidecar at 0x82D84238 before native content open or deserialization.",
+    "saveRule": "Write a temporary host sidecar and atomically replace the namespaced sidecar only after 0x82D829E8 reports success.",
+    "nativeFormat": "unchanged",
+    "result": "The mapped edges support host-only ruleset identity without embedding metadata in the native save."
+  },
+  "guards": [
+    "Do not use the display label as the sidecar key.",
+    "Do not use the internal filename without its selected user/device content namespace.",
+    "Do not commit a sidecar before file finalization succeeds.",
+    "Do not infer manual-load success from slot selection or content enumeration.",
+    "Do not edit or append to the native save format."
+  ],
+  "conclusion": "Version 1.3 exposes a stable namespaced slot identifier at selected content record offset 0x108, a pre-load intervention point at 0x82D84238, and a finalized save-result edge at 0x82D829E8. Runtime load and overwrite-save both reported save0.sve, with the save result successful."
+}

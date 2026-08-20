@@ -1562,7 +1562,7 @@
     {"id":"RVA-SYM-0075","name":"SigninStateOwnerCtor","kind":"function","address":"0x82D8D548","image":"../image.json","claim":"Constructs the 0x78-byte sign-in state owner.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/signInStateOwner"}],"qualification":{"alternatives":["The concrete class name remains unresolved."]}},
     {"id":"RVA-SYM-0076","name":"SigninStateOwnerGlobal","kind":"global","address":"0x8314EFE0","image":"../image.json","claim":"Stores the pointer to the 0x78-byte sign-in state owner.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/signInStateOwner"}],"qualification":{"falsificationCondition":"The resource builder does not publish the constructed owner here."}},
     {"id":"RVA-SYM-0080","name":"SelectedSaveUserResolve","kind":"function","address":"0x82E633C0","image":"../image.json","claim":"Returns an eligible selected user index or a negative result.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/saveEnumeration"}],"qualification":{"alternatives":["Every rejection condition remains unresolved."]}},
-    {"id":"RVA-SYM-0081","name":"SaveContentEnumerate","kind":"function","address":"0x82DDDFC0","image":"../image.json","claim":"Enumerates eleven type-1 content records using a 0x164-byte stride.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/saveEnumeration"}],"qualification":{"alternatives":["Successful runtime enumeration remains unconfirmed."]}},
+    {"id":"RVA-SYM-0081","name":"SaveContentEnumerate","kind":"function","address":"0x82DDDFC0","image":"../image.json","claim":"Enumerates eleven type-1 content records using a 0x164-byte stride.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/saveEnumeration"}],"qualification":{"alternatives":["The enumeration owner does not itself establish later load or save I/O success."]}},
     {"id":"RVA-SYM-0082","name":"XamContentCreateEnumeratorWrap","kind":"function","address":"0x8280DC58","image":"../image.json","claim":"Wrapper boundary used to create the content enumerator.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../save-profile-storage.json#/saveEnumeration"}],"qualification":{"falsificationCondition":"SaveContentEnumerate does not call this wrapper."}},
     {"id":"RVA-SYM-0092","name":"LocalizationOwnerCtor","kind":"function","address":"0x82E69F38","image":"../image.json","claim":"Constructs the 0x14C-byte localization owner and installs vtable 0x82120FC0.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"}],"qualification":{"alternatives":["The concrete class name remains unresolved."]}},
     {"id":"RVA-SYM-0093","name":"LocalizationOwnerGlobal","kind":"global","address":"0x8314F2C8","image":"../image.json","claim":"Stores the localization owner constructed during resource setup.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/localizationOwner"}],"qualification":{"falsificationCondition":"The resource builder does not publish the 0x14C-byte owner here."}},
@@ -2164,6 +2164,88 @@
       ],
       "qualification": {
         "alternatives": ["The complete unique-unit name mapping and original function name remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0211",
+      "name": "SaveSlotPick",
+      "kind": "function",
+      "address": "0x82D83208",
+      "image": "../image.json",
+      "claim": "Runs the save-mode slot picker and returns the accepted selected content record to its caller.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/slotIdentity" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D83208" }
+      ],
+      "qualification": {
+        "alternatives": ["The label is recovered semantics, not an original debug symbol."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0212",
+      "name": "LoadSlotPick",
+      "kind": "function",
+      "address": "0x82D834F0",
+      "image": "../image.json",
+      "claim": "Runs the load-mode slot picker and returns the accepted selected content record to its caller.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/slotIdentity" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D834F0" }
+      ],
+      "qualification": {
+        "alternatives": ["The label is recovered semantics, not an original debug symbol."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0213",
+      "name": "SelectedContentRecordCopy",
+      "kind": "function",
+      "address": "0x82DDBFF8",
+      "image": "../image.json",
+      "claim": "Copies the accepted 0x13C-byte selected content record payload from the picker-owned 0x164-byte UI record.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/slotIdentity" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82DDBFF8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The copy does not transfer 0x134 bytes followed by the words at offsets 0x134 and 0x138."
+      }
+    },
+    {
+      "id": "RVA-SYM-0214",
+      "name": "SaveGameToSelectedContent",
+      "kind": "function",
+      "address": "0x82D82510",
+      "image": "../image.json",
+      "claim": "Serializes the current game to the selected content record and exposes a final success result after file finalization.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/saveBoundary" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D82510" },
+        { "kind": "runtime-probe", "locator": "runtime:qol_probe_save_slots" }
+      ],
+      "qualification": {
+        "alternatives": ["Failure and device-removal results were not forced at runtime."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0215",
+      "name": "LoadGameFromSelectedContent",
+      "kind": "function",
+      "address": "0x82D84238",
+      "image": "../image.json",
+      "claim": "Consumes the selected content record and invokes native game deserialization after content open.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/loadBoundary" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D84238" },
+        { "kind": "runtime-probe", "locator": "runtime:qol_probe_save_slots" }
+      ],
+      "qualification": {
+        "alternatives": ["The runtime probe establishes entry with the selected slot; successful gameplay appearance was owner-observed rather than encoded as a second hook."]
       }
     }
   ]

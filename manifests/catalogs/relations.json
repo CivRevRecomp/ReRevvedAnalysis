@@ -1962,6 +1962,28 @@
       "confidence": "confirmed",
       "evidence": [{ "kind": "topic-manifest", "locator": "../unit-definitions-ai-evaluation.json#/aiConsumers/0" }],
       "qualification": { "falsificationCondition": "The function does not directly call 0x82CF21A0." }
+    },
+    {
+      "id": "RVA-REL-0270",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0214",
+      "to": "RVA-FLD-0113",
+      "image": "../image.json",
+      "claim": "SaveGameToSelectedContent reads the internal slot filename before opening and serializing the selected save.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/saveBoundary" }],
+      "qualification": { "falsificationCondition": "The manual save owner does not derive its storage name from selected record offset 0x108." }
+    },
+    {
+      "id": "RVA-REL-0271",
+      "kind": "reads-field",
+      "from": "RVA-SYM-0215",
+      "to": "RVA-FLD-0113",
+      "image": "../image.json",
+      "claim": "LoadGameFromSelectedContent reads the internal slot filename before opening and deserializing the selected save.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../save-slot-ruleset-identity.json#/loadBoundary" }],
+      "qualification": { "falsificationCondition": "The manual load owner does not derive its storage name from selected record offset 0x108." }
     }
   ]
 }
