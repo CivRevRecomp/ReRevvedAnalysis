@@ -16,6 +16,7 @@ This index covers every Java script in this directory.
 - `DumpMemoryWords.java` prints bounded big-endian word windows around selected guest VAs.
 - `DumpReferences.java` lists code and data references to selected guest VAs.
 - `DumpStringBoundary.java` dumps exact string references and a bounded native closure.
+- `DumpStringsInRange.java` prints defined strings inside one bounded guest address range.
 - `FindCallConstantArgs.java` finds direct calls whose nearest selected argument write is a requested immediate constant.
 - `FindFieldAccesses.java` classifies reads and writes inside selected functions and an optional caller closure.
 - `FindFieldRefs.java` finds PowerPC register-plus-displacement operands for selected offsets.

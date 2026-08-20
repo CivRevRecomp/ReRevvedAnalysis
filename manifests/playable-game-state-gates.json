@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "id": "RVA-F-0061",
+  "topic": "playable-game-state-gates",
+  "status": "closed",
+  "confidence": "confirmed",
+  "image": "image.json",
+  "question": "Which version 1.3 fields can provide a conservative read-only gameplay-availability gate across frontend, modal, and human-turn transitions?",
+  "scope": {
+    "functions": ["0x82E17238", "0x82CD5A70", "0x82D259E8", "0x82D8A3A0", "0x82DE9FD8"],
+    "globals": ["0x82FFD624", "0x8312B8E8", "0x8312E608", "0x8314F28C"],
+    "fields": ["frontend_root+0x70", "frontend_state+0x4", "interface_gate+0x5"],
+    "boundary": "The accepted API gate is a conservative single-player read predicate. It does not call guest code, classify multiplayer fallback behavior, or authorize mutations."
+  },
+  "dependencies": [
+    {
+      "topic": "frontend-gameplay-transition",
+      "use": "key-2 state factory and AudioGameStartInit entry"
+    },
+    {
+      "topic": "gameplay-main-frame-boundary",
+      "use": "proved guest-main-thread frame boundary for the default-off observer"
+    }
+  ],
+  "currentEvidence": {
+    "method": "combined foreground read-only Ghidra function, reference, instruction, pointer, and bounded-string queries with narrow generated-code corroboration and a default-off transition observer",
+    "entries": [
+      {
+        "role": "frontend gameplay-state check",
+        "address": "0x82E17238",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "human-player classifier",
+        "address": "0x82CD5A70",
+        "confidence": "confirmed"
+      },
+      {
+        "role": "turn-selection update",
+        "address": "0x82D259E8",
+        "confidence": "strong"
+      },
+      {
+        "role": "interface-update debug reader",
+        "address": "0x82DE9FD8",
+        "confidence": "confirmed"
+      }
+    ],
+    "qualification": "Runtime coverage confirmed main menu, new-game gameplay, AI and human turns, modal save UI, return to menu, and a load path. Human-player mask zero remains intentionally unavailable because the title's fallback calls session code."
+  },
+  "staticQuery": {
+    "scripts": [
+      "ghidra/DumpFunctions.java",
+      "ghidra/DumpInstructions.java",
+      "ghidra/DumpMemoryWords.java",
+      "ghidra/DumpReferences.java",
+      "ghidra/FindPointerValues.java",
+      "ghidra/DumpStringsInRange.java"
+    ],
+    "mode": "foreground-read-only",
+    "generatedCorroboration": [
+      "generated:rerevved/sub_82E17238",
+      "generated:rerevved/sub_82CD5A70",
+      "generated:rerevved/sub_82D259E8",
+      "generated:rerevved/sub_82D8A3A0",
+      "generated:rerevved/sub_82DE9FD8"
+    ]
+  },
+  "frontendLifecycle": {
+    "rootGlobal": "0x82FFD624",
+    "currentStateOffset": "0x70",
+    "stateKeyOffset": "0x4",
+    "gameplayKey": 2,
+    "check": "0x82E17238",
+    "ingameString": "0x82123070",
+    "result": "The check requires a non-null root-plus-0x70 current-state pointer and state key 2 before producing the self-identifying ingame result. Runtime observed key 1 at the main menu and key 2 during both new-game and loaded gameplay.",
+    "boundary": "Key 2 establishes frontend gameplay lifecycle only; it does not establish a human turn or an unobstructed game interface."
+  },
+  "turnOwner": {
+    "activePlayerGlobal": "0x8312B8E8",
+    "humanPlayerMaskGlobal": "0x8312E608",
+    "classifier": "0x82CD5A70",
+    "selectionUpdate": "0x82D259E8",
+    "localPlayerResolver": "0x82D8A3A0",
+    "result": "When the human-player mask is nonzero, 0x82CD5A70 classifies a player by testing its bit. The bounded turn-selection path writes selected player IDs to 0x8312B8E8 and can replace a human selection with the local player ID. Runtime observed player 0 as human, players 1-5 as AI, and restoration to player 0.",
+    "unknownRule": "Mask zero, active player outside 0-31, or an unreadable scalar makes turn ownership unknown and the read API unavailable.",
+    "boundary": "The immediate API must not invoke the classifier's mask-zero session fallback. Multiplayer and network-player semantics remain unresolved."
+  },
+  "interfaceAvailability": {
+    "pointerGlobal": "0x8314F28C",
+    "updateByteOffset": "0x5",
+    "debugReader": "0x82DE9FD8",
+    "debugLabel": "APP->GetGameInterfaceUpdate: ",
+    "debugLabelAddress": "0x82127F3C",
+    "writers": ["0x82DA52A0", "0x82DD8FB8", "0x82DDAE98", "0x82DED098", "0x82E07290", "0x82E40738"],
+    "result": "The title's own debug reader loads byte 0x5 from the object published through 0x8314F28C. Runtime save-menu transitions cleared the byte and closing the modal restored it.",
+    "boundary": "The byte is an interface-update gate, not a general scene-active or gameplay-lifecycle flag."
+  },
+  "availabilityPredicate": {
+    "expression": "frontend_key == 2 && interface_update && turn_owner_known && human_turn",
+    "readPolicy": "Resolve every pointer and scalar afresh at the proved frame boundary using bounded reads. Cache no guest pointers between frames.",
+    "result": "The predicate was unavailable at the main menu, the first incomplete load frame, AI turns, and save-menu modals; it became available on a known human turn with the interface gate enabled."
+  },
+  "runtimeProbe": {
+    "status": "captured",
+    "date": "2026-08-20",
+    "default": "off",
+    "cvar": "qol_probe_gameplay_state",
+    "frameHook": "0x82C7DF58",
+    "newGameRun": {
+      "humanFrame": 1211,
+      "aiFrames": "3445-3451",
+      "humanResumeFrame": 3452,
+      "modalFrame": 5467,
+      "menuFrame": 7086,
+      "processExitCode": 0,
+      "result": "Key 2, active player 0, mask 1, and interface enabled produced available. Active players 1-5 produced unavailable, player 0 restored available, the modal interface clear produced unavailable, and frontend key 1 kept the predicate unavailable after return to menu."
+    },
+    "loadRun": {
+      "initialLoadFrame": 4463,
+      "availableFrame": 4464,
+      "result": "The load transition first exposed key 2 with unknown player state, then exposed player 0 and became available on the next frame."
+    },
+    "reducedRegressionRun": {
+      "menuFrame": 406,
+      "initialLoadFrame": 781,
+      "availableFrame": 782,
+      "modalTransitions": [824, 929, 1196, 1278, 1339, 1476],
+      "returnMenuFrame": 1571,
+      "processExitCode": 0,
+      "ownerObservation": "The owner reported clean text after repeated save-menu transitions and return to the main menu.",
+      "result": "The reduced observer used only the accepted scalar gates, made no register captures or guest writes, and completed the load/save-menu/menu path without the text corruption seen with the broader observer."
+    },
+    "abRegression": {
+      "failure": "A broader observer that dynamically scanned rejected processor and scene owners and emitted high-frequency transitions correlated with severe text corruption after opening the save menu.",
+      "control": "The same binary and path remained clean with the cvar off. After removing the rejected scans and restoring the no-register hook contract, the cvar-on reduced observer remained clean.",
+      "qualification": "The A/B test bounds the unsafe observer design but does not isolate one rejected read or log operation as the sole cause."
+    }
+  },
+  "rejectedLeads": {
+    "sceneActiveGate": {
+      "global": "0x8314F094",
+      "result": "The flag toggled transiently and remained true at the main menu, so it is not a gameplay lifecycle predicate."
+    },
+    "gameInputProcessor": {
+      "global": "0x8314F2A4",
+      "result": "The registry object remained active during AI turns and does not classify the human-turn boundary."
+    },
+    "gameStartByte": {
+      "global": "0x8314EF7C",
+      "result": "The byte is written during game start but no supported teardown clear was found."
+    },
+    "driverOwner": {
+      "result": "The broad frame driver's owner is a rendering/update manager, not a gameplay-session identity."
+    },
+    "importedInGameScreenRun": {
+      "address": "0x82DD32D0",
+      "result": "The imported name belongs to the Hall of Achievements owner and is not a gameplay lifecycle source."
+    }
+  },
+  "guards": [
+    "Resolve the frontend current-state and interface-gate pointers on every read; never retain them across frames or teardown.",
+    "Treat frontend key 2 as lifecycle only and require both a known human turn and interface update for availability.",
+    "When the human-player mask is zero, return unavailable instead of calling the title's session fallback from an immediate read API.",
+    "Do not use the scene-active gate, game-input registry, driver owner, or one-time game-start byte as availability inputs.",
+    "Do not reintroduce broad registry scans or high-frequency transition logging; repeat the save-menu/load/menu A/B regression after changing the observer.",
+    "The probe remains default-off, performs bounded reads only, and writes no guest memory or registers."
+  ],
+  "conclusion": "For version 1.3, a conservative read-only gameplay API is available only when frontend state key 2 is current, the published interface object's update byte is enabled, and the active player is a known member of the nonzero human-player mask. The reduced default-off observer survived new game, AI/human turn changes, save-menu modal transitions, load, and return to menu without retaining guest pointers or reproducing the broader observer's text corruption."
+}

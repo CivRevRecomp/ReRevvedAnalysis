@@ -829,6 +829,49 @@
     {"id":"RVA-STR-0020","name":"platform_timing_state_8314F160","image":"../image.json","claim":"0x18-byte static timing state lazily initialized by PlatformElapsedSeconds.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/timingState"}],"qualification":{"alternatives":["Runtime precision remains unconfirmed."]},"size":"0x18","fields":[{"id":"RVA-FLD-0045","name":"baseline_timebase","offset":"0x0","claim":"Stores the fallback timebase baseline.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/timingState"}],"qualification":{"falsificationCondition":"The elapsed-seconds function does not initialize and read this field."}},{"id":"RVA-FLD-0046","name":"performance_frequency","offset":"0x8","claim":"Stores the queried performance frequency.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/timingState"}],"qualification":{"falsificationCondition":"The frequency wrapper does not write this field."}},{"id":"RVA-FLD-0047","name":"seconds_per_tick","offset":"0x10","claim":"Stores the frequency-derived seconds-per-tick scale.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../platform-timing-locale-wrappers.json#/timingState"}],"qualification":{"alternatives":["Runtime precision remains unconfirmed."]}}]},
     {"id":"RVA-STR-0016","name":"audio_manager_8314F084","image":"../image.json","claim":"0x4C8-byte audio manager published through 0x8314F084.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/managerCreation"}],"qualification":{"alternatives":["The original class name remains unresolved."]},"size":"0x4C8","fields":[{"id":"RVA-FLD-0037","name":"low_level_audio_system","offset":"0x1C","claim":"Owns the 0x6C-byte low-level audio object.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem"}],"qualification":{"falsificationCondition":"The manager constructor does not store the low-level object here."}},{"id":"RVA-FLD-0038","name":"script_2d_table","offset":"0x350","claim":"Stores the bounded pointer table.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-2d-script-table-ownership.json#/collectionProduction"}],"qualification":{"alternatives":["Entry ownership remains unresolved."]}},{"id":"RVA-FLD-0039","name":"script_2d_count","offset":"0x358","claim":"Stores the pointer-table bound.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-2d-script-table-ownership.json#/collectionProduction"}],"qualification":{"falsificationCondition":"The producer and lookup do not write and read this bound."}}]},
     {"id":"RVA-STR-0017","name":"faudio_system_miles_82147C38","image":"../image.json","claim":"0x6C-byte low-level audio object using vtable 0x82147C38.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem"}],"qualification":{"alternatives":["Unrecorded fields remain unnamed."]},"size":"0x6C","fields":[{"id":"RVA-FLD-0040","name":"miles_driver","offset":"0x30","claim":"Stores the low-level driver handle.","confidence":"strong","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/lowLevelAudioSystem"}],"qualification":{"alternatives":["Runtime driver success remains unconfirmed."]}},{"id":"RVA-FLD-0041","name":"type2_stream_slots","offset":"0x54","claim":"Stores the type-2 stream-slot array.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["No 2D semantic name is inferred."]}},{"id":"RVA-FLD-0042","name":"type3_stream_slots","offset":"0x58","claim":"Stores the type-3 stream-slot array.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["No 3D semantic name is inferred."]}}]},
-    {"id":"RVA-STR-0018","name":"faudio_stream_slot","image":"../image.json","claim":"0x38-byte stream slot whose handle is stored at offset 0x4.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Fields outside the handle boundary remain unresolved."]},"size":"0x38","fields":[{"id":"RVA-FLD-0048","name":"stream_handle","offset":"0x4","claim":"Stores the Miles open-stream result.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Successful stream opening is not claimed."]}}]}
+    {"id":"RVA-STR-0018","name":"faudio_stream_slot","image":"../image.json","claim":"0x38-byte stream slot whose handle is stored at offset 0x4.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Fields outside the handle boundary remain unresolved."]},"size":"0x38","fields":[{"id":"RVA-FLD-0048","name":"stream_handle","offset":"0x4","claim":"Stores the Miles open-stream result.","confidence":"confirmed","evidence":[{"kind":"topic-manifest","locator":"../audio-initialization-stream-ownership.json#/streamOpen"}],"qualification":{"alternatives":["Successful stream opening is not claimed."]}}]},
+    {
+      "id": "RVA-STR-0033",
+      "name": "frontend_state_identity_prefix",
+      "image": "../image.json",
+      "claim": "Two-word prefix shared by the bounded frontend state objects, with a vtable pointer followed by the numeric state key.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../frontend-gameplay-transition.json#/receivingState" },
+        { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/frontendLifecycle" }
+      ],
+      "qualification": {
+        "alternatives": ["Concrete state implementations may extend beyond this prefix."]
+      },
+      "size": "0x8",
+      "fields": [
+        {
+          "id": "RVA-FLD-0100",
+          "name": "vptr",
+          "offset": "0x0",
+          "claim": "Stores the concrete frontend state's vtable pointer.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../frontend-gameplay-transition.json#/receivingState" }
+          ],
+          "qualification": {
+            "alternatives": ["Only the key-2 concrete vtable is identified in the dependency topic."]
+          }
+        },
+        {
+          "id": "RVA-FLD-0101",
+          "name": "state_key",
+          "offset": "0x4",
+          "claim": "Stores the numeric frontend state key; key 2 identifies the gameplay state.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/frontendLifecycle" }
+          ],
+          "qualification": {
+            "alternatives": ["Only runtime-observed keys 1 and 2 are assigned meanings here."]
+          }
+        }
+      ]
+    }
   ]
 }

@@ -136,7 +136,7 @@ class GhidraBootstrapTests(unittest.TestCase):
     def test_index_covers_every_java_script(self):
         readme = (GHIDRA_DIR / "README.md").read_text(encoding="utf-8")
         scripts = sorted(path.name for path in GHIDRA_DIR.glob("*.java"))
-        self.assertEqual(len(scripts), 18)
+        self.assertEqual(len(scripts), 19)
         for script in scripts:
             self.assertIn(f"`{script}`", readme)
 

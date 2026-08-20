@@ -4,8 +4,8 @@
   "records": [
     {
       "id": "RVA-SYM-0009", "name": "frontend_root_ptr_82FFD624", "kind": "global", "address": "0x82FFD624", "image": "../image.json",
-      "claim": "Stores the frontend root pointer whose offset 0x5C supplies the named-file manager.", "confidence": "confirmed",
-      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-selection.json#/manager"}],
+      "claim": "Stores the frontend root pointer whose offset 0x5C supplies the named-file manager and whose offset 0x70 holds the current frontend state.", "confidence": "confirmed",
+      "evidence": [{"kind": "topic-manifest", "locator": "../frontend-main-menu-selection.json#/manager"}, {"kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/frontendLifecycle"}],
       "qualification": {"alternatives": ["The concrete frontend-root class and complete layout remain unresolved."]}
     },
     {
@@ -1614,6 +1614,117 @@
       ],
       "qualification": {
         "alternatives": ["This frame boundary is not itself the playable-state availability predicate."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0177",
+      "name": "FrontendInGameStateCheck",
+      "kind": "function",
+      "address": "0x82E17238",
+      "image": "../image.json",
+      "claim": "Requires a current frontend state with key 2 before producing the self-identifying ingame result.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/frontendLifecycle" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82E17238" }
+      ],
+      "qualification": {
+        "alternatives": ["Key 2 identifies frontend gameplay lifecycle, not human-turn or modal availability."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0178",
+      "name": "TurnSelectionUpdate",
+      "kind": "function",
+      "address": "0x82D259E8",
+      "image": "../image.json",
+      "claim": "Selects and publishes active-player IDs, including replacement of a human selection with the local player ID.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/turnOwner" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82D259E8" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete turn-selection state machine remains outside this packet."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0179",
+      "name": "IsHumanPlayer",
+      "kind": "function",
+      "address": "0x82CD5A70",
+      "image": "../image.json",
+      "claim": "Classifies a player from the human-player bit mask when that mask is nonzero, otherwise using a session fallback.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/turnOwner" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CD5A70" }
+      ],
+      "qualification": {
+        "alternatives": ["The session fallback and multiplayer semantics remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0180",
+      "name": "active_player_id_8312B8E8",
+      "kind": "global",
+      "address": "0x8312B8E8",
+      "image": "../image.json",
+      "claim": "Stores the active player ID selected by the bounded turn-update path.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/turnOwner" }
+      ],
+      "qualification": {
+        "alternatives": ["Values outside 0-31 are unavailable to the conservative read predicate."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0181",
+      "name": "human_player_mask_8312E608",
+      "kind": "global",
+      "address": "0x8312E608",
+      "image": "../image.json",
+      "claim": "Stores the player-bit mask consumed by IsHumanPlayer when nonzero.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/turnOwner" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CD5A70" }
+      ],
+      "qualification": {
+        "alternatives": ["A zero mask selects a session fallback and is not interpreted by the immediate read API."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0182",
+      "name": "interface_gate_ptr_8314F28C",
+      "kind": "global",
+      "address": "0x8314F28C",
+      "image": "../image.json",
+      "claim": "Stores the interface-gate object whose byte at offset 0x5 controls title interface updates.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/interfaceAvailability" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82DE9FD8" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete object layout and original class name remain unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0183",
+      "name": "InterfaceUpdateDebugRead",
+      "kind": "function",
+      "address": "0x82DE9FD8",
+      "image": "../image.json",
+      "claim": "Reads interface-gate byte 0x5 after emitting the self-identifying GetGameInterfaceUpdate label.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../playable-game-state-gates.json#/interfaceAvailability" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82DE9FD8" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The function does not read byte 0x5 from the object published through 0x8314F28C."
       }
     }
   ]
