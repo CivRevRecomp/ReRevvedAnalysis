@@ -1676,6 +1676,83 @@
       "qualification": {
         "falsificationCondition": "SceneFlagToggle does not store its r4 byte at gate offset 0x1."
       }
+    },
+    {
+      "id": "RVA-REL-0244",
+      "kind": "contains",
+      "from": "RVA-SYM-0189",
+      "to": "RVA-STR-0034",
+      "image": "../image.json",
+      "claim": "Global 0x830F2BF0 begins the player-major table of 0x54-byte unit records.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }],
+      "qualification": { "falsificationCondition": "UnitMoveApply does not index this base by player times 256 plus unit." }
+    },
+    {
+      "id": "RVA-REL-0245",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0186",
+      "to": "RVA-FLD-0102",
+      "image": "../image.json",
+      "claim": "UnitMoveApply decrements the movement budget before starting presentation.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }, { "kind": "generated-code", "locator": "generated:rerevved/sub_82CD69B8" }],
+      "qualification": { "falsificationCondition": "The byte at offset 0x2 is not decremented on the ordinary path." }
+    },
+    {
+      "id": "RVA-REL-0246",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0186",
+      "to": "RVA-FLD-0103",
+      "image": "../image.json",
+      "claim": "UnitMoveApply updates lifecycle flags before presentation and finalizes them after completion.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }],
+      "qualification": { "alternatives": ["Individual bits remain unnamed."] }
+    },
+    {
+      "id": "RVA-REL-0247",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0186",
+      "to": "RVA-FLD-0104",
+      "image": "../image.json",
+      "claim": "UnitMoveApply commits position X before movement presentation.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }],
+      "qualification": { "falsificationCondition": "The field does not advance before the presenter call." }
+    },
+    {
+      "id": "RVA-REL-0248",
+      "kind": "writes-field",
+      "from": "RVA-SYM-0186",
+      "to": "RVA-FLD-0105",
+      "image": "../image.json",
+      "claim": "UnitMoveApply commits position Y before movement presentation.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }],
+      "qualification": { "falsificationCondition": "The field does not advance before the presenter call." }
+    },
+    {
+      "id": "RVA-REL-0249",
+      "kind": "calls",
+      "from": "RVA-SYM-0186",
+      "to": "RVA-SYM-0187",
+      "image": "../image.json",
+      "claim": "UnitMoveApply calls UnitMovePresentationStart after committing the observed unit state.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/presentation" }],
+      "qualification": { "falsificationCondition": "The direct call at 0x82CD758C does not target 0x82D11AD8." }
+    },
+    {
+      "id": "RVA-REL-0250",
+      "kind": "calls",
+      "from": "RVA-SYM-0186",
+      "to": "RVA-SYM-0188",
+      "image": "../image.json",
+      "claim": "UnitMoveApply repeatedly calls GuestPresentationPump until the movement presentation condition clears.",
+      "confidence": "confirmed",
+      "evidence": [{ "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/presentation" }],
+      "qualification": { "falsificationCondition": "The loop at 0x82CD7590 does not call 0x82E2A838 before rechecking the busy condition." }
     }
   ]
 }

@@ -1726,6 +1726,115 @@
       "qualification": {
         "falsificationCondition": "The function does not read byte 0x5 from the object published through 0x8314F28C."
       }
+    },
+    {
+      "id": "RVA-SYM-0184",
+      "name": "MoveCommandSubmit",
+      "kind": "function",
+      "address": "0x82CE1950",
+      "image": "../image.json",
+      "claim": "Submits the six-word command form whose command value 0x11 identifies Move.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/commandPath" }
+      ],
+      "qualification": {
+        "alternatives": ["The complete command queue object layout remains unresolved."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0185",
+      "name": "NetworkCommandConsumer",
+      "kind": "function",
+      "address": "0x82CDDF08",
+      "image": "../image.json",
+      "claim": "Consumes queued command records and dispatches command 0x11 to the bounded Move case.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/commandPath" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CDDF08" }
+      ],
+      "qualification": {
+        "alternatives": ["Only the Move case is named by this packet."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0186",
+      "name": "UnitMoveApply",
+      "kind": "function",
+      "address": "0x82CD69B8",
+      "image": "../image.json",
+      "claim": "Applies one ordinary unit movement step, commits unit-record state, starts presentation, pumps it to completion, and finalizes movement flags.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" },
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/presentation" },
+        { "kind": "generated-code", "locator": "generated:rerevved/sub_82CD69B8" }
+      ],
+      "qualification": {
+        "alternatives": ["Combat and specialized-unit branches are outside this function-level claim."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0187",
+      "name": "UnitMovePresentationStart",
+      "kind": "function",
+      "address": "0x82D11AD8",
+      "image": "../image.json",
+      "claim": "Starts the presentation awaited by the ordinary movement executor.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/presentation" }
+      ],
+      "qualification": {
+        "alternatives": ["The function has other callers; only its ordinary-movement role is claimed."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0188",
+      "name": "GuestPresentationPump",
+      "kind": "function",
+      "address": "0x82E2A838",
+      "image": "../image.json",
+      "claim": "Pumps guest work while the ordinary movement executor waits for presentation completion.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/presentation" }
+      ],
+      "qualification": {
+        "alternatives": ["The pump is shared and is not movement-specific."]
+      }
+    },
+    {
+      "id": "RVA-SYM-0189",
+      "name": "unit_table_830F2BF0",
+      "kind": "global",
+      "address": "0x830F2BF0",
+      "image": "../image.json",
+      "claim": "Begins the 256-record-per-player unit table used by the ordinary movement executor.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }
+      ],
+      "qualification": {
+        "falsificationCondition": "The executor does not index 0x54-byte records from this base by player times 256 plus unit."
+      }
+    },
+    {
+      "id": "RVA-SYM-0190",
+      "name": "conditional_movement_duration_ms_830E4548",
+      "kind": "global",
+      "address": "0x830E4548",
+      "image": "../image.json",
+      "claim": "Receives conditional 500 or 1000 millisecond values immediately before selected movement-presentation starts.",
+      "confidence": "strong",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/presentation" },
+        { "kind": "ghidra-static", "locator": "ghidra/DumpMemoryWords.java:0x82CD7578" }
+      ],
+      "qualification": {
+        "alternatives": ["It is not established as the universal movement duration; G4 must identify its readers."]
+      }
     }
   ]
 }

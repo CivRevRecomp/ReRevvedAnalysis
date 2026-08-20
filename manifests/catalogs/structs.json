@@ -872,6 +872,116 @@
           }
         }
       ]
+    },
+    {
+      "id": "RVA-STR-0034",
+      "name": "unit_record",
+      "image": "../image.json",
+      "claim": "0x54-byte per-player unit record used by the ordinary movement lifecycle.",
+      "confidence": "confirmed",
+      "evidence": [
+        { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }
+      ],
+      "qualification": {
+        "alternatives": ["Fields outside the accepted movement boundary remain unnamed."]
+      },
+      "size": "0x54",
+      "fields": [
+        {
+          "id": "RVA-FLD-0102",
+          "name": "movement_budget",
+          "offset": "0x2",
+          "claim": "Stores the movement budget decremented by the ordinary movement executor before presentation.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82CD69B8" }
+          ],
+          "qualification": {
+            "alternatives": ["The byte uses title-specific movement units; no player-facing unit conversion is asserted."]
+          }
+        },
+        {
+          "id": "RVA-FLD-0103",
+          "name": "movement_lifecycle_flags",
+          "offset": "0xC",
+          "claim": "Stores movement lifecycle and post-completion availability flags.",
+          "confidence": "strong",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }
+          ],
+          "qualification": {
+            "alternatives": ["Individual flag bits remain unnamed."]
+          }
+        },
+        {
+          "id": "RVA-FLD-0104",
+          "name": "position_x",
+          "offset": "0x1C",
+          "claim": "Stores the unit's current map X coordinate.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }
+          ],
+          "qualification": {
+            "falsificationCondition": "The field does not advance to the observed destination before presentation."
+          }
+        },
+        {
+          "id": "RVA-FLD-0105",
+          "name": "position_y",
+          "offset": "0x1E",
+          "claim": "Stores the unit's current map Y coordinate.",
+          "confidence": "confirmed",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }
+          ],
+          "qualification": {
+            "falsificationCondition": "The field does not advance to the observed destination before presentation."
+          }
+        },
+        {
+          "id": "RVA-FLD-0106",
+          "name": "queued_destination_x",
+          "offset": "0x22",
+          "claim": "Stores the queued destination X coordinate, using -1 when no destination remains queued.",
+          "confidence": "strong",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82CD69B8" }
+          ],
+          "qualification": {
+            "alternatives": ["Full multi-turn route ownership remains unresolved."]
+          }
+        },
+        {
+          "id": "RVA-FLD-0107",
+          "name": "queued_destination_y",
+          "offset": "0x24",
+          "claim": "Stores the queued destination Y coordinate paired with offset 0x22.",
+          "confidence": "strong",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" },
+            { "kind": "generated-code", "locator": "generated:rerevved/sub_82CD69B8" }
+          ],
+          "qualification": {
+            "alternatives": ["Full multi-turn route ownership remains unresolved."]
+          }
+        },
+        {
+          "id": "RVA-FLD-0108",
+          "name": "move_step",
+          "offset": "0x4E",
+          "claim": "Stores the bounded Move command step argument used by the ordinary executor.",
+          "confidence": "strong",
+          "evidence": [
+            { "kind": "topic-manifest", "locator": "../unit-movement-lifecycle.json#/unitRecord" }
+          ],
+          "qualification": {
+            "alternatives": ["The numeric direction-to-map-delta table remains unnamed."]
+          }
+        }
+      ]
     }
   ]
 }
